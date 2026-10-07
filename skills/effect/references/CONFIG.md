@@ -1,0 +1,65 @@
+# Config
+
+Read runtime configuration through Effect `Config` recipes and provider layers, not direct `process.env` access inside application logic.
+
+```ts
+export const dataDirectoryConfig = Config.schema(
+  AbsolutePath,
+  "APP_DATA_DIR",
+)
+
+export const layerFromEnvironment = Layer.effect(
+  Configuration,
+  Effect.gen(function* () {
+    const apiKey = yield* Config.Redacted("API_KEY")
+    const optionalModel = yield* Config.option(Config.String("MODEL"))
+    const enabled = yield* Config.Boolean("FEATURE_ENABLED").pipe(
+      Config.withDefault(false),
+    )
+
+    return Configuration.of({ apiKey, optionalModel, enabled })
+  }),
+)
+```
+
+## Config Recipes
+
+- `Config<T>` is yieldable and reads the current `ConfigProvider` reference.
+- The default provider is `ConfigProvider.fromEnv()`.
+- Constructors are capitalized: `Config.String`, `Config.Boolean`, `Config.Int`, `Config.Duration`, `Config.URL`, and `Config.Redacted`. Combinators such as `Config.option` and `Config.withDefault` remain lowercase.
+- Use `Config.Redacted(...)` for credentials.
+- Use `Config.schema(...)` for refined values, or `Config.mapEffect(...)` for a transformation returning `Effect<B, Config.ConfigError>`; `Config.mapOrFail` is not a v4 API.
+- Use `Config.option(...)` for semantic absence.
+- Use `Config.withDefault(...)` for missing-data defaults only; malformed values still fail.
+- Use `Config.orElse(...)` only when intentionally catching any config parse failure.
+
+## Providers
+
+- Use `ConfigProvider.layer(provider)` to replace the active provider for an app or suite.
+- Use `ConfigProvider.layerAdd(provider)` for fallbacks; pass `{ asPrimary: true }` when the added provider must override the current provider.
+- Use `ConfigProvider.fromUnknown(...)` for deterministic test config.
+- Use `ConfigProvider.fromEnv(...)` for environment variables.
+- Use `ConfigProvider.constantCase` when camelCase schema keys should read `SCREAMING_SNAKE_CASE` env vars.
+- Use `ConfigProvider.nested(...)` to scope a provider under a prefix.
+- Treat `.env`, directory, and environment providers as startup/boundary sources, not business-workflow reads.
+
+## Layer Config Helpers
+
+Library-style layers often expose both concrete `layer(options)` and config-backed `layerConfig(options: Config.Wrap<Options>)`.
+
+```ts
+export const layerConfig = (
+  config: Config.Wrap<ClientOptions>,
+) =>
+  Layer.effect(
+    Client,
+    Config.unwrap(config).pipe(
+      Effect.flatMap(makeClient),
+      Effect.map((client) => Client.of(client)),
+    ),
+  )
+```
+
+Use this pattern when a service naturally supports runtime config while still allowing tests to pass concrete values.
+
+For test overrides, read [TESTING.md](TESTING.md).
