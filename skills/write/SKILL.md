@@ -44,7 +44,3 @@ Check that links and locators resolve, quotations match, and cited sources suppo
 ## Sources and updates
 
 Resolve this wrapper's real directory before following source links. The Matt checkout must match its based-on commit in [UPSTREAM.md](../../UPSTREAM.md). If it is missing or mismatched, report the condition rather than changing the pin or substituting another installed copy. Fetching preserves the checkout; adopt a reviewed revision by advancing the checkout and based-on record together. See [provenance](PROVENANCE.md).
-
-## User-only companion commands
-
-Do not invoke or route to `bro` or `show-me-your-work`, including through upstream references. Only the user can activate those standalone skills explicitly. Continue the current workflow without them.

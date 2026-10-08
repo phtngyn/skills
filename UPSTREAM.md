@@ -10,9 +10,11 @@
 | Matt | https://github.com/mattpocock/skills | `repos/mattpocock` | `f3fc5632f401156837ee3872f14fe33ccf1024ea` | `f3fc5632f401156837ee3872f14fe33ccf1024ea` |
 | Poteto | https://github.com/cursor/plugins | `repos/pstack` | `d0ef80d86795816da932a153458c5dbe192d294e` | `d0ef80d86795816da932a153458c5dbe192d294e` |
 
-`skills/design` loads Emil and Good CSS directly; `skills/build` loads Matt and Poteto directly. `skills/write` independently loads Matt's writing guidance. `skills/bro` and `skills/show-me-your-work` link directly to original Poteto instructions and resources, with local Codex metadata for explicit invocation. Their workflows update with the adopted Poteto checkout; no wrapper bodies need synchronization. Keep these checkouts at their based-on commits. Poteto's material is under `repos/pstack/pstack`. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. Its checkout may be newer, so agents compare it with the consuming package before trusting API facts.
+`skills/design` loads Emil and Good CSS directly; `skills/build` loads Matt and Poteto directly. `skills/write` independently loads Matt's writing guidance. `skills/bro` links directly to Poteto's original instructions and remains manual-only. `skills/show-me-your-work` loads the original instructions through a local entry point for selective automatic activation and host-compatible review; bundled resources remain linked. Review adopted Poteto changes against these local integration rules. Keep these checkouts at their based-on commits. Poteto's material is under `repos/pstack/pstack`. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. Its checkout may be newer, so agents compare it with the consuming package before trusting API facts.
 
 ## Maintenance
+
+For initial installation, use `./scripts/setup.sh`. It clones every missing source at its based-on commit, including Effect, and verifies existing checkouts without fetching or advancing them. The commands below are a separate update workflow.
 
 1. Run `./scripts/sync-repos.sh`. It clones missing sources, pins new Emil, Good CSS, Matt, and Poteto clones, and fetches existing ones while preserving their checkouts. Effect tracks `main` with fast-forward updates.
 2. Record each fetched revision in the table using `git -C <local-clone> rev-parse origin/main`. Keep based-on commits unchanged during fetching.

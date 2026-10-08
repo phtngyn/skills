@@ -4,6 +4,28 @@ A Codex-only collection of personal workflows and entry points backed by tracked
 
 Each skill is available through a matching symlink from `~/.agents/skills/<name>` to this collection's `skills/<name>` directory. Keep the collection layout and local upstream checkouts available. Start a new chat if the skill picker has not refreshed.
 
+## Global setup
+
+Clone this repository to a permanent location, then run:
+
+```bash
+./scripts/setup.sh
+./scripts/setup.sh --check
+```
+
+Setup requires Bash and Git, plus network access when upstream clones are missing. It clones missing sources at the adopted revisions in [UPSTREAM.md](UPSTREAM.md), including Effect, and links each top-level skill into `~/.agents/skills`. Rerunning preserves existing links. Existing sources must be clean and match their adopted pins; setup never fetches, advances, or resets them. Use the separate upstream maintenance workflow to adopt updates.
+
+Unrelated global skills are preserved. A conflicting name stops installation before changing links; back up or relocate that entry deliberately, then rerun. Source checkouts and skill resources are verified before links are created. Moving or deleting this collection breaks its installed links.
+
+```bash
+./scripts/setup.sh --uninstall
+./scripts/setup.sh --target /path/to/isolated-skills
+```
+
+Uninstall removes only links pointing to this collection's matching skill directories, including stale links for removed skills. It preserves foreign links, real directories, and upstream sources. `--target` works with all actions. `--check` reports missing sources, revision drift, dirty checkouts, broken resource links, and missing or conflicting installation links without creating directories or fetching.
+
+Run the isolated installer tests with `python3 tests/test_setup.py`; they use temporary directories and local Git fixtures without changing your global skills or fetching from the network.
+
 ## Design
 
 Use `/design <prompt>` or explicitly name `$design`. Design combines Emil's UI craft, exploration, motion, critique, and mobile guidance with Good CSS's layout, typography, sizing, overflow, and native controls. It loads only matching upstream guidance. Good CSS is an internal reference, with no separate skill command.
@@ -64,9 +86,11 @@ The wrapper lives in `skills/write` and reads the pinned `repos/mattpocock` chec
 
 ## Personal commands
 
-`/bro` (or `$bro`) restates the last response in plain language. `/show-me-your-work` (or `$show-me-your-work`) starts an evidence-backed decision trail you can review. Both are manual-only through local Codex invocation metadata; the other personal skills do not route to them. Their original `SKILL.md` files and bundled resources are symlinked directly from the pinned Poteto checkout, with no rewritten workflow. Advancing the reviewed checkout updates those links automatically; fetching alone preserves the adopted revision.
+`/bro` (or `$bro`) restates the last response in plain language. It remains manual-only, with its original skill linked directly from the pinned Poteto checkout. Other personal skills do not invoke it.
 
-Start Show Me Your Work before a long task to capture decisions as they happen. Check its [host requirements](skills/show-me-your-work/PROVENANCE.md#host-requirements) when transcripts or reviewer models are unavailable.
+Show Me Your Work is a shared support skill, available automatically for substantial work that needs a decision trail and separate review. Agents select it from its own description; other skills need no routing instructions. Routine edits and simple fixes skip it. You can still invoke `/show-me-your-work` or `$show-me-your-work` explicitly. Start it before a long task to capture decisions as they happen.
+
+Its [local entry point](skills/show-me-your-work/SKILL.md) loads the unchanged Poteto workflow and adds selective activation plus a separate subagent review. When transcripts or another model family are unavailable, it reviews the available evidence and discloses the limits. See [host requirements](skills/show-me-your-work/PROVENANCE.md#host-requirements). Bundled scripts and references remain linked to the adopted checkout; fetching alone preserves that revision.
 
 ## Upstream maintenance
 

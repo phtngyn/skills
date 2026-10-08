@@ -56,7 +56,3 @@ Resolve the real path of this wrapper before resolving relative source links. Do
 Each selected checkout must remain at its based-on commit recorded in the collection's `UPSTREAM.md`. Fetching updates remote refs; it does not authorize advancing the checkout. During an update review, compare new upstream changes and recommend adoption. Advance the checkout and recorded based-on commit together only when the update is adopted.
 
 See [provenance](PROVENANCE.md) for ownership and layout.
-
-## User-only companion commands
-
-Do not invoke or route to `bro` or `show-me-your-work`, including through upstream references. Only the user can activate those standalone skills explicitly. Continue the current workflow without them.

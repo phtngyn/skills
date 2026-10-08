@@ -63,7 +63,3 @@ For SQL, HTTP servers, RPC, reactive state, workflows, CLI, AI, and other featur
 - Keep transport handlers thin: decode input, read context, call services, and map failures using [ERRORS.md](references/ERRORS.md).
 - Keep network calls outside authoritative database transactions. Decode persisted values when they cannot be trusted.
 - Import supported public exports; keep `internal/` private. Avoid unchecked casts that bypass validation or conceal type errors.
-
-## User-only companion commands
-
-Do not invoke or route to `bro` or `show-me-your-work`, including through upstream references. Only the user can activate those standalone skills explicitly. Continue the current workflow without them.
