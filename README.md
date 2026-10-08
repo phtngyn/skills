@@ -88,9 +88,9 @@ The wrapper lives in `skills/write` and reads the pinned `repos/mattpocock` chec
 
 `/bro` (or `$bro`) restates the last response in plain language. It remains manual-only, with its original skill linked directly from the pinned Poteto checkout. Other personal skills do not invoke it.
 
-Show Me Your Work is a shared support skill, available automatically for substantial work that needs a decision trail and separate review. Agents select it from its own description; other skills need no routing instructions. Routine edits and simple fixes skip it. You can still invoke `/show-me-your-work` or `$show-me-your-work` explicitly. Start it before a long task to capture decisions as they happen.
+Audit is a shared support skill, available automatically for substantial work that needs a decision trail and separate review. Agents select it from its own description; other skills need no routing instructions. Routine edits and simple fixes skip it. You can still invoke `/audit` or `$audit` explicitly. Start it before a long task to capture decisions as they happen.
 
-Its [local entry point](skills/show-me-your-work/SKILL.md) loads the unchanged Poteto workflow and adds selective activation plus a separate subagent review. When transcripts or another model family are unavailable, it reviews the available evidence and discloses the limits. See [host requirements](skills/show-me-your-work/PROVENANCE.md#host-requirements). Bundled scripts and references remain linked to the adopted checkout; fetching alone preserves that revision.
+Its [local entry point](skills/audit/SKILL.md) loads the unchanged Poteto workflow and adds selective activation plus a separate subagent review. A separate reviewer can use the same model. When transcripts are unavailable, it reviews the available evidence and discloses that limit. See [host requirements](skills/audit/PROVENANCE.md#host-requirements). Bundled scripts and references remain linked to the adopted checkout; fetching alone preserves that revision.
 
 ## Upstream maintenance
 

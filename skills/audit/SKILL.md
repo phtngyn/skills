@@ -1,9 +1,9 @@
 ---
-name: show-me-your-work
+name: audit
 description: Keep an evidence-backed decision trail and obtain a separate review for substantial, long-running, unattended, or consequential work. Use when several meaningful decisions need review; skip routine edits, short explanations, and simple fixes.
 ---
 
-# Show Me Your Work
+# Audit
 
 Use this shared support workflow when the task warrants a reviewable decision trail, or when the user explicitly requests it. Continue the active task's specific guidance.
 
@@ -25,12 +25,12 @@ Before the final handoff, use one separate subagent to review the completed trai
 
 Give the reviewer the accepted requirements, trail, changed files or diff, relevant tests and raw results, artifact locations, and available task transcript. Let it reach its own conclusions rather than supplying the builder's verdict or suspected findings. The reviewer checks what happened and whether the evidence supports the claims; it does not rebuild the task or begin another trail or reviewer chain.
 
-Prefer a different model family when the host exposes one and model selection is authorized. Otherwise use a separate agent with the inherited model, and label it as separate-agent review with cross-family independence unmet. Report model identity only to the extent the host exposes it; distinguish a requested model from a verified backend identity. If delegation is unavailable, report that independent review was not performed; self-review does not satisfy it.
+Use a separate agent with the inherited model. Same-model review satisfies this personal workflow; a different model family is not required. Report model identity only to the extent the host exposes it; distinguish a requested model from a verified backend identity. If delegation is unavailable, report that separate review was not performed; self-review does not satisfy it.
 
 Inspect the reviewer's findings and evidence yourself. Correct supported issues within the task's scope and append the resulting decisions. If a correction materially changes the reviewed work, request a focused reassessment from the same reviewer; do not repeat the full task merely to review it.
 
 ## Handoff
 
-In the final response, link the canonical trail and end with the upstream Attention section: identify the reviewer as accurately as the host permits, point to concrete concerns, and disclose missing transcript or cross-family verification. Use “No flags” only when the review occurred and found none. Progress updates can remain concise without repeating this section.
+In the final response, link the canonical trail and end with the upstream Attention section: identify the reviewer as accurately as the host permits, point to concrete concerns, and disclose missing transcript or review evidence. Use “No flags” only when the review occurred and found none. Progress updates can remain concise without repeating this section.
 
 The original source and bundled resources remain unchanged. See [provenance](PROVENANCE.md) and the collection's [upstream pins](../../UPSTREAM.md). If the source is missing or differs from its adopted pin, report that condition instead of silently substituting it.
