@@ -35,6 +35,8 @@ Excluded from this mode: `ask-sonner`, `pick-ui-library`, `write-swift`, and `an
 
 For CSS implementation or review, read our [Good CSS reference](references/GOOD_CSS.md) alongside the selected Emil workflow. It loads matching upstream techniques and defines integration priorities. Reuse guidance already read and continue the current workflow.
 
+Prefer Tailwind CSS for web styling when it fits the project's framework and constraints. Reuse an existing Tailwind setup; for new projects or projects without an established styling system, choose Tailwind when practical. Preserve explicit user choices and established styling conventions in existing projects. Use custom CSS where utilities would make the implementation less clear or cannot express the required behavior cleanly.
+
 ## Personal preferences and Codex integration
 
 These are the wrapper's adjustments to upstream behavior:
