@@ -30,6 +30,10 @@ Choose the most specific skill for the task. Combine relevant skills for a mixed
 
 Excluded from this mode: `ask-sonner`, `pick-ui-library`, `write-swift`, and `animate-expo`. Do not route to or load these skills, including when another upstream skill references them. Handle incidental library decisions using the project’s existing conventions and ordinary research; keep this mode focused on web design and motion.
 
+## CSS implementation support
+
+For CSS implementation or review, read our [Good CSS entry point](../good-css/SKILL.md) alongside the selected Emil workflow. It loads matching upstream techniques and defines integration priorities. Reuse guidance already read and continue the current workflow.
+
 ## Personal preferences and Codex integration
 
 These are the wrapper's adjustments to upstream behavior:

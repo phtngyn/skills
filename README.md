@@ -22,6 +22,20 @@ The wrapper lives in `skills/emil`. It routes directly to Emil's unchanged upstr
 
 Follow-ups continue the design task without setting an application-wide mode.
 
+## Good CSS
+
+Use `/good-css <prompt>` or explicitly name `$good-css` for CSS implementation and review. It is also available for automatic selection on CSS tasks. The wrapper reads Vojta Holik's unchanged upstream entry point and only the technique entries relevant to the work.
+
+Emil supplies visual direction, component craft, animation decisions, and mobile interaction guidance. Good CSS supplies layout, sizing, typography, overflow, and native CSS techniques. The Emil wrapper reaches it during CSS implementation or review; the [Good CSS wrapper](skills/good-css/SKILL.md#combine-with-emil) resolves overlaps while preserving project tokens, browser targets, and required behavior.
+
+```text
+/emil polish this settings page using the existing design system and modern CSS.
+/good-css simplify this card grid without changing its behavior.
+/good-css check this dialog's CSS against our supported browsers.
+```
+
+The entry point lives in `skills/good-css` and reads the pinned `repos/good-css` checkout. Use [good-css.com](https://good-css.com/) for live specimens when a technique needs visual or interaction context. The source references remain the adopted baseline; the live site can differ.
+
 ## Build
 
 Use `/build <prompt>` or explicitly name `$build`. Poteto owns the primary implementation, debugging, architecture, refactoring, and review workflows. Start from the code, choose the data shape, implement a coherent change, and verify the actual result. Matt supplies targeted testing, interface, and diagnostic guidance; his planning and review workflows are available when requested. Specs and tickets are opt-in. The wrapper loads relevant upstream guidance and adapts it to Codex.

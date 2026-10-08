@@ -2,17 +2,18 @@
 set -euo pipefail
 
 REPOS=(
-  "Matt repos/mattpocock https://github.com/mattpocock/skills.git pinned"
-  "Poteto repos/pstack https://github.com/cursor/plugins.git pinned pstack"
-  "Emil repos/emil https://github.com/emilkowalski/skills.git pinned"
-  "Effect repos/effect https://github.com/Effect-TS/effect.git tracking"
+  "Matt|repos/mattpocock|https://github.com/mattpocock/skills.git|pinned"
+  "Poteto|repos/pstack|https://github.com/cursor/plugins.git|pinned|pstack"
+  "Emil|repos/emil|https://github.com/emilkowalski/skills.git|pinned"
+  "Good CSS|repos/good-css|https://github.com/vojtaholik/good-css.git|pinned"
+  "Effect|repos/effect|https://github.com/Effect-TS/effect.git|tracking"
 )
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 mkdir -p repos
 
 for repo in "${REPOS[@]}"; do
-  read -r source_name path remote policy sparse_path <<< "$repo"
+  IFS='|' read -r source_name path remote policy sparse_path <<< "$repo"
 
   if [[ "$policy" == "pinned" ]]; then
     source_commit="$(awk -F '|' -v source="$source_name" '$2 == " " source " " {gsub(/[ `]/, "", $6); print $6}' UPSTREAM.md)"
