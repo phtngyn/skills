@@ -3,7 +3,7 @@
 ## Defaults
 
 ```ts
-import { expect, it } from "@effect/vitest"
+import { assert, it } from "@effect/vitest"
 import { Effect, Fiber } from "effect"
 import { TestClock } from "effect/testing"
 ```
@@ -13,6 +13,8 @@ Use a v4-compatible `@effect/vitest` version. `TestClock` is under
 
 - Use `it.effect` by default.
 - Use `it.live` only when real time or live runtime services are the behavior under test.
+- Both provide and close a `Scope`; return scoped effects directly from those tests.
+- Effect's own tests use `assert` from `@effect/vitest`; retain an established consuming-project assertion style.
 - Use test layers and `ConfigProvider` rather than global mutation.
 - Use `TestClock.setTime` / `TestClock.adjust` for sleeps, schedules, retries, leases, and timeouts.
 - Fork sleeping effects before advancing `TestClock`.
@@ -26,7 +28,7 @@ it.effect("advances virtual time", () =>
       Effect.forkScoped,
     )
     yield* TestClock.adjust("1 second")
-    expect(yield* Fiber.join(fiber)).toBe("done")
+    assert.strictEqual(yield* Fiber.join(fiber), "done")
   }),
 )
 ```
@@ -36,7 +38,7 @@ it.effect("finds a user", () =>
   Effect.gen(function* () {
     const users = yield* UserRepo
     const result = yield* users.find(UserId.make("u1"))
-    expect(Option.isSome(result)).toBe(true)
+    assert.strictEqual(Option.isSome(result), true)
   }).pipe(Effect.provide(UserRepo.layerTest)),
 )
 ```
@@ -63,7 +65,7 @@ it.effect("publishes exactly once", () =>
     yield* Deferred.await(ready)
     const message = yield* Queue.take(published)
 
-    expect(message).toEqual(expectedMessage)
+    assert.deepStrictEqual(message, expectedMessage)
   }),
 )
 ```
@@ -138,3 +140,15 @@ Use `Layer.succeed(AppConfiguration, config)` when the app wraps decoded config 
 ## Shared Test Layers
 
 `layer(...)` from `@effect/vitest` acquires a shared layer for a test block and tears it down afterward. Mutable service state persists between tests in that block. Use this intentionally for expensive shared resources; use per-test acquisition or reset controls when cases require isolated state. Test acquisition/release and interruption for resource-owning services.
+
+## Compiler Behavior
+
+Use a focused type test when the requirement is TypeScript inferring, accepting, rejecting, narrowing, or selecting an overload for a consumer expression. An exported declaration alone needs the project's type-check, not automatically a type-test suite. A runtime regression with an unchanged type contract needs runtime coverage.
+
+Inspect nearby type tests and use the project's existing harness. In Effect itself, read `.agents/skills/test-development/types.md` and use the relevant `packages/effect/typetest` example. Structural type equality does not establish editor quick-info rendering; displayed-type regressions use the separate `displayed-types.md` branch.
+
+For a regression, confirm the assertion fails against the original implementation/type and passes after the change. Derive targeted non-watch commands and applicable checks from the consuming project's scripts and instructions. Report checks that could not run. For library API design, read [LIBRARY_DESIGN.md](LIBRARY_DESIGN.md).
+
+## Source Anchors
+
+At the revisions in [provenance](../PROVENANCE.md): `ai-docs/src/09_testing`, `.agents/skills/test-development`, `packages/vitest/src`, and the focused runtime/type tests for the changed module.

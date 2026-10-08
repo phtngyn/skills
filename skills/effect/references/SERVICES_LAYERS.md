@@ -2,6 +2,8 @@
 
 ## Domain Organization
 
+This is a personal organization default informed by the third-party article below. For upstream application layouts and naming/import conventions, read [CONVENTIONS.md](CONVENTIONS.md).
+
 Group behavior by the domain job, such as `documents/publication.ts` or `media/removal.ts`, rather than collecting unrelated work under mechanism folders such as `services` or `tools`. Split domain internals into independently understandable workflows; a workflow file does not need its own service tag.
 
 Keep the public capability surface small. Introduce a service boundary when callers need an independently useful contract, replaceable dependencies, or separate lifetime ownership. Name adapter ports after the application's job; keep vendor and platform implementations behind those contracts. A `platform` folder is appropriate for adapters, with domain rules staying in their owner.
@@ -11,19 +13,6 @@ Compose layers at each host or executable entrypoint, using named subgraphs when
 For finite lifecycles, introduce a state machine when legal transitions, modes, or cancellation warrant it; ordinary workflows can remain direct Effects. See [RESOURCES_RUNTIME.md](RESOURCES_RUNTIME.md) for matching construction dependencies to their owner's lifetime.
 
 This organization guidance is informed by [Structure an Effect codebase by domain](https://ratstack.sh/lore/structure-effect-by-domain); its capability projections, cartridges, XState integration, and lint policies are optional house conventions.
-
-## Naming Defaults
-
-| Surface | Default |
-| --- | --- |
-| Application service file / class | `Database.ts` / `Database` |
-| Service identifier | Unique package/path/name, such as `myapp/db/Database` |
-| Operation span | `Database.query`, matching the operation |
-| Error class / tag | Meaningful failure name, such as `UserNotFound` |
-| Layer | `layer`; purpose variants such as `layerConfig`, `layerTest`, `layerMemory` |
-| Library module | Named public exports; optional namespace projection in a separate barrel |
-
-These are conventions, not Effect requirements.
 
 ## Application Services
 
@@ -62,18 +51,7 @@ Static layers colocate a straightforward implementation with its service. Separa
 
 ## Library Modules And Exports
 
-Upstream library modules often expose a same-name interface and service value. A barrel projects the module as a namespace:
-
-```ts
-// index.ts: project a separate leaf module.
-export * as Database from "./Database.js"
-```
-
-Sibling implementations import the owning leaf directly, avoiding their own aggregate barrel. Consumers of other packages use public exports. Keep local codecs, helpers, and implementation details private.
-
-Domain-named application classes and namespaced library modules are different surfaces. Generic `Interface` / `Service` names and cyclic leaf self-exports may be retained as an explicit existing project convention, but are not the upstream application default.
-
-Use ES modules for runtime organization. Type-only companion namespaces can describe associated types; library type IDs, prototypes, `dual` overloads, and generic casts are not application-service templates.
+For a reusable public module, read [LIBRARY_DESIGN.md](LIBRARY_DESIGN.md); for import/export conventions read [CONVENTIONS.md](CONVENTIONS.md#imports-and-exports). Application service tags and library model types have different jobs. Choose the surface from useful caller expressions and preserve existing project conventions.
 
 ## Layer Constructors And Names
 
@@ -130,4 +108,4 @@ For error translation and shared helpers, read [ERRORS.md](ERRORS.md).
 
 ## Source Anchors
 
-At the source revision named in `SKILL.md`: `ai-docs/src/01_effect/03_services/01_service.ts`, `20_layer-composition.ts`, `ai-docs/src/01_effect/01_basics/02_effect-fn.ts`, and `packages/effect/src/http/index.ts`. These demonstrate application tags, layer variants, tracing selection, and separate barrel namespaces.
+At the original API-guide revision in [provenance](../PROVENANCE.md): `ai-docs/src/01_effect/03_services/01_service.ts`, `20_layer-composition.ts`, `ai-docs/src/01_effect/01_basics/02_effect-fn.ts`, and `packages/effect/src/http/index.ts`. These demonstrate application tags, layer variants, tracing selection, and separate barrel namespaces.

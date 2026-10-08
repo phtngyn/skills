@@ -6,8 +6,8 @@ Prefer `effect/Cache` over a `Map` + timestamp + prune-loop cache when its keyed
 
 - `Cache.make({ capacity, lookup, timeToLive })` caches per-key lookups with one fixed TTL for all entries.
 - `Cache.makeWith(lookup, { capacity, timeToLive(exit, key) })` computes TTL per entry from the lookup's `Exit` — the tool for "cache successes, not failures".
-- Concurrent `Cache.get` calls for the same missing key share one pending lookup.
-- `capacity` is required and bounds the cache.
+- Concurrent `Cache.get` calls for the same missing key share one pending lookup while its entry remains in the cache.
+- `capacity` is required and bounds retained entries, including pending lookups. Capacity eviction can remove a pending entry and allow a second lookup for that key. If sharing must survive capacity churn, inspect the local `Cache.get` / `checkCapacity` implementation and test more simultaneous keys than the capacity; separate pending-work coordination from bounded result retention when needed.
 - Return a zero TTL (`0` or `"0 millis"`) from `timeToLive` to avoid caching transient failures or degraded fallbacks without failing the caller. A short negative-cache TTL can be appropriate for stable failures such as not-found results.
 - `Cache.invalidate(cache, key)` / `Cache.refresh(cache, key)` handle explicit staleness; `Cache.has` checks without triggering a lookup.
 - Cache construction is effectful. Build the cache once in the owning layer/scope and share the handle; a cache built per call caches nothing.
@@ -50,6 +50,6 @@ Batching exists for backends with a real batch endpoint: the resolver receives a
 Selection guide:
 
 - Same key requested repeatedly over time → `Cache`.
-- Same key requested concurrently in one burst → `Cache` (shared pending lookup).
+- Same key requested concurrently in one burst → `Cache` (shared pending lookup, subject to capacity eviction).
 - Many distinct keys, backend has a batch endpoint → `Effect.request` + `RequestResolver`.
 - Many distinct keys, per-item endpoint only → `Effect.forEach(..., { concurrency: n })`, optionally through a `Cache`.

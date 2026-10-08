@@ -56,4 +56,4 @@ At transport boundaries, map expected domain errors to deliberate status/payload
 
 ## Source Anchors
 
-At the source revision named in `SKILL.md`: `ai-docs/src/01_effect/04_errors/01_error-handling.ts`, `10_catch-tags.ts`, `20_reason-errors.ts`, and `packages/effect/src/http/HttpClientError.ts` (Data-based wrapper with typed reasons).
+At the original API-guide revision in [provenance](../PROVENANCE.md): `ai-docs/src/01_effect/04_errors/01_error-handling.ts`, `10_catch-tags.ts`, `20_reason-errors.ts`, and `packages/effect/src/http/HttpClientError.ts` (Data-based wrapper with typed reasons).

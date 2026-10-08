@@ -1,10 +1,10 @@
-# Current v4 API Checkpoints
+# v4 API Lookup Checkpoints
 
-Use the source precedence and revision recorded in [SKILL.md](../SKILL.md).
+Use the source workflow in [SKILL.md](../SKILL.md) and the extraction revisions in [PROVENANCE.md](../PROVENANCE.md). These checkpoints flag likely migration mistakes; verify exact names and imports in the target package before applying them.
 
 ## Imports
 
-Current v4 groups modules by domain without the prerelease `unstable` segment:
+The inspected v4 source groups modules by domain without the prerelease `unstable` segment:
 
 ```ts
 import { Config, Context, Effect, Layer, Schema } from "effect"
@@ -23,7 +23,7 @@ have separate packages. The root barrel does not re-export every domain module.
 
 ## Common Migration Traps
 
-| Older API or assumption | Current v4 |
+| Older API or assumption | Inspected v4 source |
 | --- | --- |
 | `Config.string`, `boolean`, `redacted` | `Config.String`, `Boolean`, `Redacted` |
 | `Config.mapOrFail` | `Config.mapEffect`; failure must be `Config.ConfigError` |

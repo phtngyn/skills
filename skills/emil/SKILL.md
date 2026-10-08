@@ -15,16 +15,16 @@ For a bare invocation, ask what the user wants to work on. Otherwise proceed wit
 
 | Request | Upstream skill |
 | --- | --- |
-| General UI craft, implementation, or design critique | [emil-design-eng](upstream/emil-design-eng/SKILL.md) |
-| Explore multiple UI directions | [prototype](upstream/prototype/SKILL.md) |
-| Build or fix web motion | [animate](upstream/animate/SKILL.md) |
-| Review existing motion or a motion diff | [review-animations](upstream/review-animations/SKILL.md) |
-| Audit existing motion and plan improvements | [improve-animations](upstream/improve-animations/SKILL.md) |
-| Find worthwhile places to add motion | [find-animation-opportunities](upstream/find-animation-opportunities/SKILL.md) |
-| Name an animation effect | [animation-vocabulary](upstream/animation-vocabulary/SKILL.md) |
-| Apple-inspired physical interaction or visual design | [apple-design](upstream/apple-design/SKILL.md) |
-| Mobile web polish and touch behavior | [mobile-native](upstream/mobile-native/SKILL.md) |
-| Stress UI with difficult data | [break-ui](upstream/break-ui/SKILL.md) |
+| General UI craft, implementation, or design critique | [emil-design-eng](../../repos/emil/skills/emil-design-eng/SKILL.md) |
+| Explore multiple UI directions | [prototype](../../repos/emil/skills/prototype/SKILL.md) |
+| Build or fix web motion | [animate](../../repos/emil/skills/animate/SKILL.md) |
+| Review existing motion or a motion diff | [review-animations](../../repos/emil/skills/review-animations/SKILL.md) |
+| Audit existing motion and plan improvements | [improve-animations](../../repos/emil/skills/improve-animations/SKILL.md) |
+| Find worthwhile places to add motion | [find-animation-opportunities](../../repos/emil/skills/find-animation-opportunities/SKILL.md) |
+| Name an animation effect | [animation-vocabulary](../../repos/emil/skills/animation-vocabulary/SKILL.md) |
+| Apple-inspired physical interaction or visual design | [apple-design](../../repos/emil/skills/apple-design/SKILL.md) |
+| Mobile web polish and touch behavior | [mobile-native](../../repos/emil/skills/mobile-native/SKILL.md) |
+| Stress UI with difficult data | [break-ui](../../repos/emil/skills/break-ui/SKILL.md) |
 
 Choose the most specific skill for the task. Combine relevant skills for a mixed request; avoid loading the entire collection. An explicit request to explore alternatives through `/emil` counts as requesting the prototype capability, even though its upstream skill requires explicit invocation. Do not introduce that workflow merely because it is available.
 
@@ -44,7 +44,9 @@ These are the wrapper's adjustments to upstream behavior:
 
 ## Source availability and updates
 
-`upstream/` links to the local Emil checkout's `skills/` directory. Read it as the source of design guidance. If the link is unavailable, report the missing checkout rather than silently using another installed skill with the same name.
+Source links point outside the installed wrapper to the local Emil checkout’s `skills/` directory. Read it as the source of design guidance. If the checkout is unavailable, report the missing checkout rather than silently using another installed skill with the same name.
+
+Resolve the real path of this wrapper before resolving relative source links. Do not nest upstream directory links under the installed wrapper; they expose excluded skills as independent entries.
 
 The checkout must remain at the Emil based-on commit recorded in the collection's `UPSTREAM.md`. Fetching updates remote refs; it does not authorize advancing the checkout. During an update review, compare new upstream changes and recommend adoption. Advance the checkout and recorded based-on commit together only when the update is adopted.
 

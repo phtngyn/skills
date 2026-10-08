@@ -71,4 +71,4 @@ Use `LayerMap` when a key such as tenant ID chooses a reusable scoped service gr
 
 ## Source Anchors
 
-At the source revision named in `SKILL.md`: `ai-docs/src/01_effect/05_resources/10_acquire-release.ts`, `20_layer-side-effects.ts`, `30_layer-map.ts`, `ai-docs/src/04_integration/10_managed-runtime.ts`, and `packages/effect/src/Layer.ts` (`MemoMap`, `fresh`).
+At the original API-guide revision in [provenance](../PROVENANCE.md): `ai-docs/src/01_effect/05_resources/10_acquire-release.ts`, `20_layer-side-effects.ts`, `30_layer-map.ts`, `ai-docs/src/04_integration/10_managed-runtime.ts`, and `packages/effect/src/Layer.ts` (`MemoMap`, `fresh`).

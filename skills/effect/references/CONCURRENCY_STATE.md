@@ -62,4 +62,4 @@ For deterministic ordering, time, interruption, and finalization checks, read [T
 
 ## Source Anchors
 
-At the source revision named in `SKILL.md`: `packages/effect/src/Effect.ts` (`forEach`, `forkChild`, `forkScoped`, `tryPromise`), `Ref.ts`, `SynchronizedRef.ts`, `Semaphore.ts`, `FiberMap.ts`, and `Stream.ts` (`groupByKey`); corresponding tests own operational behavior.
+At the original API-guide revision in [provenance](../PROVENANCE.md): `packages/effect/src/Effect.ts` (`forEach`, `forkChild`, `forkScoped`, `tryPromise`), `Ref.ts`, `SynchronizedRef.ts`, `Semaphore.ts`, `FiberMap.ts`, and `Stream.ts` (`groupByKey`); corresponding tests own operational behavior.

@@ -2,7 +2,7 @@
 
 `SKILL.md` is our personal Codex entry point and routing wrapper. The design guidance comes directly from [Emil Kowalski's skills](https://github.com/emilkowalski/skills), unchanged in `repos/emil`.
 
-`upstream` is a relative symlink to `../../repos/emil/skills`. Keep the collection layout intact when moving it. The upstream checkout and its resources are runtime dependencies; no rewritten supporting guides are bundled here. The retained upstream MIT license identifies the source's terms. This wrapper does not imply Emil authored or endorsed our customizations.
+Source links point directly to `../../repos/emil/skills` from the wrapper’s real directory. No upstream directory link is nested under the installed wrapper, preventing independent discovery of excluded skills through it. Keep the collection layout intact when moving it. The upstream checkout and its resources are runtime dependencies; no rewritten supporting guides are bundled here. The retained upstream MIT license identifies the source's terms. This wrapper does not imply Emil authored or endorsed our customizations.
 
 The wrapper adds only routing, personal collaboration preferences, Codex tool adaptation, and maintenance instructions. The commit in the collection's `UPSTREAM.md` identifies the upstream version used. Keep the checkout at that commit until an update is deliberately adopted.
 

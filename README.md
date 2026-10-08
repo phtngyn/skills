@@ -2,6 +2,8 @@
 
 A Codex-only collection of personal workflows and entry points backed by tracked upstream sources.
 
+Each skill is available through a matching symlink from `~/.agents/skills/<name>` to this collection's `skills/<name>` directory. Keep the collection layout and local upstream checkouts available. Start a new chat if the skill picker has not refreshed.
+
 ## Emil
 
 Use `/emil <prompt>` through Codex's skill picker, or explicitly name `$emil` in a prompt. The entry point owns design exploration, UI implementation, motion, critique, mobile polish, and UI stress checks. Upstream skills and their references load only when relevant.
@@ -16,12 +18,41 @@ Examples:
 /emil review this component with long labels, empty data, and a narrow viewport.
 ```
 
-The wrapper lives in `skills/emil`. It routes directly to Emil's unchanged upstream skills through `skills/emil/upstream`, a link to `repos/emil/skills`. Keep that checkout available at the commit recorded in [UPSTREAM.md](UPSTREAM.md). There are no rewritten supporting guides.
+The wrapper lives in `skills/emil`. It routes directly to Emil's unchanged upstream skills through direct file references to `repos/emil/skills` outside the installed wrapper. Keep that checkout available at the commit recorded in [UPSTREAM.md](UPSTREAM.md). There are no rewritten supporting guides.
 
-A user-level symlink at `~/.agents/skills/emil` makes the wrapper available to Codex. Start a new chat if the skill picker has not refreshed. Follow-ups continue the design task without setting an application-wide mode.
+Follow-ups continue the design task without setting an application-wide mode.
+
+## Build
+
+Use `/build <prompt>` or explicitly name `$build`. Poteto owns the primary implementation, debugging, architecture, refactoring, and review workflows. Start from the code, choose the data shape, implement a coherent change, and verify the actual result. Matt supplies targeted testing, interface, and diagnostic guidance; his planning and review workflows are available when requested. Specs and tickets are opt-in. The wrapper loads relevant upstream guidance and adapts it to Codex.
+
+The entry point indexes all 24 Poteto principles and reads their original files when task conditions match. You can also name a principle directly to steer a decision.
+
+```text
+/build help me settle the behavior of this import flow before implementing it.
+/build implement the agreed retry behavior and verify it.
+/build diagnose why this job sometimes runs twice.
+/build refactor this module while preserving its behavior.
+/build apply subtract before you add to this refactor.
+/build review these changes against the task and project conventions.
+```
+
+The wrapper lives in `skills/build`; its direct upstream references depend on the pinned local clones outside the installed skill directory. Visual design work routes to the personal Emil entry point.
+
+## Effect
+
+Use `/effect <prompt>` or explicitly name `$effect` for Effect applications and reusable libraries. Applications are the default. The skill covers design principles, naming, structure, style, and focused topic guidance while using compatible local source to establish API facts.
+
+The agent locates `repos/effect` in the project or a nearby ancestor, with this collection's clone as a fallback. It compares the checkout with the consuming package, looks up each material changed API/pattern once, and reuses that evidence during the task. Exact signatures, exports, and operational semantics remain source lookups.
+
+```text
+/effect design this service and its resource lifetime before implementing it.
+/effect review this worker's cancellation, retries, and layer sharing.
+/effect design a reusable module and verify its consumer inference.
+```
+
+The entry point lives in `skills/effect`. `build` can guide the overall task while Effect supplies language and library decisions. [Provenance](skills/effect/PROVENANCE.md) distinguishes upstream evidence, synthesized principles, and personal preferences.
 
 ## Upstream maintenance
 
-`repos/` contains upstream clones; `skills/` contains our personal workflows and wrappers. [UPSTREAM.md](UPSTREAM.md) records each source repository, its last fetched commit, and the commit our skills are based on. Future agents compare those commits and recommend whether our skills should change.
-
-`scripts/sync-repos.sh` fetches Emil updates without advancing its existing checkout. New Emil clones are checked out at the recorded based-on commit. After syncing, record the fetched `origin/main` commit in `UPSTREAM.md`; adopt it only after reviewing the changes.
+For cloning sources, fetching updates, and adopting revisions, follow [UPSTREAM.md](UPSTREAM.md).
