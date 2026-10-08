@@ -102,7 +102,7 @@ Capture the starting revision and contents of files with pre-existing changes be
 - Match effort to the task. Architecture exploration is for consequential or uncertain choices, rather than every function boundary. Small changes need a focused implementation and check. Larger work needs verifiable slices. Keep durable records when useful; ordinary work does not require throughput checklists, principle citations, or decision logs.
 - Adapt tools to Codex. Upstream references to Skill, Task, Cursor rules, model slugs, or plugins describe intent, not required tool names or dependencies. Read local resources directly. Delegate only when authorized; an upstream demand to delegate does not itself grant permission. Otherwise own the work and perform the checks directly. Inspect any delegated artifact yourself and claim independent review only when it occurred.
 - Do not automatically commit, open PRs, publish tickets, merge, deploy, or send messages. Follow task authorization. An implementation request alone does not authorize these upstream closing steps.
-- Route visual exploration, UI craft, and motion to the personal [Emil entry point](../emil/SKILL.md), honoring its exclusions. Keep application behavior, data contracts, and integration verification in this workflow. Use the existing project stack and official version-specific documentation where needed.
+- Route visual exploration, UI craft, and motion to the personal [Design entry point](../design/SKILL.md), honoring its exclusions. Keep application behavior, data contracts, and integration verification in this workflow. Use the existing project stack and official version-specific documentation where needed.
 - Report the result, consequential choices, concrete verification evidence, and remaining limitations. Give a candid recommendation when a proposed change does not earn its complexity.
 
 ## Sources and updates
@@ -112,3 +112,7 @@ Source links point outside the installed skill directory into the collection's l
 Keep both checkouts at their based-on commits in the collection's [UPSTREAM.md](../../UPSTREAM.md). Fetching must not advance these runtime sources. Adopt updates by reviewing the upstream diff and advancing the clean checkout and based-on record together. If a selected source is missing or at a different revision, report it rather than silently substituting installed skills or changing the pin.
 
 See [provenance](PROVENANCE.md).
+
+## User-only companion commands
+
+Do not invoke or route to `bro` or `show-me-your-work`, including through upstream references. Only the user can activate those standalone skills explicitly. Continue the current workflow without them.

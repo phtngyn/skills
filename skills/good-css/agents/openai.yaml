@@ -1,4 +1,0 @@
-interface:
-  display_name: "Good CSS"
-  short_description: "Modern CSS techniques that complement Emil's UI guidance"
-  default_prompt: "Use $good-css to improve the CSS for this component."

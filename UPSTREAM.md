@@ -10,7 +10,7 @@
 | Matt | https://github.com/mattpocock/skills | `repos/mattpocock` | `f3fc5632f401156837ee3872f14fe33ccf1024ea` | `f3fc5632f401156837ee3872f14fe33ccf1024ea` |
 | Poteto | https://github.com/cursor/plugins | `repos/pstack` | `d0ef80d86795816da932a153458c5dbe192d294e` | `d0ef80d86795816da932a153458c5dbe192d294e` |
 
-`skills/emil` loads Emil directly and uses `skills/good-css` for CSS techniques from Good CSS; `skills/build` loads Matt and Poteto directly. Keep these checkouts at their based-on commits. Poteto's material is under `repos/pstack/pstack`. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. Its checkout may be newer, so agents compare it with the consuming package before trusting API facts.
+`skills/design` loads Emil and Good CSS directly; `skills/build` loads Matt and Poteto directly. `skills/write` independently loads Matt's writing guidance. `skills/bro` and `skills/show-me-your-work` link directly to original Poteto instructions and resources, with local Codex metadata for explicit invocation. Their workflows update with the adopted Poteto checkout; no wrapper bodies need synchronization. Keep these checkouts at their based-on commits. Poteto's material is under `repos/pstack/pstack`. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. Its checkout may be newer, so agents compare it with the consuming package before trusting API facts.
 
 ## Maintenance
 

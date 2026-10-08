@@ -1,6 +1,6 @@
 interface:
-  display_name: "Emil"
+  display_name: "Design"
   short_description: "Design, build, and polish UI with Emil's craft principles"
-  default_prompt: "Use $emil to help with this interface."
+  default_prompt: "Use $design to help with this interface."
 policy:
   allow_implicit_invocation: false
