@@ -5,7 +5,7 @@ description: "Explicit software-building entry point. Use /build to implement, d
 
 # Build
 
-A personal Codex entry point led by Poteto. Understand the code, choose the data shape, make a coherent change, and prove the result. Matt Pocock supplies focused testing and interface guidance when it answers a concrete question. This wrapper controls routing, effort, collaboration, and authorization, including indirect handoffs to upstream guidance.
+A personal Codex entry point led by Poteto. Understand the code, choose a lightweight foundation, build the simplest complete solution, verify it, and finish with cleanup and simplification. Matt Pocock supplies focused testing and interface guidance when it answers a concrete question. This wrapper controls routing, effort, collaboration, and authorization, including indirect handoffs to upstream guidance.
 
 ## Start and route
 
@@ -13,7 +13,7 @@ For `/build <request>` or `$build`, inspect repository instructions, relevant co
 
 A bare invocation asks what to work on. Otherwise begin the actual request. Honor whether the user wants an explanation, a plan, a review, or implementation. Follow-ups continue the task without another invocation; this is not an application-wide persistent mode.
 
-Read the selected upstream file in full before applying it. Resolve its resources relative to its directory and read referenced material when needed. Use one primary workflow per phase. Load supporting guidance for a concrete decision. Use the leaf files below rather than loading Poteto Mode's entire trigger system.
+Use one primary workflow per phase. Read the selected upstream file in full, resolve resources from its directory, and load supporting material for concrete decisions. Use the leaf files below rather than Poteto Mode's entire trigger system.
 
 Poteto owns the primary workflows:
 
@@ -26,11 +26,11 @@ Poteto owns the primary workflows:
 | Choose a consequential architectural shape | [Poteto architect](../../repos/pstack/pstack/skills/architect/SKILL.md) |
 | Settle an empirical question with a small experiment | [Poteto prototype playbook](../../repos/pstack/pstack/skills/poteto-mode/playbooks/prototype.md) |
 | Review changes against intent and the surrounding code | [Poteto review rubric](../../repos/pstack/pstack/skills/interrogate/references/rubric.md) |
-| Refactor while preserving behavior | [Poteto refactoring playbook](../../repos/pstack/pstack/skills/poteto-mode/playbooks/refactoring.md) |
+| Refactor while preserving intended behavior | [Poteto refactoring playbook](../../repos/pstack/pstack/skills/poteto-mode/playbooks/refactoring.md) |
 
 ## Principles
 
-Scan this index at the start of a task and when the work changes direction. Select matching principles and any the user names. Read each selected leaf in full before applying it, and load its referenced material only when needed. The personal rules below govern scope, staging, delegation, and external actions.
+Scan this index at the start and when work changes direction. Select matching principles and any the user names; read each selected leaf in full and load its references when needed. The personal rules below govern scope, staging, delegation, and external actions.
 
 Use principle names as steering vocabulary. When naming a principle in an explanation, identify the concrete decision it changed. Cite only leaves read during the task.
 
@@ -63,11 +63,15 @@ Use principle names as steering vocabulary. When naming a principle in an explan
 
 ## Default working loop
 
-1. Trace the affected flow before proposing a redesign. Establish the intended result, current behavior, data shape, ownership, and a check that can distinguish success from failure. For new code, inspect the system it must integrate with.
+Use this loop for implementation, including fixes and refactors.
+
+1. Trace the affected flow before proposing a redesign. Establish the intended result, current behavior, and a check that can distinguish success from failure. For new code, inspect the system it must integrate with.
 2. Resolve factual uncertainty by inspecting or running the system. Use a small isolated experiment when observation can settle the choice. Ask about missing intent or consequential product choices with a recommendation. Honor checkpoints the user requests.
-3. State the next coherent change and how to verify it. For a consequential architectural choice, sketch caller usage, types, and ownership before implementation. Compare structurally different options when the choice remains uncertain. Ordinary function changes use established patterns.
-4. Implement the smallest change that reaches the goal. Prefer structures that remove invalid states, repeated rules, or scattered branching. Preserve the full requested scope. Run the useful check after each meaningful slice and let its evidence determine the next step.
-5. Inspect the final artifact and task diff against the request and repository conventions. Complete the verification below before reporting the outcome. Revise the design when evidence refutes it.
+3. Choose a lightweight foundation: core concepts, data shape, flow, and ownership for the next working slice. Reuse sound structures and add scaffolding only for current needs. State the next change and its check. For consequential architectural choices, sketch caller usage and compare different structures when uncertain. Ordinary function changes use established patterns.
+4. Implement the simplest complete solution to the full requested scope. Prefer direct code and structures that remove invalid states, repeated rules, or scattered branching. Add abstractions when current requirements justify them. Resolve correctness and structural blockers as they arise. Run the useful check after each meaningful slice and let its evidence determine the next step.
+5. Verify the requested behavior on its actual surface using the guidance below. Revise the design when evidence refutes it.
+6. Before completing any implementation, perform a final cleanup and simplification pass over the affected code. Remove dead code, temporary scaffolding, duplicated decisions, and unnecessary indirection while preserving intended behavior and task scope. Keep only refactoring that makes the code easier to follow. The pass is required, even when no useful edits remain.
+7. Recheck affected behavior after cleanup changes. Inspect the final artifact and task diff against the request and repository conventions before reporting the outcome.
 
 The user can begin with a rough goal. Keep planning local to the next verifiable step; useful work can start before a full specification exists. For long work, retain a short record of decisions and remaining work. A request for a plan alone gets a plan grounded in the code.
 
@@ -81,7 +85,7 @@ Read a supporting file when its decision arises. It supplements the selected Pot
 | An interface or testing seam needs a depth and ownership check | [Matt codebase-design](../../repos/mattpocock/skills/engineering/codebase-design/SKILL.md) |
 | A stubborn or intermittent bug needs a tighter feedback loop | [Matt diagnosing-bugs](../../repos/mattpocock/skills/engineering/diagnosing-bugs/SKILL.md) |
 
-Feature TDD stays within Poteto's feature workflow. Apply Matt's one-failing-test, one-implementation-slice cadence through caller-facing interfaces. Ask about a new testing boundary only when it changes a consequential contract; established project boundaries and agreed test plans need no repeated approval. Perform structural refactoring after the slice passes, then recheck behavior. Preserve project terminology.
+Feature TDD stays within Poteto's feature workflow. Apply Matt's one-failing-test, one-implementation-slice cadence through caller-facing interfaces. Use established project boundaries and agreed test plans; ask about a new boundary only when it changes a consequential contract. Refactor after the slice passes, then recheck behavior. Preserve project terminology.
 
 For a requested specification or ticket breakdown, use Matt's [to-spec](../../repos/mattpocock/skills/engineering/to-spec/SKILL.md) or [to-tickets](../../repos/mattpocock/skills/engineering/to-tickets/SKILL.md). Use Matt's [code-review](../../repos/mattpocock/skills/engineering/code-review/SKILL.md) when the user requests that workflow or separate requirements and standards reports. Ordinary reviews use Poteto's rubric. The task brief can supply requirements without a formal specification or tracker setup.
 
@@ -93,13 +97,14 @@ When measuring or reporting a performance change, use the [Benchmark checklist](
 
 For bugs, reproduce the actual symptom before fixing and verify the original scenario afterward. Use [Poteto TDD](../../repos/pstack/pstack/skills/tdd/SKILL.md) when a cheap local regression test exists or the user requests one. When a durable test needs disproportionate setup, use a focused executable check that exercises the failure. Report the failing-before and passing-after evidence, or explain which part could not be established.
 
-For refactoring, pin observable behavior before moving structure and verify it as the structure changes. Migrate callers and remove obsolete code together when safely bounded. A wide rollout may need working intermediate stages; name the contract each stage preserves and remove temporary compatibility at the end.
+For refactoring, pin the intended observable behavior before moving structure, then verify it as structure changes. Checks protect required outcomes; callers and interface checks follow the new design. Migrate affected callers, tests, documentation, and examples, removing replaced APIs, obsolete adapters, and legacy paths together. Deliver wide changes in verifiable stages ending with one supported path.
 
 Capture the starting revision and contents of files with pre-existing changes before editing them. Review staged and unstaged changes plus untracked task files against that starting state, including mixed edits within a file. For committed reviews, use the requested revision comparison. Do not stage or commit merely to make a review visible. Trace actionable findings to reachable behavior and explain their impact. Fix findings within an implementation request; report findings for a review-only request.
 
 ## Personal rules and conflict resolution
 
-- Match effort to the task. Architecture exploration is for consequential or uncertain choices, rather than every function boundary. Small changes need a focused implementation and check. Larger work needs verifiable slices. Keep durable records when useful; ordinary work does not require throughput checklists, principle citations, or decision logs.
+- Optimize the final design for current requirements. Backward compatibility is opt-in: change APIs, types, or module boundaries within scope for a simpler or more effective solution. Preserve requested behavior; retain legacy contracts only when the user explicitly requires compatibility. This rule takes precedence over upstream advice about preserving old contracts.
+- Match effort to the task. Reserve architecture exploration for consequential or uncertain choices. Small changes need a focused implementation and check; larger work needs verifiable slices. Keep records when useful; routine work needs no throughput checklists, principle citations, or decision logs.
 - Adapt tools to Codex. Upstream references to Skill, Task, Cursor rules, model slugs, or plugins describe intent, not required tool names or dependencies. Read local resources directly. Delegate only when authorized; an upstream demand to delegate does not itself grant permission. Otherwise own the work and perform the checks directly. Inspect any delegated artifact yourself and claim independent review only when it occurred.
 - Do not automatically commit, open PRs, publish tickets, merge, deploy, or send messages. Follow task authorization. An implementation request alone does not authorize these upstream closing steps.
 - Route visual exploration, UI craft, and motion to the personal [Design entry point](../design/SKILL.md), honoring its exclusions. Keep application behavior, data contracts, and integration verification in this workflow. Use the existing project stack and official version-specific documentation where needed.

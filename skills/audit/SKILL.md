@@ -5,29 +5,29 @@ description: Keep an evidence-backed decision trail and obtain a separate review
 
 # Audit
 
-Use this shared support workflow when the task warrants a reviewable decision trail, or when the user explicitly requests it. Continue the active task's specific guidance.
+Use this support workflow when a task needs a reviewable decision trail or the user requests it. Continue the active task's guidance.
 
 ## Select and load
 
-For automatic selection, consider whether the work spans several consequential decisions, proceeds unattended, or needs a durable record to assess its verification. Task size alone does not require a trail. Handle routine edits, short explanations, and simple fixes directly.
+For automatic selection, choose it for several consequential decisions, unattended work, or verification that needs a durable record. Task size alone is insufficient; handle routine edits, short explanations, and simple fixes directly.
 
-When selected, read Poteto's original [Show Me Your Work](../../repos/pstack/pstack/skills/show-me-your-work/SKILL.md). Follow its logging format, helper, append-only corrections, run boundaries, and evidence rules. Resolve its references from the upstream directory. Reuse a trail already active for this task instead of starting a second one. These local integration rules take precedence over conflicting upstream instructions.
+Read Poteto's original [Show Me Your Work](../../repos/pstack/pstack/skills/show-me-your-work/SKILL.md) and follow its logging format, helper, append-only corrections, run boundaries, and evidence rules. Resolve references from its directory and reuse any trail already active for this task. These local rules take precedence over conflicting upstream instructions.
 
 Tell the user briefly when activating the workflow. Record decisions from activation onward; identify any earlier evidence as retrospective rather than inventing a contemporaneous history. Keep the log as a local working artifact unless committing it is authorized.
 
 ## Audit available evidence
 
-Use the current task's transcript when the host exposes it. Otherwise inspect the available task messages, source changes, commands, test output, and other recorded artifacts. Report the transcript comparison as unavailable and describe the actual evidence reviewed; an artifact review does not establish a complete transcript audit. Access only evidence belonging to the current task.
+Use the current task's transcript when available. Otherwise review its messages, source changes, commands, test output, and recorded artifacts. Disclose the unavailable transcript comparison and identify the evidence reviewed; an artifact review does not establish a complete transcript audit. Access only this task's evidence.
 
 ## Separate review
 
 Before the final handoff, use one separate subagent to review the completed trail and its supporting work when delegation is available and permitted. This workflow requests that focused review; it does not authorize unrelated delegation or external actions.
 
-Give the reviewer the accepted requirements, trail, changed files or diff, relevant tests and raw results, artifact locations, and available task transcript. Let it reach its own conclusions rather than supplying the builder's verdict or suspected findings. The reviewer checks what happened and whether the evidence supports the claims; it does not rebuild the task or begin another trail or reviewer chain.
+Give the reviewer accepted requirements, the trail, changed files or diff, tests and raw results, artifact locations, and any task transcript. Let it reach independent conclusions without the builder's verdict or suspected findings. It checks the work and supporting evidence, without rebuilding the task or starting another trail or reviewer chain.
 
-Use a separate agent with the inherited model. Same-model review satisfies this personal workflow; a different model family is not required. Report model identity only to the extent the host exposes it; distinguish a requested model from a verified backend identity. If delegation is unavailable, report that separate review was not performed; self-review does not satisfy it.
+Use a separate agent with the inherited model; a different model family is unnecessary. Report model identity only as exposed by the host, distinguishing a requested model from a verified backend identity. If delegation is unavailable, report that separate review was not performed; self-review does not satisfy it.
 
-Inspect the reviewer's findings and evidence yourself. Correct supported issues within the task's scope and append the resulting decisions. If a correction materially changes the reviewed work, request a focused reassessment from the same reviewer; do not repeat the full task merely to review it.
+Inspect the findings and evidence, correct supported issues within scope, and append the resulting decisions. Request focused reassessment from the same reviewer when a correction materially changes the reviewed work.
 
 ## Handoff
 

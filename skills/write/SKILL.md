@@ -9,9 +9,9 @@ Write for the agent reading the document. Use Matt Pocock's original authoring g
 
 ## Load the authoring guidance
 
-Read the upstream [Writing for Agents](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL.md) before drafting or reviewing. Reuse it during the task. Resolve its references from that upstream directory.
+Before drafting or reviewing, read upstream [Writing for Agents](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL.md). Reuse it during the task and resolve references from its directory.
 
-When the document is a skill, also read its [skill mechanics](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL-MECHANICS.md). For Codex packaging, use the available `skill-creator` guidance for actual frontmatter and `agents/openai.yaml`; the upstream mechanics explain conceptual choices across agent environments.
+For a skill, also read [skill mechanics](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL-MECHANICS.md). Use Codex's `skill-creator` for frontmatter and `agents/openai.yaml`; upstream mechanics explain choices across agent environments.
 
 ## Ground the document
 
@@ -23,21 +23,21 @@ Identify the document's job and the decisions its reader must make. Inspect the 
 | Intended behavior, requirements, or policy | The user's accepted requirements and authoritative specifications or decision records |
 | External APIs or standards | Official sources matching the version or standard the project uses |
 
-Read the supporting section before citing it. When sources disagree, establish which claim each governs and report unresolved conflicts. Keep inferred explanations and unverified assumptions distinct from established facts; an existing document alone is not proof of current implementation behavior.
+Read the supporting section before citing it. When sources disagree, identify which claim each governs and report unresolved conflicts. Distinguish inference and assumptions from verified facts; confirm documented behavior against its implementation.
 
-Cite material factual claims near the text they support, grouping related claims when appropriate. Prefer stable repository-relative links with a heading or symbol locator. Use immutable revision links for historical snapshots and version-specific external links when available. Attribute exact quotations; quote briefly when precise wording matters and otherwise summarize. A repository homepage or unrelated test does not substantiate a specific behavior claim.
+Cite material factual claims near the text they support. Prefer stable repository-relative links with a heading or symbol locator, immutable revision links for historical snapshots, and version-specific external links when available. Link to the section or test that supports the claim. Attribute exact quotations; quote briefly when wording matters and otherwise summarize.
 
 ## Keep facts fresh
 
-Prefer a pointer to the authoritative file, export, or command over copying information the reader can retrieve cheaply. Keep non-obvious rationale, constraints, and instructions the reader needs at the point of action in the document, with their source.
+Link to authoritative files, exports, or commands for facts the reader can retrieve cheaply. Keep non-obvious rationale, constraints, and instructions at the point of action, with their source.
 
-When a volatile fact must be repeated, identify its canonical source and the relevant version, revision, or environment. Name the change that should trigger rechecking it when that is useful: a renamed export, dependency upgrade, configuration change, or superseding decision. A citation helps locate the truth; it does not establish that a copied claim is still current.
+When a volatile fact must be repeated, identify its source and relevant version, revision, or environment. Name useful refresh triggers, such as an export rename, dependency upgrade, configuration change, or superseding decision. Citations help locate evidence; copied claims still need rechecking.
 
-Reuse verified source locations during the task. Recheck when the underlying source changes or conflicting evidence appears. A small edit needs focused source checks, not a survey of the whole repository.
+Reuse verified source locations and recheck when their contents change or evidence conflicts. Keep source checks proportional to the edit.
 
 ## Draft and verify
 
-Apply the upstream hierarchy, context pointers, completion criteria, and pruning to the draft. Preserve behavior-changing requirements while removing duplicated facts and instructions that add no useful guidance. Reach conditional detail through a pointer that states when it is needed; keep shared instructions immediately available.
+Apply upstream hierarchy, context pointers, completion criteria, and pruning. Preserve behavior-changing requirements and remove duplicated facts or instructions that add no guidance. Link conditional detail with its trigger; keep shared instructions immediately available.
 
 Check that links and locators resolve, quotations match, and cited sources support the actual claims. Verify documented commands through non-mutating or isolated checks when needed. Trace the reader's requested task through the document and confirm its prerequisites, branches, and completion conditions remain usable. Report missing source evidence and consequential limitations.
 

@@ -53,7 +53,9 @@ The wrapper lives in `skills/design`, with unchanged pinned sources in `repos/em
 
 ## Build
 
-Use `/build <prompt>` or explicitly name `$build`. Poteto owns the primary implementation, debugging, architecture, refactoring, and review workflows. Start from the code, choose the data shape, implement a coherent change, and verify the actual result. Matt supplies targeted testing, interface, and diagnostic guidance; his planning and review workflows are available when requested. Specs and tickets are opt-in. The wrapper loads relevant upstream guidance and adapts it to Codex.
+Use `/build <prompt>` or explicitly name `$build`. Poteto supplies the primary implementation, debugging, architecture, refactoring, and review workflows. Matt provides targeted testing, interface, and diagnostic guidance, with planning and review workflows available on request. Specs and tickets are opt-in.
+
+Start from the code, choose a lightweight foundation, build the simplest complete solution, and verify it. Every implementation ends with a required cleanup and simplification pass; recheck behavior after cleanup changes. Backward compatibility is opt-in: migrate callers to the best current design and remove obsolete APIs and compatibility layers.
 
 The entry point indexes all 24 Poteto principles and reads their original files when task conditions match. You can also name a principle directly to steer a decision.
 
@@ -66,7 +68,7 @@ The entry point indexes all 24 Poteto principles and reads their original files 
 /build review these changes against the task and project conventions.
 ```
 
-The wrapper lives in `skills/build`; its direct upstream references depend on the pinned local clones outside the installed skill directory. Visual design work routes to the personal Design entry point.
+The wrapper lives in `skills/build` and adapts the pinned local upstream guidance to Codex. Its source checkouts remain outside the installed skill directory. Visual design work routes to the personal Design entry point.
 
 ## Effect
 
