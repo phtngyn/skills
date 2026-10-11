@@ -26,6 +26,18 @@ Uninstall removes only links pointing to this collection's matching skill direct
 
 Run the isolated installer tests with `python3 tests/test_setup.py`; they use temporary directories and local Git fixtures without changing your global skills or fetching from the network.
 
+## Brief
+
+Use `/brief <rough idea>` or explicitly name `$brief` to prepare a task for an executing agent. It inspects relevant context, asks a few questions about intent with recommended answers, and returns a concise, copyable prompt with the outcome, scope, constraints, acceptance criteria, and decision authority. Assumptions and unresolved choices remain visible.
+
+```text
+/brief users keep losing edits when they leave this page. Help me define what should change.
+/brief turn our discussion into a prompt for an agent to implement.
+/brief I want to simplify onboarding, but I am unsure what the first version should include.
+```
+
+Brief is an optional preparation step before Build or Design. It stops at the prompt unless execution or transmission is also requested. The self-contained entry point lives in `skills/brief`; [provenance](skills/brief/PROVENANCE.md) records its sources and personal adaptations.
+
 ## Design
 
 Use `/design <prompt>` or explicitly name `$design`. Design combines Emil's UI craft, exploration, motion, critique, and mobile guidance with Good CSS's layout, typography, sizing, overflow, and native controls. It loads only matching upstream guidance. Good CSS is an internal reference, with no separate skill command.
