@@ -11,7 +11,7 @@ Use Emil Kowalski's upstream skills and Vojta Holik's Good CSS techniques throug
 
 For `/design <request>` or `$design`, inspect the request and relevant project context. Read the matching guidance in full, follow its workflow, and load references when needed. Resolve resources from the upstream skill's directory. This wrapper's exclusions and personal preferences take precedence over conflicting upstream instructions.
 
-For a bare invocation, ask what to work on. Otherwise begin the request. Follow-ups continue the task without another invocation; this is not an application-wide persistent mode.
+For a bare invocation, ask what to work on. Otherwise begin the requested critique, plan, exploration, or implementation. Follow-ups continue the current task without another invocation.
 
 | Request | Guidance |
 | --- | --- |
@@ -19,6 +19,7 @@ For a bare invocation, ask what to work on. Otherwise begin the request. Follow-
 | General UI craft, implementation, or design critique | [emil-design-eng](../../repos/emil/skills/emil-design-eng/SKILL.md) |
 | Explore multiple UI directions | [prototype](../../repos/emil/skills/prototype/SKILL.md) |
 | Build or fix web motion | [animate](../../repos/emil/skills/animate/SKILL.md) |
+| Diagnose dropped frames or choose animation properties and drivers for performance | [animation-performance](../../repos/emil/skills/animation-performance/SKILL.md) |
 | Review existing motion or a motion diff | [review-animations](../../repos/emil/skills/review-animations/SKILL.md) |
 | Audit existing motion and plan improvements | [improve-animations](../../repos/emil/skills/improve-animations/SKILL.md) |
 | Find worthwhile places to add motion | [find-animation-opportunities](../../repos/emil/skills/find-animation-opportunities/SKILL.md) |
@@ -39,13 +40,11 @@ Prefer Tailwind CSS when it fits the project's framework and constraints. Reuse 
 
 ## Personal preferences and Codex integration
 
-These are the wrapper's adjustments to upstream behavior:
-
 - Discover project facts yourself. Bring consequential uncertainty about requirements or design direction to the user with a recommendation. Once settled, implement autonomously within scope.
 - Preserve the full requested scope. For multi-component exploration, agree on staging rather than silently reducing the request to one component.
 - Respect the project's design system, components, dependencies, and established product decisions. Retain upstream craft guidance and detailed techniques; do not rewrite them into generic advice.
 - Adapt upstream tool mechanics to Codex while preserving the intended outcome. Delegate, commit, publish, create PRs, or message others only within task authorization.
-- Honor whether the request is for critique, planning, exploration, or implementation. An audit may produce plans; when the user asks to implement selected changes, continue with the appropriate construction skill rather than requiring a separate command.
+- Honor whether the request is for critique, planning, exploration, or implementation. When the user asks to implement changes from a critique or plan, continue with the matching implementation workflow without requiring another command.
 - Verify version-sensitive API and performance claims against the installed implementation or current official documentation when relevant. If upstream instructions conflict internally, use their specific component guidance and explain consequential tradeoffs rather than silently applying contradictory rules.
 
 ## Source availability and updates

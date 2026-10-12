@@ -12,12 +12,12 @@ Build focused services with explicit contracts and owned lifetimes. Applications
 The installed package and compatible repository source establish API facts; verify any examples used against the target version. [Provenance](PROVENANCE.md) records extraction revisions and personal choices.
 
 1. **Locate once.** Read project instructions and resolve Effect's installed version from the consuming package. Prefer a task-specified checkout, then the project's or a nearby ancestor's `repos/effect`, then this collection's `../../repos/effect` resolved from the skill's real directory. Record the revision and compare relevant exports and signatures with the installed package; equal version strings do not establish identical source.
-2. **Read narrowly.** For each material Effect API or pattern introduced or changed, search the local `LLMS.md` and `ai-docs/src`, then inspect its exported signature. Read implementation and focused tests when semantics remain uncertain. Application examples guide application structure; public modules and their tests guide library design. Use [SOURCE_WORKFLOW.md](references/SOURCE_WORKFLOW.md) for discovery failures, version mismatches, and unfamiliar features.
+2. **Read narrowly.** For each distinct Effect API or pattern introduced or changed, make one focused source lookup: search the local `LLMS.md` and `ai-docs/src`, then inspect its exported signature. Read implementation and focused tests when semantics remain uncertain. Application examples guide application structure; public modules and their tests guide library design. Use [SOURCE_WORKFLOW.md](references/SOURCE_WORKFLOW.md) for discovery failures, version mismatches, and unfamiliar features.
 3. **Settle the contract.** Identify success, expected failures, requirements, and any resource or fiber owner. Decide cancellation, retry, and sharing semantics where they affect the request. Ordinary edits can use established contracts directly.
 4. **Implement and check.** Make a focused change using matching Effect primitives. Use a small compiling or executable probe to settle uncertain API usage. Validate the changed runtime behavior; test compiler behavior when inference, assignability, or rejection is part of the requirement.
 5. **Reuse evidence.** Keep source locations, version information, and verified facts in working context. Recheck for a new API or pattern, changed version, compiler error, or contradictory result. Report the outcome, actual checks, and material limitations; link evidence for consequential choices.
 
-Inspect each distinct changed API or pattern once and reuse that evidence for unchanged calls. Keep reference checkouts read-only. When local evidence is unavailable, use version-matched official sources and state compatibility uncertainty. Derive application checks from the consuming project's scripts; contributor commands apply to the reference repository itself.
+Keep reference checkouts read-only. When local evidence is unavailable, use version-matched official sources and state compatibility uncertainty. Derive application checks from the consuming project's scripts; contributor commands apply to the reference repository itself.
 
 ## Principles
 
@@ -56,7 +56,7 @@ Load guides for the decision at hand and reuse them during the task. A canonical
 | Tests, virtual time, fakes, controlled ordering | [TESTING.md](references/TESTING.md) |
 | v3/v4 migration assumptions and import paths | [V4_APIS.md](references/V4_APIS.md) |
 
-For SQL, HTTP servers, RPC, reactive state, workflows, CLI, AI, and other features, use the [source map](references/SOURCE_WORKFLOW.md#find-the-existing-mechanism) and the installed export map. Public importability and API stability are separate facts.
+For SQL, HTTP servers, RPC, reactive state, workflows, CLI, AI, and other features, use the [source map](references/SOURCE_WORKFLOW.md#find-the-existing-mechanism) and the installed export map. Check both whether an API is publicly exported and what stability guarantees it carries.
 
 ## Application Boundaries
 

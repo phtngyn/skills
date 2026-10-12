@@ -1,6 +1,0 @@
-interface:
-  display_name: "Audit"
-  short_description: "Keep an explicit decision trail with evidence and outcomes"
-  default_prompt: "Use $audit for this request."
-policy:
-  allow_implicit_invocation: true

@@ -10,7 +10,7 @@ import unittest
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/setup.sh"
-SKILLS = ("bro", "build", "design", "effect", "audit", "write")
+SKILLS = ("brief", "bro", "build", "design", "effect", "ketchup", "write")
 
 
 def git(directory, *arguments):

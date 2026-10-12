@@ -5,7 +5,7 @@ description: Turn rough ideas or conversations into concise execution prompts wh
 
 # Brief
 
-Prepare a task the user can delegate. The user manages outcomes; the executing agent owns implementation. Accept rough language and use the conversation instead of making the user fill in a template.
+Turn the supplied idea or conversation into a task an agent can execute. The user sets the outcome and constraints; the executing agent chooses implementation details within that authority.
 
 ## Establish the task
 
@@ -21,9 +21,9 @@ Ask only questions whose answers materially change the outcome, scope, constrain
 
 Use small rounds, usually one to three concise questions, with a recommendation and a plain-language tradeoff. Settle prerequisites before dependent questions and reuse accepted decisions from the conversation.
 
-When the user is unsure, explain the options and recommend a path. Record delegation only when the user grants it; unanswered recommendations remain proposals. Honor requests to draft immediately using stated assumptions.
+When the user is unsure, explain the options and recommend a path. Record decision authority only when the user grants it; unanswered recommendations remain proposals. Honor requests to draft immediately using stated assumptions.
 
-Finish clarifying when the agent can start bounded work and identify completion evidence. Technical unknowns can become investigation work. Keep unresolved intent or authority explicit; when it blocks execution, label the brief a draft and name the missing decision.
+Finish clarifying when the agent knows what work it may start and how to recognize completion. Technical unknowns can become investigation work. Keep unresolved intent or authority explicit; when it blocks execution, label the brief a draft and name the missing decision.
 
 ## Compose the execution prompt
 

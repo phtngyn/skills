@@ -37,7 +37,7 @@ Reuse verified source locations and recheck when their contents change or eviden
 
 ## Draft and verify
 
-Apply upstream hierarchy, context pointers, completion criteria, and pruning. Preserve behavior-changing requirements and remove duplicated facts or instructions that add no guidance. Link conditional detail with its trigger; keep shared instructions immediately available.
+Apply upstream hierarchy, context pointers, completion criteria, and pruning. Preserve requirements that change behavior, remove duplication, and link conditional detail with a clear trigger. Keep instructions needed on every run in the entry point.
 
 Check that links and locators resolve, quotations match, and cited sources support the actual claims. Verify documented commands through non-mutating or isolated checks when needed. Trace the reader's requested task through the document and confirm its prerequisites, branches, and completion conditions remain usable. Report missing source evidence and consequential limitations.
 

@@ -5,13 +5,13 @@ description: "Explicit software-building entry point. Use /build to implement, d
 
 # Build
 
-A personal Codex entry point led by Poteto. Understand the code, choose a lightweight foundation, build the simplest complete solution, verify it, and finish with cleanup and simplification. Matt Pocock supplies focused testing and interface guidance when it answers a concrete question. This wrapper controls routing, effort, collaboration, and authorization, including indirect handoffs to upstream guidance.
+Use Poteto for the primary workflow and Matt Pocock for focused testing and interface decisions. Understand the code, build the simplest complete solution, verify it, and finish with cleanup and simplification. This wrapper governs scope, effort, collaboration, and authorization across all upstream guidance it loads.
 
 ## Start and route
 
 For `/build <request>` or `$build`, inspect repository instructions, relevant code, callers, tests, and observable behavior. Code establishes what exists; the user's intent establishes what should change. Existing behavior can be wrong.
 
-A bare invocation asks what to work on. Otherwise begin the actual request. Honor whether the user wants an explanation, a plan, a review, or implementation. Follow-ups continue the task without another invocation; this is not an application-wide persistent mode.
+For a bare invocation, ask what to work on. Otherwise begin the requested explanation, plan, review, or implementation. Follow-ups continue the current task without another invocation.
 
 Use one primary workflow per phase. Read the selected upstream file in full, resolve resources from its directory, and load supporting material for concrete decisions. Use the leaf files below rather than Poteto Mode's entire trigger system.
 
@@ -30,7 +30,7 @@ Poteto owns the primary workflows:
 
 ## Principles
 
-Scan this index at the start and when work changes direction. Select matching principles and any the user names; read each selected leaf in full and load its references when needed. The personal rules below govern scope, staging, delegation, and external actions.
+Scan this index at the start and when work changes direction. Select matching principles and any the user names; read each selected leaf in full, including its frontmatter, and load references when needed. The personal rules below govern scope, staging, delegation, and external actions.
 
 Use principle names as steering vocabulary. When naming a principle in an explanation, identify the concrete decision it changed. Cite only leaves read during the task.
 
@@ -104,7 +104,7 @@ Capture the starting revision and contents of files with pre-existing changes be
 ## Personal rules and conflict resolution
 
 - Optimize the final design for current requirements. Backward compatibility is opt-in: change APIs, types, or module boundaries within scope for a simpler or more effective solution. Preserve requested behavior; retain legacy contracts only when the user explicitly requires compatibility. This rule takes precedence over upstream advice about preserving old contracts.
-- Match effort to the task. Reserve architecture exploration for consequential or uncertain choices. Small changes need a focused implementation and check; larger work needs verifiable slices. Keep records when useful; routine work needs no throughput checklists, principle citations, or decision logs.
+- Match effort to the task. Reserve architecture exploration for consequential or uncertain choices. Small changes need a focused implementation and check; larger work needs verifiable slices. Keep brief records when they help resume or review the work; routine tasks need only a focused change and check.
 - Adapt tools to Codex. Upstream references to Skill, Task, Cursor rules, model slugs, or plugins describe intent, not required tool names or dependencies. Read local resources directly. Delegate only when authorized; an upstream demand to delegate does not itself grant permission. Otherwise own the work and perform the checks directly. Inspect any delegated artifact yourself and claim independent review only when it occurred.
 - Do not automatically commit, open PRs, publish tickets, merge, deploy, or send messages. Follow task authorization. An implementation request alone does not authorize these upstream closing steps.
 - Route visual exploration, UI craft, and motion to the personal [Design entry point](../design/SKILL.md), honoring its exclusions. Keep application behavior, data contracts, and integration verification in this workflow. Use the existing project stack and official version-specific documentation where needed.

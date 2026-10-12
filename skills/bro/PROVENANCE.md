@@ -1,7 +1,7 @@
 # Source and ownership
 
-The original [bro skill](https://github.com/cursor/plugins/tree/d0ef80d86795816da932a153458c5dbe192d294e/pstack/skills/bro) is used unchanged from Poteto's pinned checkout. `SKILL.md` and any bundled resource directories are relative symlinks into `repos/pstack/pstack/skills/bro`; [LICENSE](LICENSE) links to the upstream license. Keep the collection layout intact.
+`SKILL.md` is an unchanged copy of Poteto's original [bro skill](https://github.com/cursor/plugins/tree/1b6d44ff26d4e242f4e8f68c391e6d2f7ca16def/pstack/skills/bro). A regular entry-point file allows Codex discovery without following a file symlink. [LICENSE](LICENSE) links to the upstream license.
 
-Local `agents/openai.yaml` supplies Codex UI metadata and disables implicit invocation. The other personal skills retain the user's rule against routing here. There is no local workflow override; upstream environment assumptions and cross-references remain as written.
+Local `agents/openai.yaml` supplies Codex UI metadata and disables implicit invocation. There is no custom workflow. Keep upstream relative references usable from this directory.
 
-Adopt updates through the shared Poteto checkout and pin recorded in [UPSTREAM.md](../../UPSTREAM.md). The links expose the adopted revision without copying or rewriting the skill.
+When adopting Poteto updates in [UPSTREAM.md](../../UPSTREAM.md), refresh this copy from the adopted checkout and verify byte equality. Fetching alone must preserve the adopted contents.
