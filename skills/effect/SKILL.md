@@ -1,65 +1,45 @@
 ---
 name: effect
-description: Build and review Effect v4 applications and reusable libraries. Use for Effect API selection, naming, module design, services, schemas, errors, resource ownership, concurrency, integration, and testing, verified against local source.
+description: Design, implement, refactor, and review Effect v4 applications and libraries. Use for service boundaries, layer composition, schemas and typed errors, resource lifetimes, concurrent workflows, runtime integration, and testing.
 ---
 
 # Effect
 
-Build focused services with explicit contracts and owned lifetimes. Applications are the default; load library guidance for reusable public APIs. Honor the requested kind of work, user checkpoints, and project conventions. When used with `build`, this skill supplies Effect-specific decisions.
+Build around domain capabilities and explicit ownership. An Effect describes work, a service exposes a capability, and a Layer constructs the implementation. A Scope owns resources and background work. Make those boundaries agree.
 
-## Work From Source
+Applications are the default. Use the library branch for reusable public APIs. When used with `build`, this skill supplies Effect design and implementation decisions.
 
-The installed package and compatible repository source establish API facts; verify any examples used against the target version. [Provenance](PROVENANCE.md) records extraction revisions and personal choices.
+## Working Approach
 
-1. **Locate once.** Read project instructions and resolve Effect's installed version from the consuming package. Prefer a task-specified checkout, then the project's or a nearby ancestor's `repos/effect`, then this collection's `../../repos/effect` resolved from the skill's real directory. Record the revision and compare relevant exports and signatures with the installed package; equal version strings do not establish identical source.
-2. **Read narrowly.** For each distinct Effect API or pattern introduced or changed, make one focused source lookup: search the local `LLMS.md` and `ai-docs/src`, then inspect its exported signature. Read implementation and focused tests when semantics remain uncertain. Application examples guide application structure; public modules and their tests guide library design. Use [SOURCE_WORKFLOW.md](references/SOURCE_WORKFLOW.md) for discovery failures, version mismatches, and unfamiliar features.
-3. **Settle the contract.** Identify success, expected failures, requirements, and any resource or fiber owner. Decide cancellation, retry, and sharing semantics where they affect the request. Ordinary edits can use established contracts directly.
-4. **Implement and check.** Make a focused change using matching Effect primitives. Use a small compiling or executable probe to settle uncertain API usage. Validate the changed runtime behavior; test compiler behavior when inference, assignability, or rejection is part of the requirement.
-5. **Reuse evidence.** Keep source locations, version information, and verified facts in working context. Recheck for a new API or pattern, changed version, compiler error, or contradictory result. Report the outcome, actual checks, and material limitations; link evidence for consequential choices.
+1. **Trace the behavior.** Follow one concrete workflow from input through state changes to output. Identify the expected failures, dependencies, and owner of any resource or background work. For a review or bug, trace the competing paths through failure, cancellation, and shutdown too.
+2. **Choose the boundaries.** Keep pure decisions as functions. Put replaceable capabilities and owned state behind services. Compose implementations with Layers at the application boundary. For new architecture, explain the important ownership and failure choices briefly; for an ordinary edit, work within the established design.
+3. **Implement a complete slice.** Decode at entry, perform the workflow, and translate its result at the exit. Keep execution in the process or framework host. Use [source lookup](references/SOURCE.md) to settle an unfamiliar API or uncertain semantics, then reuse that evidence.
+4. **Prove and simplify.** Check observable behavior, including the lifecycle or concurrency contract changed by the task. Remove redundant wrappers, service tags, error translations, and legacy paths within scope. Report the outcome and actual checks.
 
-Keep reference checkouts read-only. When local evidence is unavailable, use version-matched official sources and state compatibility uncertainty. Derive application checks from the consuming project's scripts; contributor commands apply to the reference repository itself.
+## Design Defaults
 
-## Principles
+- **Services represent capabilities.** Introduce a tag for a useful caller contract, replaceable dependency, or lifetime owner. A function or file does not automatically need a service.
+- **Dependencies follow lifetimes.** Capture stable dependencies when constructing a service. Supply request context and borrow keyed resources when the operation needs them. A long-lived service must not retain a shorter-lived resource beyond its owner.
+- **Effects compose until the edge.** Use `Effect.gen` for inline workflows and named `Effect.fn` for meaningful operations. Run them through the application's host, not from inside domain services.
+- **Failure is part of the contract.** Typed errors describe expected failure; defects describe broken assumptions; interruption describes cancellation. Recover where the caller can make a truthful decision.
+- **State has one owner.** Keep mutable implementation state private. Coordinate transitions that cross suspension points. Define which concurrent requests join, queue, replace, or coalesce.
+- **Resources have a closing path.** Acquire resources and start background work in the scope that owns them. A fiber needs a failure policy as well as a lifetime.
+- **Validation belongs at trust boundaries.** Decode foreign representations once, pass trusted domain values inward, and encode at the outward boundary.
+- **Use the existing mechanism.** Prefer Effect's resource, concurrency, scheduling, caching, and platform tools when their semantics fit. Add application machinery for a demonstrated contract that they do not supply.
 
-These principles synthesize Effect's examples and implementation. Use them for concrete decisions and follow linked guides when detail is needed.
+## Guides
 
-| Principle | Decision it changes |
+For a new application capability or Promise-facing host, read Architecture and Boundaries before implementation; supplied consumer types do not settle construction, ownership, or error policy. Then read the guides for the remaining decisions. A small edit to an established design need not load all of them.
+
+| Decision | Guide |
 | --- | --- |
-| [Source before memory](references/SOURCE_WORKFLOW.md) | Verify new or changed API facts against compatible source before relying on remembered APIs or skill examples. |
-| [Contracts first](references/SERVICES_LAYERS.md) | Shape success, typed failures, and dependencies around the caller's capability; introduce service boundaries where they earn their ownership. |
-| [Compose before running](references/RESOURCES_RUNTIME.md) | Keep workflows as Effects and layers; execute them at the owning process or framework boundary. |
-| [Scope owns lifetime](references/RESOURCES_RUNTIME.md) | Acquire, share, and release a resource within its actual application, request, tenant, or test owner. |
-| [Cancellation is behavior](references/CONCURRENCY_STATE.md) | Choose fiber ownership, interruption propagation, and failure policy before starting concurrent work. |
-| [Decode at boundaries](references/SCHEMA.md) | Validate unknown representations on entry; model trusted internal values according to their domain. |
-| [Use the standard library](references/SOURCE_WORKFLOW.md#find-the-existing-mechanism) | Check Effect's existing mechanism and semantics before implementing scheduling, caching, coordination, or platform plumbing. |
-| [Prove the contract](references/TESTING.md) | Verify observable behavior and, when relevant, public compiler behavior with focused checks. |
+| Module shape, service contracts, dependency capture, layer composition | [Architecture](references/ARCHITECTURE.md) |
+| Schemas, expected errors, transport adapters, configuration | [Boundaries](references/BOUNDARIES.md) |
+| Acquisition, sharing, runtimes, keyed graphs, registrations, shutdown | [Lifetimes](references/LIFETIMES.md) |
+| Fibers, shared state, streams, keyed work, cancellation and readiness | [Concurrency](references/CONCURRENCY.md) |
+| Retry, deadlines, caching, batching, HTTP policy, observability and time | [Operations](references/OPERATIONS.md) |
+| Fakes, virtual time, controlled races, runtime and compiler checks | [Testing](references/TESTING.md) |
+| Consumer expressions, combinators, inference, public models | [Libraries](references/LIBRARIES.md) |
+| Unfamiliar APIs or platform features | [Source lookup](references/SOURCE.md) |
 
-## Read Matching Guidance
-
-Load guides for the decision at hand and reuse them during the task. A canonical source example can answer the question directly without loading a parallel guide.
-
-| Task | Reference |
-| --- | --- |
-| Naming, imports, exports, formatting, and code style | [CONVENTIONS.md](references/CONVENTIONS.md) |
-| Domain organization, application services, layers, `Effect.fn` | [SERVICES_LAYERS.md](references/SERVICES_LAYERS.md) |
-| Reusable library modules, combinators, inference, and public documentation | [LIBRARY_DESIGN.md](references/LIBRARY_DESIGN.md) |
-| Records, brands, variants, optionality, decoding | [SCHEMA.md](references/SCHEMA.md) |
-| Error design, translation, recovery, defects, interruption | [ERRORS.md](references/ERRORS.md) |
-| Acquisition, finalization, layer sharing, runtime bridges, dynamic services | [RESOURCES_RUNTIME.md](references/RESOURCES_RUNTIME.md) |
-| Parallelism, fibers, cancellation, shared state, keyed work | [CONCURRENCY_STATE.md](references/CONCURRENCY_STATE.md) |
-| Runtime config, providers, `layerConfig` | [CONFIG.md](references/CONFIG.md) |
-| Retry, repeat, polling, backoff, deadlines | [SCHEDULING.md](references/SCHEDULING.md) |
-| Memoization, keyed TTL, resource caches, batching | [CACHING.md](references/CACHING.md) |
-| Events, pagination, queues, backpressure, stream consumers | [STREAMS.md](references/STREAMS.md) |
-| Outgoing HTTP, status handling, rate limits | [HTTP_CLIENTS.md](references/HTTP_CLIENTS.md) |
-| Logging, tracing, metrics, dates, time zones, and testable current time | [OBSERVABILITY_TIME.md](references/OBSERVABILITY_TIME.md) |
-| Tests, virtual time, fakes, controlled ordering | [TESTING.md](references/TESTING.md) |
-| v3/v4 migration assumptions and import paths | [V4_APIS.md](references/V4_APIS.md) |
-
-For SQL, HTTP servers, RPC, reactive state, workflows, CLI, AI, and other features, use the [source map](references/SOURCE_WORKFLOW.md#find-the-existing-mechanism) and the installed export map. Check both whether an API is publicly exported and what stability guarantees it carries.
-
-## Application Boundaries
-
-- Keep transport handlers thin: decode input, read context, call services, and map failures using [ERRORS.md](references/ERRORS.md).
-- Keep network calls outside authoritative database transactions. Decode persisted values when they cannot be trusted.
-- Import supported public exports; keep `internal/` private. Avoid unchecked casts that bypass validation or conceal type errors.
+For an application architecture study, [OpenCode v2](references/OPENCODE.md) provides implementation and regression evidence. [Provenance](PROVENANCE.md) distinguishes source facts from these personal design defaults.

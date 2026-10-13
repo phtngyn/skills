@@ -1,39 +1,37 @@
 # Effect Provenance
 
-This is a personal guide derived from Effect's source and application examples. It contains synthesized decision guidance, conditional references, and source-navigation instructions; it does not install upstream contributor skills or require their release workflow in applications.
+This personal skill teaches design and implementation decisions for Effect v4. Its organization and defaults are our synthesis; Effect source establishes API behavior, and OpenCode supplies application evidence.
 
-## Revisions And Authority
+## Reviewed Sources
 
-- Original API guides and selected examples were checked against Effect 4.0.1 at [`b1d200c40a1dad69def51ebdbf0a1a612a12b8ac`](https://github.com/Effect-TS/effect/tree/b1d200c40a1dad69def51ebdbf0a1a612a12b8ac).
-- Naming, module design, agent workflow, testing branches, observability, and time guidance were reviewed against the local 4.0.1 checkout at [`757821fe99b7179f907d6d1a34a4e86de4173112`](https://github.com/Effect-TS/effect/tree/757821fe99b7179f907d6d1a34a4e86de4173112).
-- The collection's [UPSTREAM.md](../../UPSTREAM.md) records the extraction baseline and fetched revision. This records material considered, not an exhaustive audit of every API or intervening fix.
+| Source | Reviewed revision | Material used |
+| --- | --- | --- |
+| Effect | [`8aee3b9caa796aa79316c82c7c83f98c89dc49f5`](https://github.com/Effect-TS/effect/tree/8aee3b9caa796aa79316c82c7c83f98c89dc49f5) | `LLMS.md`, focused application examples, public declarations/implementation, and test/type-test conventions |
+| OpenCode v2 | [`4617210822bdbb31e5749751afbfb4584ccedac8`](https://github.com/anomalyco/opencode/tree/4617210822bdbb31e5749751afbfb4584ccedac8) | Service graph composition, location ownership, plugin registrations, reloads, session coordination, host adapters, and focused regression tests |
+| Writing for Agents | [`49dd158d1076134a641b33efb035946536778336`](https://github.com/mattpocock/skills/tree/49dd158d1076134a641b33efb035946536778336) | Decision-oriented hierarchy, conditional context pointers, co-location, and pruning |
 
-The consuming project's installed package and compatible source remain authoritative for API facts. A reference checkout may be newer; a shared version string alone is insufficient. Fetching does not refresh these written summaries or authorize upgrading an application.
+The local checkouts live under this collection's `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. Topic guides point directly to the material used. The [OpenCode study](references/OPENCODE.md) retains immutable source links and describes what was reviewed rather than claiming an exhaustive audit.
 
-## Source Map
+The earlier handbook was developed from Effect 4.0.1 revisions `b1d200c40a1dad69def51ebdbf0a1a612a12b8ac` and `757821fe99b7179f907d6d1a34a4e86de4173112`. The current rewrite was reviewed against the Effect 4.0.3 checkout above. Historical revision records are provenance, not steps an agent must repeat before ordinary application work.
 
-| Material | Primary source at the reviewed revision |
-| --- | --- |
-| Targeted local evidence workflow | [Effect development skill](https://github.com/Effect-TS/effect/blob/757821fe99b7179f907d6d1a34a4e86de4173112/.agents/skills/effect-development/SKILL.md), `LLMS.md`, `ai-docs/src` |
-| Application services, layers, and functions | `ai-docs/src/01_effect/03_services`, `01_effect/01_basics/02_effect-fn.ts` |
-| Complete application boundaries | `ai-docs/src/51_http-server/fixtures` and `04_integration/10_managed-runtime.ts` |
-| Library models, combinators, and types | `packages/effect/src/Ref.ts`, `Request.ts`, `Function.ts`, `http/HttpClient.ts`, and focused tests/type tests |
-| Imports and mechanical style | `packages/tools/oxc/oxlintrc.json`, `.oxlintrc.json`, `dprint.json`, and public module imports |
-| Runtime versus compiler verification | [Test development skill](https://github.com/Effect-TS/effect/blob/757821fe99b7179f907d6d1a34a4e86de4173112/.agents/skills/test-development/SKILL.md), its runtime/type branches, `packages/vitest` |
-| Public API documentation | `.agents/skills/jsdocs` and current public declarations |
-| Telemetry and time | `ai-docs/src/08_observability`, `07_datetime`; `Metric.ts`, `DateTime.ts`, corresponding tests |
-| Monorepo validation and generated files | [.agents/AGENTS.md](https://github.com/Effect-TS/effect/blob/757821fe99b7179f907d6d1a34a4e86de4173112/.agents/AGENTS.md) and the task-relevant contributor skill |
+## Design Choices
 
-Topic guides retain their own more specific anchors. Paths refer to the selected Effect checkout, not to files bundled inside this skill.
+The skill defaults to applications, organized by domain capabilities and explicit ownership. Its plain-record preference for `Schema.Struct` plus a same-name interface is personal; class schemas remain appropriate when their behavior helps. Public-library machinery loads only for reusable consumer contracts.
 
-## Personal Decisions
+OpenCode demonstrates the consequences of ownership and concurrency policy in a substantial application. Its graph compiler, package layout, import restrictions, infinite resource retention, and custom test runner are examples to reason from, not requirements to copy.
 
-The principle names in the entry point are our synthesis, not upstream named principles. Applications are the default; library design loads only for reusable public contracts. Existing project conventions and the user's task govern adoption of style and architecture.
-
-The plain-record preference for `Schema.Struct` plus a same-name interface is a retained personal choice. Upstream also uses class schemas. The domain-oriented organization advice cites [Structure an Effect codebase by domain](https://ratstack.sh/lore/structure-effect-by-domain); its broader house conventions are optional and are not Effect requirements.
+The rewrite replaces the API-by-topic handbook with guides for architecture, boundaries, lifetimes, concurrency, operations, testing, and libraries. Source lookup supports uncertain choices; routine revision comparison and legacy migration catalogs are removed.
 
 ## Updating
 
-Compare the recorded baseline to the proposed source revision. Inspect relevant examples, declarations, tests, and changed conventions before adopting guidance. Update the extraction record with the material actually considered, and compile or execute examples whose API usage changes. Keep one home for each rule and replace stale API catalogs with precise source pointers where practical.
+Review the relevant implementation, examples, and tests when adopting another source revision or changing guidance. Keep a rule in one guide and use conditional links from other guides. Validate instructions by tracing realistic tasks, compile executable examples when they change, and check meaningful behavior for ownership and concurrency claims.
 
-Runtime lookup of a compatible local checkout does not require changing this extraction baseline. Prefer narrow retrieval and reuse verified evidence within the task.
+These references are a focused synthesis, not a substitute for the consuming project's declarations, tests, or conventions. Preserve reference checkouts during ordinary work. The rewrite's embedded TypeScript examples were type-checked, and eight isolated tests covered dependency capture, expected failures, schema rejection, scoped registration release, virtual time, and reference-counted invalidation. OpenCode's upstream regression tests were read; they were not executed as part of the study.
+
+## Forward Evaluation
+
+On 2026-10-13, two fresh subagents with low reasoning effort implemented the same reloadable Promise-facing catalog task in isolated projects. Both passed the same eleven independent consumer acceptance cases covering connection ownership, coalescing, readiness, failure recovery, startup cleanup, and cancellation settlement.
+
+The first used manual scope ownership and unknown failures while skipping Architecture and Boundaries. After clarifying guide routing, the application host boundary, and foreign-error translation, the fresh second run used a service, Layer, ManagedRuntime, and typed failure reasons.
+
+This checks one application-host scenario. It does not establish a general success rate or isolate the effect of each wording change.

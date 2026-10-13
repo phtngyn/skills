@@ -72,9 +72,9 @@ The wrapper lives in `skills/build` and adapts the pinned local upstream guidanc
 
 ## Effect
 
-Use `/effect <prompt>` or explicitly name `$effect` for Effect applications and reusable libraries. Applications are the default. The skill covers design principles, naming, structure, style, and focused topic guidance while using compatible local source to establish API facts.
+Use `/effect <prompt>` or explicitly name `$effect` to design, implement, refactor, or review Effect v4 applications and reusable libraries. Applications are the default. The skill starts from domain capabilities, failure contracts, and ownership, then routes to focused architecture, boundary, lifetime, concurrency, operations, and testing guidance.
 
-The agent locates `repos/effect` in the project or a nearby ancestor, with this collection's clone as a fallback. It compares the checkout with the consuming package, looks up each material changed API/pattern once, and reuses that evidence during the task. Exact signatures, exports, and operational semantics remain source lookups.
+The agent uses project code and focused source lookup to settle unfamiliar APIs or uncertain semantics. Effect's local examples and declarations supply library evidence; the OpenCode v2 study supplies application examples.
 
 ```text
 /effect design this service and its resource lifetime before implementing it.
