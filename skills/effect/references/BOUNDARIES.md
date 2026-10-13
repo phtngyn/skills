@@ -38,6 +38,19 @@ Evidence: [schema examples](../../../repos/effect/ai-docs/src/01_effect/02_schem
 
 Use `Data.TaggedError` for internal failures without a serialization contract. Use `Schema.TaggedError` when errors cross validated, persisted, or transport boundaries. Tags distinguish cases within the relevant union. Add a typed `reason` when callers need specific recovery decisions; an opaque `cause` retains foreign exception evidence.
 
+For schema-backed error classes, this skill prefers a per-class type brand through the second generic:
+
+```ts
+export class NotFound extends Schema.TaggedError<NotFound, { readonly brand: unique symbol }>()(
+  "NotFound",
+  { id: Schema.String },
+) {}
+```
+
+The tag distinguishes union cases; the brand prevents structurally matching values from satisfying the error class type. The `Brand` generic adds a type-only member, so constructor inputs and encoded payloads still contain only the schema fields. Decode transport values through the class schema to obtain instances. Verify this contract with a negative type check for a structurally matching value and a runtime encode/decode round trip that preserves class identity and omits the brand from both the instance and payload.
+
+Evidence: [Schema.ts](../../../repos/effect/packages/effect/src/Schema.ts) (`TaggedError`'s `Brand` generic and implementation). Recheck the generic when upgrading Effect.
+
 Translate where the abstraction changes, such as HTTP/SQL failure into a domain capability error. Keep the original error when it already expresses the caller's contract. A wrapper that hides distinctions without adding meaning weakens recovery.
 
 Accept `unknown` at the raw foreign boundary, then translate it into a named failure before returning the domain Effect. Preserve opaque evidence in a `cause: unknown` field without widening the whole error channel to `unknown`. Internal waiters and coordination should preserve the same error contract.
