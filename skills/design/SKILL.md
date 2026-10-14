@@ -16,17 +16,17 @@ For a bare invocation, ask what to work on. Otherwise begin the requested critiq
 | Request | Guidance |
 | --- | --- |
 | CSS layout, sizing, typography, overflow, or native controls | [Good CSS](references/GOOD_CSS.md) |
-| General UI craft, implementation, or design critique | [emil-design-eng](../../repos/emil/skills/emil-design-eng/SKILL.md) |
-| Explore multiple UI directions | [prototype](../../repos/emil/skills/prototype/SKILL.md) |
-| Build or fix web motion | [animate](../../repos/emil/skills/animate/SKILL.md) |
-| Diagnose dropped frames or choose animation properties and drivers for performance | [animation-performance](../../repos/emil/skills/animation-performance/SKILL.md) |
-| Review existing motion or a motion diff | [review-animations](../../repos/emil/skills/review-animations/SKILL.md) |
-| Audit existing motion and plan improvements | [improve-animations](../../repos/emil/skills/improve-animations/SKILL.md) |
-| Find worthwhile places to add motion | [find-animation-opportunities](../../repos/emil/skills/find-animation-opportunities/SKILL.md) |
-| Name an animation effect | [animation-vocabulary](../../repos/emil/skills/animation-vocabulary/SKILL.md) |
-| Apple-inspired physical interaction or visual design | [apple-design](../../repos/emil/skills/apple-design/SKILL.md) |
-| Mobile web polish and touch behavior | [mobile-native](../../repos/emil/skills/mobile-native/SKILL.md) |
-| Stress UI with difficult data | [break-ui](../../repos/emil/skills/break-ui/SKILL.md) |
+| General UI craft, implementation, or design critique | [emil-design-eng](/Users/phtngyn/Developer/skills/repos/emil/skills/emil-design-eng/SKILL.md) |
+| Explore multiple UI directions | [prototype](/Users/phtngyn/Developer/skills/repos/emil/skills/prototype/SKILL.md) |
+| Build or fix web motion | [animate](/Users/phtngyn/Developer/skills/repos/emil/skills/animate/SKILL.md) |
+| Diagnose dropped frames or choose animation properties and drivers for performance | [animation-performance](/Users/phtngyn/Developer/skills/repos/emil/skills/animation-performance/SKILL.md) |
+| Review existing motion or a motion diff | [review-animations](/Users/phtngyn/Developer/skills/repos/emil/skills/review-animations/SKILL.md) |
+| Audit existing motion and plan improvements | [improve-animations](/Users/phtngyn/Developer/skills/repos/emil/skills/improve-animations/SKILL.md) |
+| Find worthwhile places to add motion | [find-animation-opportunities](/Users/phtngyn/Developer/skills/repos/emil/skills/find-animation-opportunities/SKILL.md) |
+| Name an animation effect | [animation-vocabulary](/Users/phtngyn/Developer/skills/repos/emil/skills/animation-vocabulary/SKILL.md) |
+| Apple-inspired physical interaction or visual design | [apple-design](/Users/phtngyn/Developer/skills/repos/emil/skills/apple-design/SKILL.md) |
+| Mobile web polish and touch behavior | [mobile-native](/Users/phtngyn/Developer/skills/repos/emil/skills/mobile-native/SKILL.md) |
+| Stress UI with difficult data | [break-ui](/Users/phtngyn/Developer/skills/repos/emil/skills/break-ui/SKILL.md) |
 
 Choose the most specific skill, combining relevant guidance for mixed requests. An explicit request to explore alternatives through `/design` satisfies prototype's invocation requirement; use that workflow only when exploration is requested.
 

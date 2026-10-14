@@ -2,13 +2,15 @@
 
 ## Start With The Workflow
 
-Organize by the domain job: `documents/publication.ts`, `sessions/execution.ts`, or `media/removal.ts`. Keep transport, business decisions, and persistence responsibilities visible, without requiring a separate file or tag for each step. Package boundaries should follow consumers and dependency direction.
+Organize by the domain job: `documents/publication.ts`, `orders/placement.ts`, or `media/removal.ts`. Keep transport, business decisions, and persistence responsibilities visible, without requiring a separate file or tag for each step. Package boundaries should follow consumers and dependency direction.
 
 A service earns its boundary when it provides a useful capability, owns shared state or resources, or lets callers substitute an implementation. Its interface describes what callers can rely on: success, expected failures, and call-time requirements. A repository, coordinator, provider adapter, or policy engine may earn a tag; a parsing helper usually stays a function.
 
+Choose the smallest boundary that expresses the caller's contract. A finite script can compose one program; an operation can remain an Effect-returning function; a reusable resource can expose scoped acquisition. Use a service and Layer when callers need a replaceable capability or a shared owner. For public consumer APIs, read [Libraries](LIBRARIES.md).
+
 Keep handlers thin: decode, read request context, call the capability, encode the result. Keep domain decisions outside transport types and vendor APIs. Use explicit state machines when legal transitions or modes need enforcement; straightforward workflows can remain sequential Effects.
 
-For an application host with shared state and background work, implement the capability as an Effect service constructed by a Layer. Keep the Promise facade focused on running operations and closing its host runtime. A supplied Promise interface defines the consumer edge, not the internal service architecture. A reusable scoped handle can instead expose an acquisition Effect; use [Libraries](LIBRARIES.md) for that contract.
+For an application capability with shared state and background work, a service constructed by a Layer can align construction and ownership. Keep framework or Promise adapters focused on running operations and translating the consumer contract. Choose the execution host from its owner; runtime ownership is covered in [Lifetimes](LIFETIMES.md#runtime-and-stream-boundaries).
 
 ## Construct Services Once
 
@@ -48,7 +50,7 @@ export class Documents extends Context.Service<Documents, {
 
 An Effect-valued member expresses repeatable work, a Stream-valued member expresses a source, and a plain value expresses already-acquired data. Do not turn immutable values into zero-argument Effects merely for uniformity.
 
-Evidence: [service construction](../../../repos/effect/ai-docs/src/01_effect/03_services/01_service.ts), [application integration](../../../repos/effect/ai-docs/src/04_integration/10_managed-runtime.ts).
+Evidence: [service construction](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/01_service.ts), [application integration](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/04_integration/10_managed-runtime.ts).
 
 ## Compose At The Owner
 
@@ -66,9 +68,9 @@ Compose named subgraphs at executable, host, tenant, or test boundaries. Keep th
 
 When replacing an adapter, change the wiring that acquires it. Providing a tag around a workflow cannot replace an implementation that its Layer already supplies internally. Tests and embedding hooks should substitute dependencies before graph acquisition and verify the production adapter's side effects never start.
 
-Start with ordinary Layer composition. OpenCode's [graph compiler](OPENCODE.md#composition-and-replacement) addresses transitive replacement and separate sharing domains in a large application; those helpers are application code. Resource identity and memoization are covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs).
+Start with ordinary Layer composition. Add graph machinery only for requirements such as transitive replacement or separate sharing domains that ordinary wiring cannot express clearly. Resource identity and memoization are covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs). OpenCode v2 supplies [worked evidence](OPENCODE.md#composition-and-replacement) for those larger graph requirements and [dependency capture](OPENCODE_SESSION.md#put-each-owner-at-the-right-boundary).
 
-Evidence: [Layer composition](../../../repos/effect/ai-docs/src/01_effect/03_services/20_layer-composition.ts), [Layer declarations](../../../repos/effect/packages/effect/src/Layer.ts).
+Evidence: [Layer composition](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/20_layer-composition.ts), [Layer declarations](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Layer.ts).
 
 ## Make Operations Readable
 
@@ -78,4 +80,4 @@ Bind services to meaningful local names before calling methods. Use generators f
 
 Name capabilities and operations by their domain job. Keep implementation state private and public contracts explicit where callers rely on them. Follow the consuming project's import, formatter, and export conventions. Import public Effect modules; upstream implementation formatting and namespace style are not architectural requirements.
 
-Evidence: [Effect functions](../../../repos/effect/ai-docs/src/01_effect/01_basics/02_effect-fn.ts). For public combinators rather than application operations, read [Libraries](LIBRARIES.md).
+Evidence: [Effect functions](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/01_basics/02_effect-fn.ts). For public combinators rather than application operations, read [Libraries](LIBRARIES.md).

@@ -6,7 +6,7 @@ Read this branch for a reusable public module. Application service design is in 
 
 Write the imports, construction, direct calls, and compositions consumers need before designing machinery. Establish inferred success, error, and requirement types, along with absence and ownership. A useful public model may expose constructors, guards, operations, and associated types; include only the pieces consumers need.
 
-Study the closest analogous Effect module: [Ref](../../../repos/effect/packages/effect/src/Ref.ts) for a small state handle, [Request](../../../repos/effect/packages/effect/src/Request.ts) for associated types, or [HttpClient](../../../repos/effect/packages/effect/src/http/HttpClient.ts) for a service-backed API. Name operations by their contracts: `make`, `from...`, `to...`, `is...`, and effectful counterparts such as `mapEffect` have distinct jobs.
+Study the closest analogous Effect module: [Ref](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts) for a small state handle, [Request](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Request.ts) for associated types, or [HttpClient](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/http/HttpClient.ts) for a service-backed API. Name operations by their contracts: `make`, `from...`, `to...`, `is...`, and effectful counterparts such as `mapEffect` have distinct jobs.
 
 Keep implementation helpers private. A namespace barrel can project related exports, but the implementation should depend directly on owning modules. Follow the library's import/export conventions rather than imposing Effect's repository formatting.
 
@@ -18,7 +18,7 @@ Choose variance from what the abstraction consumes and produces. A mutable state
 
 Internal casts may connect a proven runtime representation to the public interface. Keep them local and explain non-obvious invariants. A cast does not prove assignability, narrowing, or inference; verify the consumer expression itself.
 
-Evidence: [Function.dual](../../../repos/effect/packages/effect/src/Function.ts), [Ref types](../../../repos/effect/packages/effect/src/Ref.ts), [Effect type tests](../../../repos/effect/packages/effect/typetest).
+Evidence: [Function.dual](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Function.ts), [Ref types](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts), [Effect type tests](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/typetest).
 
 ## Representations And Ownership
 
@@ -28,7 +28,7 @@ Expose acquisition through Effects or Layers whose types and Scope describe owne
 
 Document what consumers can rely on, when to choose the API, and verified constraints. Examples should show useful composition or surprising semantics. Stability tags, JSDoc categories, and generated barrels follow the target repository's procedure.
 
-Evidence: [Ref model](../../../repos/effect/packages/effect/src/Ref.ts), [Request model](../../../repos/effect/packages/effect/src/Request.ts), [Lifetimes](LIFETIMES.md).
+Evidence: [Ref model](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts), [Request model](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Request.ts), [Lifetimes](LIFETIMES.md).
 
 ## Verification
 

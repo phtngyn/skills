@@ -4,11 +4,13 @@ Use this guide for an unfamiliar API, an uncertain operational detail, or a feat
 
 ## Look Up The Question
 
-Use the project's package declarations and public exports to establish available APIs. For examples and implementation, prefer a task-specified checkout, the project's or nearby ancestor's `repos/effect`, then this collection's `repos/effect` resolved from the skill's real directory. Keep reference checkouts read-only.
+Use the project's package declarations and public exports to establish available APIs. For examples and implementation, prefer a task-specified checkout or a nearby version-matched source, then the [cloned Effect repository](/Users/phtngyn/Developer/skills/repos/effect). Keep reference checkouts read-only. Link cloned source with its absolute filesystem path and a line locator when useful; record revision context in provenance.
 
 Search `LLMS.md` and `ai-docs/src` for the concept or symbol, then inspect the relevant exported declaration. Read implementation and focused tests for cancellation, sharing, failure retention, ordering, and cleanup when a signature does not settle them. Use supported public imports, including domain entrypoints such as `effect/http` and `effect/testing`.
 
 Use application examples to study workflows and composition. Use public modules and type tests to study reusable libraries. OpenCode provides application evidence rather than Effect API authority. When an example fails against the consuming project, resolve the specific mismatch from that package's declarations instead of adding a compatibility layer.
+
+For architectural evidence from OpenCode v2, use the [study index](OPENCODE.md#choose-a-workflow) and its [cloned v2 source](/Users/phtngyn/Developer/skills/repos/opencode) at the reviewed revision. Identify the requirement each source decision satisfies, its Effect mechanism, ownership/failure policy and supporting test. Transfer that relationship to the current task's domain. Product-specific capabilities, custom helpers and infrastructure are choices to assess against that task's requirements.
 
 For uncertain overloads or semantics, make a small compiling/executable probe in an isolated workspace. Reuse established evidence until a new API, error, or contradictory result requires another lookup. If local sources are missing, use official documentation/source and report gaps that materially limit the result.
 
@@ -25,6 +27,7 @@ Example directories below are under `ai-docs/src`; root modules live in `package
 | Retry, TTL, batching | `06_schedule`, `05_batching`; `Schedule.ts`, `Cache.ts`, `ScopedCache.ts`, `RequestResolver.ts` |
 | SQL and transactions | `40_sql`; `sql/` and the selected driver package |
 | HTTP clients and APIs | `50_http-client`, `51_http-server`; `http/`, `http-api/` |
+| Typed GraphQL operations, client tests, batching | `52_graphql`; `graphql/`, `packages/tools/graphql-generator` |
 | RPC, durable workflow, distributed entities | `rpc/`, `workflow/`, `cluster/`; `80_cluster` |
 | Reactive state and framework bindings | `reactivity/`, `packages/atom`; `Atom`, `AtomRuntime` |
 | CLI, subprocesses, platform I/O | `70_cli`, `60_child-process`; `cli/`, `process/`, platform adapter packages |
@@ -36,4 +39,4 @@ Check existing scheduling, caching, coordination, and platform mechanisms before
 
 When contributing to Effect itself, read its current repository instructions and task-relevant contributor skills for validation, code generation, and package registration. Those commands do not define checks for a consuming application.
 
-Evidence: [LLMS.md](../../../repos/effect/LLMS.md), [public export map](../../../repos/effect/packages/effect/package.json), [provenance](../PROVENANCE.md).
+Evidence: [LLMS.md](/Users/phtngyn/Developer/skills/repos/effect/LLMS.md), [public export map](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/package.json), [provenance](../PROVENANCE.md).

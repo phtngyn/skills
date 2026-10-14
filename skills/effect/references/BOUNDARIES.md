@@ -25,7 +25,7 @@ Distinguish absent keys (`optionalKey`), explicit undefined, null, and domain ab
 
 `schema.make` constructs a trusted type-side value; decoding interprets an unknown encoded representation. Constructor defaults and decoded transformations have different jobs. Prefer Effect decoding when failure belongs in the workflow; use Option/Result decoders when a pure caller deliberately discards or handles validation details. Low-level constructor/parser errors can differ from `SchemaError`; check the selected operation before translating them.
 
-Evidence: [schema examples](../../../repos/effect/ai-docs/src/01_effect/02_schema/10_schema-basics.ts), [Schema](../../../repos/effect/packages/effect/src/Schema.ts). OpenCode's [Promise boundary](OPENCODE.md#promise-and-stream-boundaries) demonstrates preserving encoded contracts.
+Evidence: [schema examples](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/02_schema/10_schema-basics.ts), [Schema](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Schema.ts). For an in-process Promise facade promising client representations, read [OpenCode endpoint encoding](OPENCODE_HOST.md#plugin-context-iterators-and-representation).
 
 ## Errors Callers Can Act On
 
@@ -49,7 +49,7 @@ export class NotFound extends Schema.TaggedError<NotFound, { readonly brand: uni
 
 The tag distinguishes union cases; the brand prevents structurally matching values from satisfying the error class type. The `Brand` generic adds a type-only member, so constructor inputs and encoded payloads still contain only the schema fields. Decode transport values through the class schema to obtain instances. Verify this contract with a negative type check for a structurally matching value and a runtime encode/decode round trip that preserves class identity and omits the brand from both the instance and payload.
 
-Evidence: [Schema.ts](../../../repos/effect/packages/effect/src/Schema.ts) (`TaggedError`'s `Brand` generic and implementation). Recheck the generic when upgrading Effect.
+Evidence: [Schema.ts](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Schema.ts) (`TaggedError`'s `Brand` generic and implementation). Recheck the generic when upgrading Effect.
 
 Translate where the abstraction changes, such as HTTP/SQL failure into a domain capability error. Keep the original error when it already expresses the caller's contract. A wrapper that hides distinctions without adding meaning weakens recovery.
 
@@ -59,7 +59,7 @@ Use `catchTag` or another typed recovery for expected failures. Use cause-level 
 
 Use `try` / `tryPromise` around foreign operations whose throws/rejections are expected failures. `sync` / `promise` represent unexpected throws/rejections as defects. `orDie` belongs where an expected lower-level failure is an invariant violation for this caller; it is not a way to satisfy a narrower method signature.
 
-Evidence: [error handling](../../../repos/effect/ai-docs/src/01_effect/04_errors/01_error-handling.ts), [typed reasons](../../../repos/effect/ai-docs/src/01_effect/04_errors/20_reason-errors.ts).
+Evidence: [error handling](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/01_error-handling.ts), [typed reasons](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/20_reason-errors.ts).
 
 ## Foreign And Transport Adapters
 
@@ -69,7 +69,7 @@ Pass the Effect-provided AbortSignal into cooperative foreign APIs. Callback ada
 
 Transport handlers map expected errors to deliberate status/payload contracts. Keep secrets and internal exception payloads out of public responses. Report defects at the responsible owner instead of turning every failure into an ordinary client error.
 
-Evidence: [HTTP client examples](../../../repos/effect/ai-docs/src/50_http-client), [tryPromise](../../../repos/effect/packages/effect/src/Effect.ts), [OpenCode adapters](OPENCODE.md#promise-and-stream-boundaries).
+Evidence: [HTTP client examples](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/50_http-client), [tryPromise](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Effect.ts). For cancellation across a Promise host and response body, read [OpenCode cancellation and settlement](OPENCODE_HOST.md#cancellation-and-settlement).
 
 ## Configuration Is Construction Input
 
@@ -79,4 +79,4 @@ Use `Config.Redacted` for credentials and schema-based config for refined values
 
 Tests can provide `ConfigProvider.fromUnknown` through a provider Layer when exercising decoding, or supply the decoded configuration service directly. A library may offer concrete options plus a config-backed layer when both are useful consumer contracts.
 
-Evidence: [Config](../../../repos/effect/packages/effect/src/Config.ts), [ConfigProvider](../../../repos/effect/packages/effect/src/ConfigProvider.ts), [default references](../../../repos/effect/ai-docs/src/01_effect/03_services/10_reference.ts).
+Evidence: [Config](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Config.ts), [ConfigProvider](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/ConfigProvider.ts), [default references](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/10_reference.ts).

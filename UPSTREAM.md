@@ -6,7 +6,7 @@
 | --- | --- | --- | --- | --- |
 | Emil | https://github.com/emilkowalski/skills | `repos/emil` | `2d228630ba1446365f614a108cb8252f1feda202` | `2d228630ba1446365f614a108cb8252f1feda202` |
 | Good CSS | https://github.com/vojtaholik/good-css | `repos/good-css` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` |
-| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `8aee3b9caa796aa79316c82c7c83f98c89dc49f5` | `8aee3b9caa796aa79316c82c7c83f98c89dc49f5` |
+| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` |
 | OpenCode (v2) | https://github.com/anomalyco/opencode | `repos/opencode` | `4617210822bdbb31e5749751afbfb4584ccedac8` | `4617210822bdbb31e5749751afbfb4584ccedac8` |
 | Matt | https://github.com/mattpocock/skills | `repos/mattpocock` | `49dd158d1076134a641b33efb035946536778336` | `49dd158d1076134a641b33efb035946536778336` |
 | Poteto | https://github.com/cursor/plugins | `repos/pstack` | `1b6d44ff26d4e242f4e8f68c391e6d2f7ca16def` | `1b6d44ff26d4e242f4e8f68c391e6d2f7ca16def` |

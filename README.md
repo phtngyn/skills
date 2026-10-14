@@ -72,9 +72,9 @@ The wrapper lives in `skills/build` and adapts the pinned local upstream guidanc
 
 ## Effect
 
-Use `/effect <prompt>` or explicitly name `$effect` to design, implement, refactor, or review Effect v4 applications and reusable libraries. Applications are the default. The skill starts from domain capabilities, failure contracts, and ownership, then routes to focused architecture, boundary, lifetime, concurrency, operations, and testing guidance.
+Use `/effect <prompt>` or explicitly name `$effect` to design, implement, refactor, or review Effect v4 programs, applications, integrations, and reusable libraries. The skill starts from the operation, its callers, failure contracts, and ownership, then loads the relevant architecture, boundary, lifetime, concurrency, operations, testing, or library guidance.
 
-The agent uses project code and focused source lookup to settle unfamiliar APIs or uncertain semantics. Effect's local examples and declarations supply library evidence; the OpenCode v2 study supplies application examples.
+The agent uses project code and focused source lookup to settle unfamiliar APIs or uncertain semantics. Effect's local examples and declarations establish API behavior. Studying the cloned OpenCode v2 source supplies transferable architectural lessons about dependencies, ownership, failures and concurrency; the skill applies them to the current project's requirements.
 
 ```text
 /effect design this service and its resource lifetime before implementing it.

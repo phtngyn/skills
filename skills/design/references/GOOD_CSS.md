@@ -4,7 +4,7 @@ Use Vojta Holik's upstream CSS techniques directly. This internal Design referen
 
 ## Load the matching techniques
 
-Read the upstream [Good CSS entry point](../../../repos/good-css/skills/good-css/SKILL.md), then use its routing table to locate matching reference categories. Resolve those references from that upstream directory. Search category headings and read matching entries in full, including their conditions and support notes. Keep each read bounded so the complete entry arrives without truncated aggregate output. Reuse entries already read and keep unrelated techniques unloaded.
+Read the upstream [Good CSS entry point](/Users/phtngyn/Developer/skills/repos/good-css/skills/good-css/SKILL.md), then use its routing table to locate matching reference categories. Resolve those references from that upstream directory. Search category headings and read matching entries in full, including their conditions and support notes. Keep each read bounded so the complete entry arrives without truncated aggregate output. Reuse entries already read and keep unrelated techniques unloaded.
 
 Prefer intrinsic layout and supported native CSS mechanisms where they preserve the required behavior. Use the project's styling system and established tokens. Apply changes within the requested scope; introducing this skill does not require replacing an existing reset, palette, breakpoint system, or component library. Its CSS-first preference governs presentation techniques; application state, data loading, and necessary focus management can still require JavaScript.
 

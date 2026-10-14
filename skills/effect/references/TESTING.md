@@ -8,7 +8,9 @@ Use `@effect/vitest` with `it.effect` for a new Vitest setup. Retain an establis
 
 Expected failures, defects, and interruption need different assertions. For resource owners, verify release after success, failure, and interruption. For retries, assert bounded attempts and the final outcome. A bug regression should fail against the original implementation and pass after the change.
 
-Evidence: [Effect test examples](../../../repos/effect/ai-docs/src/09_testing), [Vitest integration](../../../repos/effect/packages/vitest/src), [OpenCode Bun harness](../../../repos/opencode/packages/core/test/lib/effect.ts).
+For boundary changes, verify rejection before side effects and the promised encoded/decoded representation. For reusable APIs, verify consumer composition and inference. Select only the checks required by the changed contract.
+
+Evidence: [Effect test examples](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/09_testing), [Vitest integration](/Users/phtngyn/Developer/skills/repos/effect/packages/vitest/src), [OpenCode Bun harness](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/test/lib/effect.ts).
 
 ## Build Useful Fakes
 
@@ -18,7 +20,7 @@ Replace at the graph composition point so an internally wired production adapter
 
 For offline tests, an HTTP replacement can reject and record unexpected network attempts. Assert the records after execution so application error recovery cannot hide a missing fake. Use provider Layers for config decoding tests and direct configuration services for workflows that only need decoded values.
 
-Evidence: [Layer test composition](../../../repos/effect/packages/vitest/src), [OpenCode network guard](../../../repos/opencode/packages/core/test/lib/effect.ts), [composition rules](ARCHITECTURE.md#compose-at-the-owner).
+Evidence: [Layer test composition](/Users/phtngyn/Developer/skills/repos/effect/packages/vitest/src), [OpenCode network guard](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/test/lib/effect.ts), [composition rules](ARCHITECTURE.md#compose-at-the-owner).
 
 ## Control The Interleaving
 
@@ -45,14 +47,16 @@ For a race, block one path, introduce the competing action, release the block, a
 
 | Contract | Interleaving to prove |
 | --- | --- |
+| Retry or deadline | Gate an attempt, advance virtual time, and assert the attempt bound or cancellation outcome |
+| Cache or batching | Concurrent callers share the expected lookup/batch while failures and eviction follow the chosen policy |
 | Replaceable resource graph | Old boot fails/releases after its replacement becomes available |
-| Coalesced reload | Change arrives during initial activation or just before idle |
+| Coalesced refresh | Change arrives during the initial refresh or just before idle |
 | Serialized work | Another trigger arrives while the first operation is gated |
-| Scoped registrations | One subscriber fails/unloads while a healthy peer remains |
+| Scoped registrations | One subscriber closes while a healthy peer remains |
 | Cancellation | Stop acknowledges while cleanup is gated; settlement waits for the right generation |
-| Streaming host | Close starts while a body/iterator is still being consumed |
+| Streaming resource | Its owner closes while a body/iterator is still being consumed |
 
-OpenCode's [regression tests](OPENCODE.md#regression-tests) supply concrete implementations of several of these scenarios. Tests should prove those contracts, not copy its coordinator or test harness.
+OpenCode v2's studies supply worked regression evidence for [shared execution](OPENCODE_SESSION.md#regression-evidence), [subscriber replacement](OPENCODE_PLUGINS.md#regression-evidence), and [stream lifetime](OPENCODE_HOST.md#regression-evidence). Use a study when its contract helps define the current test; keep the application's own requirements and runner authoritative.
 
 ## Runtime, Types, And Packaging
 
@@ -60,4 +64,4 @@ Use focused runtime coverage for behavior and cleanup. Use the project's existin
 
 If exports or packaging changed, verify consumer imports against the built/packed surface. Follow the consuming project's scripts and runner conventions; contributor commands for the Effect repository apply only when changing Effect itself. Run targeted checks, then any required project checks. Report checks that could not run.
 
-Evidence: [Effect type tests](../../../repos/effect/packages/effect/typetest), [Libraries](LIBRARIES.md#verification).
+Evidence: [Effect type tests](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/typetest), [Libraries](LIBRARIES.md#verification).

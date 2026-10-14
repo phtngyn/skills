@@ -9,9 +9,9 @@ Write for the agent reading the document. Use Matt Pocock's original authoring g
 
 ## Load the authoring guidance
 
-Before drafting or reviewing, read upstream [Writing for Agents](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL.md). Reuse it during the task and resolve references from its directory.
+Before drafting or reviewing, read upstream [Writing for Agents](/Users/phtngyn/Developer/skills/repos/mattpocock/skills/productivity/writing-for-agents/SKILL.md). Reuse it during the task and resolve references from its directory.
 
-For a skill, also read [skill mechanics](../../repos/mattpocock/skills/productivity/writing-for-agents/SKILL-MECHANICS.md). Use Codex's `skill-creator` for frontmatter and `agents/openai.yaml`; upstream mechanics explain choices across agent environments.
+For a skill, also read [skill mechanics](/Users/phtngyn/Developer/skills/repos/mattpocock/skills/productivity/writing-for-agents/SKILL-MECHANICS.md). Use Codex's `skill-creator` for frontmatter and `agents/openai.yaml`; upstream mechanics explain choices across agent environments.
 
 ## Ground the document
 
@@ -25,7 +25,7 @@ Identify the document's job and the decisions its reader must make. Inspect the 
 
 Read the supporting section before citing it. When sources disagree, identify which claim each governs and report unresolved conflicts. Distinguish inference and assumptions from verified facts; confirm documented behavior against its implementation.
 
-Cite material factual claims near the text they support. Prefer stable repository-relative links with a heading or symbol locator, immutable revision links for historical snapshots, and version-specific external links when available. Link to the section or test that supports the claim. Attribute exact quotations; quote briefly when wording matters and otherwise summarize.
+Cite material factual claims near the text they support. For this collection's cloned sources, use absolute filesystem links with a line or symbol locator and record reviewed revisions in provenance. Use project-relative links for project documents and version-specific official links for sources without a local clone. Link to the section or test that supports the claim. Attribute exact quotations; quote briefly when wording matters and otherwise summarize.
 
 ## Keep facts fresh
 
@@ -43,4 +43,4 @@ Check that links and locators resolve, quotations match, and cited sources suppo
 
 ## Sources and updates
 
-Resolve this wrapper's real directory before following source links. The Matt checkout must match its based-on commit in [UPSTREAM.md](../../UPSTREAM.md). If it is missing or mismatched, report the condition rather than changing the pin or substituting another installed copy. Fetching preserves the checkout; adopt a reviewed revision by advancing the checkout and based-on record together. See [provenance](PROVENANCE.md).
+Use the linked local Matt checkout at its based-on commit in [UPSTREAM.md](../../UPSTREAM.md). If it is missing or mismatched, report the condition rather than changing the pin or substituting another installed copy. Fetching preserves the checkout; adopt a reviewed revision by advancing the checkout and based-on record together. See [provenance](PROVENANCE.md).
