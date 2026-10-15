@@ -10,7 +10,7 @@ import unittest
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/setup.sh"
-SKILLS = ("brief", "bro", "build", "design", "effect", "ketchup", "write")
+SKILLS = tuple(sorted(path.parent.name for path in SCRIPT.parent.parent.glob("skills/*/SKILL.md")))
 
 
 def git(directory, *arguments):
@@ -127,8 +127,8 @@ class SetupTests(unittest.TestCase):
         self.assertFalse((self.target / "design").exists())
 
     def test_real_directory_conflict_prevents_partial_install(self):
-        (self.target / "write").mkdir(parents=True)
-        (self.target / "write/personal.md").write_text("Keep this.\n")
+        (self.target / "architect").mkdir(parents=True)
+        (self.target / "architect/personal.md").write_text("Keep this.\n")
         before = snapshot(self.target)
         self.run_setup(succeeds=False)
         self.assertEqual(snapshot(self.target), before)
@@ -136,7 +136,7 @@ class SetupTests(unittest.TestCase):
 
     def test_dangling_foreign_link_is_a_conflict(self):
         self.target.mkdir()
-        (self.target / "write").symlink_to(self.base / "missing foreign skill")
+        (self.target / "architect").symlink_to(self.base / "missing foreign skill")
         before = snapshot(self.target)
         self.run_setup(succeeds=False)
         self.assertEqual(snapshot(self.target), before)
@@ -202,6 +202,24 @@ class SetupTests(unittest.TestCase):
         shutil.rmtree(self.root / "repos")
         self.run_setup("--uninstall")
         self.assertEqual(list(self.target.iterdir()), [])
+
+    def test_install_reconciles_retired_owned_links_only(self):
+        self.run_setup()
+        (self.target / "build").symlink_to(self.root / "skills/build")
+        (self.target / "foreign").symlink_to(self.base / "missing foreign skill")
+        self.run_setup("--check", succeeds=False)
+        self.assertTrue((self.target / "build").is_symlink())
+        self.run_setup()
+        self.assertFalse((self.target / "build").is_symlink())
+        self.assertTrue((self.target / "foreign").is_symlink())
+        self.run_setup("--check")
+
+    def test_failed_preflight_preserves_retired_links(self):
+        self.run_setup()
+        (self.target / "build").symlink_to(self.root / "skills/build")
+        (self.root / "repos/source/source-version").write_text("local edit\n")
+        self.run_setup(succeeds=False)
+        self.assertTrue((self.target / "build").is_symlink())
 
     def test_poteto_sparse_checkout_preserves_required_resources(self):
         upstream_skill = self.origin / "pstack/skills/bro"

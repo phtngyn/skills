@@ -1,6 +1,0 @@
-interface:
-  display_name: "Build"
-  short_description: "Build, simplify, and verify software solutions"
-  default_prompt: "Use $build to help with this software task."
-policy:
-  allow_implicit_invocation: false

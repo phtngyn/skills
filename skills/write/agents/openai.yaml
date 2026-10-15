@@ -1,4 +1,0 @@
-interface:
-  display_name: "Write"
-  short_description: "Write agent docs grounded in authoritative sources"
-  default_prompt: "Use $write to improve this document using its authoritative sources."

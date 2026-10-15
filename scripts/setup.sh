@@ -151,6 +151,17 @@ if [[ "$action" == install ]]; then
   target_dir="$(cd -- "$target_dir" && pwd -P)"
 fi
 
+# Reconcile retired skills only after all sources and current skills pass preflight.
+for entry in "$target_dir"/*; do
+  if is_our_link "$entry" && [[ ! -f "$collection_root/skills/${entry##*/}/SKILL.md" ]]; then
+    if [[ "$action" == check ]]; then
+      fail "retired collection link: $entry; run setup to remove it"
+    fi
+    rm -- "$entry"
+    printf 'removed retired link: %s\n' "$entry"
+  fi
+done
+
 missing=0
 for name in "${skill_names[@]}"; do
   entry="$target_dir/$name"

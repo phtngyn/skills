@@ -1,109 +1,130 @@
-# Personal skills
+# Personal skills for Codex
 
-A Codex-only collection of personal workflows and entry points backed by tracked upstream sources.
+54 skills: the 52 Poteto core skills excluding `make-bot-ui`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
-Each skill is available through a matching symlink from `~/.agents/skills/<name>` to this collection's `skills/<name>` directory. Keep the collection layout and local upstream checkouts available. Start a new chat if the skill picker has not refreshed.
+## Install
 
-## Global setup
-
-Clone this repository to a permanent location, then run:
+Keep this repository in a permanent location, then run:
 
 ```bash
 ./scripts/setup.sh
 ./scripts/setup.sh --check
 ```
 
-Setup requires Bash and Git, plus network access when upstream clones are missing. It clones missing sources at the adopted revisions in [UPSTREAM.md](UPSTREAM.md), including Effect, and links each top-level skill into `~/.agents/skills`. Rerunning preserves existing links. Existing sources must be clean and match their adopted pins; setup never fetches, advances, or resets them. Use the separate upstream maintenance workflow to adopt updates.
+Setup clones missing upstream sources at the adopted revisions in [UPSTREAM.md](UPSTREAM.md), verifies existing checkouts, and links each skill into `~/.agents/skills`. Existing sources are never fetched, advanced, or reset during setup. Retired links owned by this collection are removed after preflight succeeds. Foreign links and real directories are preserved; a conflicting current skill name stops installation before changing links.
 
-Unrelated global skills are preserved. A conflicting name stops installation before changing links; back up or relocate that entry deliberately, then rerun. Source checkouts and skill resources are verified before links are created. Moving or deleting this collection breaks its installed links.
+Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Most Poteto skills are explicit-only, preserving upstream policy; `setup-pstack` can also be selected automatically. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
 
 ```bash
-./scripts/setup.sh --uninstall
 ./scripts/setup.sh --target /path/to/isolated-skills
+./scripts/setup.sh --uninstall
 ```
 
-Uninstall removes only links pointing to this collection's matching skill directories, including stale links for removed skills. It preserves foreign links, real directories, and upstream sources. `--target` works with all actions. `--check` reports missing sources, revision drift, dirty checkouts, broken resource links, and missing or conflicting installation links without creating directories or fetching.
+Uninstall removes only this collection's links, including retired ones. It preserves upstream checkouts and unrelated skills. Moving or deleting this repository breaks installed links.
 
-Run the isolated installer tests with `python3 tests/test_setup.py`; they use temporary directories and local Git fixtures without changing your global skills or fetching from the network.
+## Workflow
 
-## Brief
-
-Use `/brief <rough idea>` or explicitly name `$brief` to prepare a task for an executing agent. It inspects relevant context, asks a few questions about intent with recommended answers, and returns a concise, copyable prompt with the outcome, scope, constraints, acceptance criteria, and decision authority. Assumptions and unresolved choices remain visible.
+Use `$poteto-mode <task>` as the general execution entry point. It chooses a playbook and applies relevant principles. Use a narrower skill when that is the whole task.
 
 ```text
-/brief users keep losing edits when they leave this page. Help me define what should change.
-/brief turn our discussion into a prompt for an agent to implement.
-/brief I want to simplify onboarding, but I am unsure what the first version should include.
+$poteto-mode fix this retry path creating duplicate rows. Reproduce it, fix the root cause, and verify retries leave one row.
+$architect with checkpoint redesign this importer around its callers and failure contract.
+$how explain resource ownership and shutdown in this subsystem.
+$interrogate review this branch against the accepted requirements without editing.
+$design improve this dialog's layout and keyboard interactions.
+$effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-Brief is an optional preparation step before Build or Design. It stops at the prompt unless execution or transmission is also requested. The self-contained entry point lives in `skills/brief`; [provenance](skills/brief/PROVENANCE.md) records its sources and personal adaptations.
+A typical flow is goal clarification, system understanding, design when needed, implementation, real verification, and review. `poteto-mode` connects those phases. `design` supplies UI craft; `effect` supplies Effect v4 decisions. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills.
 
-## Design
+## Skills
 
-Use `/design <prompt>` or explicitly name `$design`. Design combines Emil's UI craft, exploration, motion, critique, and mobile guidance with Good CSS's layout, typography, sizing, overflow, and native controls. It loads only matching upstream guidance. Good CSS is an internal reference, with no separate skill command.
+| Skill | Purpose |
+| --- | --- |
+| `poteto-mode` | Execute substantial engineering tasks through matching playbooks. |
+| `poteto-help` | Choose a workflow or prepare a concrete task prompt. |
+| `in-your-own-words` | Confirm the intended goal and problem. |
+| `how` | Explain current architecture, ownership, and runtime flow. |
+| `why` | Investigate design rationale with cited evidence and explicit uncertainty. |
+| `teach` | Combine mechanics and rationale into a clear explanation. |
+| `recall` | Reconstruct recent project context from available history and live state. |
+| `ketchup` | Catch up on progress and decisions within the current chat. |
+| `bro` | Restate the last response plainly. |
+| `architect` | Compare interface and module designs before implementation. |
+| `figure-it-out` | Design and execute an auditable workflow for ambitious unfamiliar work. |
+| `arena` | Compare isolated candidates and synthesize the strongest solution. |
+| `swarm` | Cover independent slices or races and aggregate evidence. |
+| `show-me-your-work` | Keep a reviewable decision trail. |
+| `interrogate` | Run independent adversarial review and synthesize a verdict. |
+| `blast-radius` | Find downstream breakage and prove critical assumptions. |
+| `benchmark-checklist` | Validate performance measurements before acting on them. |
+| `tdd` | Add a focused failing regression test where a practical test path exists. |
+| `create-verification-skill` | Generate and execute a project-specific real-app verification workflow. |
+| `maintain-verification-skill` | Audit a verification skill and feature map against source and live behavior. |
+| `no-comments` | Review comments and address accepted clutter or unenforced constraints. |
+| `correct` | Prevent recurring agent mistakes structurally. |
+| `technical-writing` | Structure and edit technical documents. |
+| `unslop` | Remove formulaic AI prose. |
+| `typescript-best-practices` | Apply TypeScript modeling and verification guidance. |
+| `automate-me` | Capture personal working conventions in a mode skill. |
+| `reflect` | Turn repeated session lessons into authorized skill improvements. |
+| `setup-pstack` | Configure optional model preferences for Codex delegation roles. |
+| `design` | UI craft, CSS, prototyping, motion, critique, and mobile web polish using Emil and Good CSS. |
+| `effect` | Design, implement, and review Effect v4 programs and libraries. |
 
-```text
-/design explore three different versions of this pricing card.
-/design implement the selected version and verify its interactions.
-/design simplify this card grid using our existing tokens.
-/design check this dialog against our browser targets and keyboard requirements.
+The remaining 24 skills are principles, each prefixed with `principle-`:
+
+- `attack-the-premise`
+- `boundary-discipline`
+- `build-the-lever`
+- `encode-lessons-in-structure`
+- `exhaust-the-design-space`
+- `experience-first`
+- `explain-the-number`
+- `fix-root-causes`
+- `foundational-thinking`
+- `guard-the-context-window`
+- `laziness-protocol`
+- `make-operations-idempotent`
+- `migrate-callers-then-delete-legacy-apis`
+- `minimize-reader-load`
+- `model-the-domain`
+- `never-block-on-the-human`
+- `outcome-oriented-execution`
+- `prove-it-works`
+- `redesign-from-first-principles`
+- `separate-before-serializing-shared-state`
+- `sequence-verifiable-units`
+- `subtract-before-you-add`
+- `test-behavior-not-implementation`
+- `type-system-discipline`
+
+## Codex adaptation
+
+[The runtime contract](skills/poteto-mode/references/codex.md) defines delegation, model inheritance, writable isolation, history access, missing-capability fallbacks, and long-running work. It uses tools actually exposed by the current Codex host. It does not require Cursor, custom agent profiles, hooks, or a plugin marketplace.
+
+All roles inherit the current model by default. `$setup-pstack` can record optional role preferences at `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`; that file is this collection's convention rather than a native Codex configuration setting. Unavailable model overrides fall back explicitly. Independent contexts are not represented as model diversity.
+
+History comes from supported host tools, identified transcripts, or the visible conversation. Missing history is reported. Persistent monitoring requires an explicitly requested and supported mechanism. Available browser, app-control, shell, and project verification tools provide live proof; absent proof stays unverified.
+
+[POTETO.md](POTETO.md) records adaptation decisions and the reviewed [Aqua-123 Codex port](https://github.com/Aqua-123/pstack-for-codex/tree/3d2770d638d8fb9eabd85c977fe76d90e6b426ce). [UPSTREAM.md](UPSTREAM.md) records source pins and maintenance. The source checkouts remain unchanged.
+
+## Validation
+
+```bash
+python3 scripts/validate.py
+python3 tests/test_setup.py
+./scripts/setup.sh --check
 ```
 
-The wrapper lives in `skills/design`, with unchanged pinned sources in `repos/emil` and `repos/good-css`. [CSS integration](skills/design/references/CSS_INTEGRATION.md) resolves overlaps. Use [good-css.com](https://good-css.com/) for live specimens when needed; the pinned source remains the adopted baseline. Follow-ups continue the design task.
+Collection validation checks the included catalog, invocation policy, and linked Markdown resources. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
 
-## Build
+The imported orchestration and GitHub watcher helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
 
-Use `/build <prompt>` or explicitly name `$build`. Poteto supplies the primary implementation, debugging, architecture, refactoring, and review workflows. Matt provides targeted testing, interface, and diagnostic guidance, with planning and review workflows available on request. Specs and tickets are opt-in.
-
-Start from the code, choose a lightweight foundation, build the simplest complete solution, and verify it. Every implementation ends with a required cleanup and simplification pass; recheck behavior after cleanup changes. Backward compatibility is opt-in: migrate callers to the best current design and remove obsolete APIs and compatibility layers.
-
-The entry point indexes all 24 Poteto principles and reads their original files when task conditions match. You can also name a principle directly to steer a decision.
-
-```text
-/build help me settle the behavior of this import flow before implementing it.
-/build implement the agreed retry behavior and verify it.
-/build diagnose why this job sometimes runs twice.
-/build refactor this module while preserving its behavior.
-/build apply subtract before you add to this refactor.
-/build review these changes against the task and project conventions.
+```bash
+bun install --frozen-lockfile
+bun test orch watch-pr
+bun run typecheck
 ```
 
-The wrapper lives in `skills/build` and adapts the pinned local upstream guidance to Codex. Its source checkouts remain outside the installed skill directory. Visual design work routes to the personal Design entry point.
-
-## Effect
-
-Use `/effect <prompt>` or explicitly name `$effect` to design, implement, refactor, or review Effect v4 programs, applications, integrations, and reusable libraries. The skill starts from the operation, its callers, failure contracts, and ownership, then loads the relevant architecture, boundary, lifetime, concurrency, operations, testing, or library guidance.
-
-The agent uses project code and focused source lookup to settle unfamiliar APIs or uncertain semantics. Effect's local examples and declarations establish API behavior. Studying the cloned OpenCode v2 source supplies transferable architectural lessons about dependencies, ownership, failures and concurrency; the skill applies them to the current project's requirements.
-
-```text
-/effect design this service and its resource lifetime before implementing it.
-/effect review this worker's cancellation, retries, and layer sharing.
-/effect design a reusable module and verify its consumer inference.
-```
-
-The entry point lives in `skills/effect`. `build` can guide the overall task while Effect supplies language and library decisions. [Provenance](skills/effect/PROVENANCE.md) distinguishes upstream evidence, synthesized principles, and personal preferences.
-
-## Write
-
-Use `/write <prompt>` or explicitly name `$write` to write or review documents agents consume. It is also available for automatic selection on agent-facing documentation tasks. This is a separate writing entry point backed by Matt Pocock's original guidance; Build keeps its existing scope.
-
-Ground claims in authoritative code, configuration, accepted requirements, or version-matched official documentation. Prefer pointers over duplicated facts, cite the supporting source, and record relevant version context and refresh triggers when volatile facts must be repeated. A citation helps verify a claim; it does not make a copied statement permanently current.
-
-```text
-/write improve AGENTS.md using the project's authoritative files while preserving its requirements.
-/write write an agent guide to this release flow and cite the code and configuration that define it.
-/write review these docs for stale claims, weak source links, and unnecessary duplication.
-```
-
-The wrapper lives in `skills/write` and reads the pinned `repos/mattpocock` checkout. Skill-specific mechanics load only when authoring a skill. [Provenance](skills/write/PROVENANCE.md) records the source and our personal additions.
-
-## Personal commands
-
-`/bro` (or `$bro`) restates the last response in plain language. It remains manual-only, with its original instructions copied unchanged from the pinned Poteto checkout. Other personal skills do not invoke it.
-
-`/ketchup` (or `$ketchup`) catches you up on chat progress since your previous message and explains decisions awaiting you. It remains manual-only, with its original instructions copied unchanged from the pinned Poteto checkout. There is no custom workflow; [provenance](skills/ketchup/PROVENANCE.md) records the upstream copy and Codex metadata.
-
-## Upstream maintenance
-
-For cloning sources, fetching updates, and adopting revisions, follow [UPSTREAM.md](UPSTREAM.md).
+Without Bun, skills use their documented direct-tool fallback. The helpers are not required for skill installation or discovery.

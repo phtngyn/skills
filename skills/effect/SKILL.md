@@ -7,7 +7,7 @@ description: Design, implement, refactor, and review Effect v4 code. Use for eff
 
 Match the design to the operation and its callers. An Effect describes work; ordinary functions and composed Effects can be enough. A service exposes a useful capability, a Layer constructs its implementation, and a Scope owns resources and background work. Introduce those boundaries where dependencies, substitution or ownership justify them.
 
-Use this skill for small programs, applications, framework integrations and reusable libraries. The consuming project's requirements determine the architecture. When used with `build`, this skill supplies Effect design and implementation decisions.
+Use this skill for small programs, applications, framework integrations and reusable libraries. The consuming project's requirements determine the architecture. When used with `poteto-mode`, this skill supplies Effect design and implementation decisions.
 
 ## Working Approach
 

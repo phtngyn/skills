@@ -2,7 +2,6 @@
 set -euo pipefail
 
 REPOS=(
-  "Matt|repos/mattpocock|https://github.com/mattpocock/skills.git|pinned"
   "Poteto|repos/pstack|https://github.com/cursor/plugins.git|pinned|pstack"
   "Emil|repos/emil|https://github.com/emilkowalski/skills.git|pinned"
   "Good CSS|repos/good-css|https://github.com/vojtaholik/good-css.git|pinned"
