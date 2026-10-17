@@ -42,4 +42,4 @@ Load guides for the decisions the task requires. Read Architecture when introduc
 | Consumer expressions, combinators, inference, public models | [Libraries](references/LIBRARIES.md) |
 | Unfamiliar APIs or platform features | [Source lookup](references/SOURCE.md) |
 
-The [OpenCode v2 studies](references/OPENCODE.md) show how a substantial application uses Effect. Learn from the contracts its construction, ownership and failure policies satisfy, then apply the relevant lesson to the current task. [Provenance](PROVENANCE.md) distinguishes observed source behavior from general guidance and personal defaults.
+The [application examples](references/APPLICATIONS.md) use OpenCode v2 and T3 Code to examine construction, ownership, concurrency, durable execution and streaming. Choose a workflow by the guarantee the caller needs, then apply its lesson to the current domain. [Provenance](PROVENANCE.md) distinguishes observed source behavior from general guidance and personal defaults.

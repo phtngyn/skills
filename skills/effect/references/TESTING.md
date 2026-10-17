@@ -55,8 +55,11 @@ For a race, block one path, introduce the competing action, release the block, a
 | Scoped registrations | One subscriber closes while a healthy peer remains |
 | Cancellation | Stop acknowledges while cleanup is gated; settlement waits for the right generation |
 | Streaming resource | Its owner closes while a body/iterator is still being consumed |
+| Durable work | Duplicate admission, execution success followed by settlement failure, or restart before execution |
+| Ordered publication | First writer commits but pauses before publication while a second writer proceeds |
+| Replay/live stream | Consumer acknowledgement or replay is blocked while the live tail fills; assert bounded retention and upstream cleanup |
 
-OpenCode v2's studies supply worked regression evidence for [shared execution](OPENCODE_SESSION.md#regression-evidence), [subscriber replacement](OPENCODE_PLUGINS.md#regression-evidence), and [stream lifetime](OPENCODE_HOST.md#regression-evidence). Use a study when its contract helps define the current test; keep the application's own requirements and runner authoritative.
+Use the [application examples](APPLICATIONS.md#choose-the-relevant-workflow) for concrete regression scenarios. OpenCode v2 covers shared execution, subscriber replacement and host-owned streams. T3 Code covers durable work, publication order and replay/live overflow. Each example distinguishes inspected tests from executed checks; keep the consuming application's requirements and runner authoritative.
 
 ## Runtime, Types, And Packaging
 

@@ -19,7 +19,7 @@ function focusAgent(id: AgentId): void {
 }
 ```
 
-Match the `readonly __brand: 'X'` shape. Don't invent a new convention.
+This example uses a branded intersection. Reuse the project's existing brand or schema mechanism when one exists.
 
 ## Discriminated unions
 
@@ -47,15 +47,14 @@ Non-empty, via a variadic tuple:
 ```ts
 type NonEmpty<T> = [T, ...T[]];
 
-// Don't: T[] plus a length check every caller must repeat
-function pickWinner(entries: string[]): string {
-  if (entries.length === 0) throw new Error("no entries");
-  return entries[Math.floor(Math.random() * entries.length)];
+// A plain array needs an explicit absence result.
+function firstOrUndefined(entries: string[]): string | undefined {
+  return entries[0];
 }
 
-// Do: an empty value of the type can't exist
-function pickWinner(entries: NonEmpty<string>): string {
-  return entries[Math.floor(Math.random() * entries.length)];
+// A required first entry is guaranteed by the input type.
+function firstEntry(entries: NonEmpty<string>): string {
+  return entries[0];
 }
 ```
 
@@ -71,17 +70,7 @@ Even length, as pairs:
 type Pairs<T> = [T, T][];
 ```
 
-A time range, as start plus duration:
-
-```ts
-// Don't: a comment holds the invariant
-type TimeRange = { start: Date; end: Date }; // start <= end
-
-// Do: a negative range can't be written; derive end when needed
-type TimeRange = { start: Date; durationMs: number };
-```
-
-Keep `durationMs` a plain number. Brand it (per Branded types) only if a raw number could be passed where a duration is expected, not by reflex. Pick the representation that makes the bad state unconstructable, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
+For a time range, start plus duration can simplify arithmetic, but a plain `number` still admits negative durations. If the contract requires an ordered range, validate the duration once through the project's schema or constructor and preserve that guarantee in the domain type. Choose the representation from the operations callers need; neither a field name nor a brand without validation establishes a runtime invariant.
 
 ## Simplest total type
 
@@ -148,9 +137,9 @@ function parseUser(input: unknown): User {
 
 Use `safeParse` when failure is an expected branch. Use the equivalent inference helper when the repository uses another schema library. Do not add a new schema dependency for one guard. This rule prefers the schema system the codebase already trusts.
 
-## No `as` casts
+## Type assertions
 
-Every `as` is a potential runtime crash. Cast only after the type system has verified the claim.
+A type assertion does not validate its input. Prefer parsing unknown data and narrowing known variants. When TypeScript cannot express a proven representation invariant, keep the assertion local, document the evidence and verify the public contract. `as const` preserves literal inference without asserting an unknown domain value.
 
 ```ts
 import { z } from "zod";
@@ -185,7 +174,7 @@ When refactoring an `as` out of existing code, identify why TypeScript can't inf
 - Missing discriminant: add one, switch to a discriminated union.
 - Overly wide source type (e.g. `Record<string, unknown>`): narrow it.
 - Untyped boundary: parse with the schema that owns the shape. Add a schema only where none exists.
-- Genuinely inexpressible: use a branded type or `satisfies`.
+- A proven invariant the compiler cannot express: isolate the assertion and verify it. A brand requires a trustworthy constructor; `satisfies` checks assignability and cannot prove a missing runtime fact.
 
 ## Narrowing hierarchy
 
@@ -195,7 +184,7 @@ From best to last-resort:
 2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
 3. **`typeof` / `instanceof`.** For primitives and class instances.
 4. **User-defined type guard.** When the above aren't enough.
-5. **`as` cast.** Only after validation.
+5. **Type assertion.** Only for a validated value or an independently proven representation invariant.
 
 ```ts
 function area(s: Shape): number {
@@ -256,7 +245,7 @@ Return-style in value-returning switches, void-style in statement switches.
 
 ## `satisfies` over `as`
 
-`satisfies` validates without widening literal types.
+`satisfies` checks assignability while retaining the expression's inferred shape. Contextual typing can still affect inference. It performs no runtime validation.
 
 ```ts
 // Don't. Widens, loses literal types.
@@ -271,7 +260,7 @@ const config = { theme: "dark", cols: 3 } satisfies Config;
 
 Validate once where data crosses in. Trust types inside. See the **boundary-discipline** principle skill.
 
-- **Wire formats** (proto, JSON-RPC): parse with `ignoreUnknownFields` so forward-compatible changes don't break old clients.
+- **Wire formats** (proto, JSON-RPC): choose unknown-field handling from the protocol's compatibility contract. Use the parser's actual supported option; accepting or rejecting extra fields is not a universal rule.
 - **Persisted JSON:** versioned blob with a try/catch around the parse.
 - **Don't re-validate** deep in call chains.
 

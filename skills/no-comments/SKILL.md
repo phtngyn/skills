@@ -1,6 +1,6 @@
 ---
 name: no-comments
-description: "Spawn Comment Sicko, fix accepted findings, and offer encodings for claimed constraints."
+description: "Review comments, remove accepted clutter, and propose enforceable forms for claimed constraints. Use for $no-comments or a focused comment review."
 ---
 
 # No comments

@@ -52,7 +52,7 @@ These upstream tests were read, not executed.
 | Preserve tool interruption across Promises | [Promise tool](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/test/plugin/promise-tool.test.ts:15): interrupt the Effect fiber; the foreign executor's signal aborts and its Exit remains interruption |
 | Normalize the Promise input contract | [Explicit undefined input](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/test/plugin.test.ts:453): a Promise plugin can create a session with an explicitly undefined optional field through the JSON normalization path |
 
-Separately, six [isolated transport checks](../PROVENANCE.md#opencode-validation) were executed against unmodified `OwnedFetch`, including gated body cancellation and handler settlement before disposal. They cover the transport without booting the application graph.
+Separately, six [isolated transport checks](../PROVENANCE.md#opencode) were executed against unmodified `OwnedFetch`, including gated body cancellation and handler settlement before disposal. They cover the transport without booting the application graph.
 
 Startup disposal, plugin iterator unload and output encoding are supported here by implementation review; the selected tests do not independently prove those paths. For another host, add controlled startup failure, early iterator return/unload and schema round-trip cases to the relevant acceptance tests. Use [Testing](TESTING.md#control-the-interleaving) to keep those checks observable.
 

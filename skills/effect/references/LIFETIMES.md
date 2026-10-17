@@ -36,6 +36,8 @@ Evidence: [acquisition](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src
 
 Layer sharing depends on Layer identity and the relevant memo map/scope. Reuse named Layer values for shared resources. Equal options in repeated factory calls do not imply the same Layer identity. Provide clients at their owner instead of constructing/providing them in every business call. Use `Layer.fresh` when isolation is intentional.
 
+Storage identity and service identity are separate. Instances using the same database can own different process-local wakeups, cancellation signals or caches. Share the instance when its protocol depends on those signals, as in [T3 Code's outbox wiring](T3_CODE.md#keep-capabilities-reachable-across-transports). Persisted intent can outlive a process; its native handles and fibers still need process-owned lifetimes.
+
 Separate dependencies whose owners differ. An application service may select and borrow a request, account or tenant capability for an operation; it must not retain that capability beyond its owner. Keys must include the identity and authority that determine safe sharing. Canonicalize equivalent keys before lookup and invalidation.
 
 Reuse a shared Layer for one resource owner; use `LayerMap` when callers borrow independent keyed service graphs. Its underlying reference-counted ownership means invalidation detaches future lookup while existing borrowers can retain the old graph. Define these application policies separately:

@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-54 skills: the 52 Poteto core skills excluding `make-bot-ui`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+55 skills: the 53 Poteto core skills excluding `make-bot-ui`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -44,6 +44,7 @@ A typical flow is goal clarification, system understanding, design when needed, 
 | `poteto-mode` | Execute substantial engineering tasks through matching playbooks. |
 | `poteto-help` | Choose a workflow or prepare a concrete task prompt. |
 | `in-your-own-words` | Confirm the intended goal and problem. |
+| `sharpen` | Improve task framing, sources and verification, then execute within scope. |
 | `how` | Explain current architecture, ownership, and runtime flow. |
 | `why` | Investigate design rationale with cited evidence and explicit uncertainty. |
 | `teach` | Combine mechanics and rationale into a clear explanation. |

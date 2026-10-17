@@ -1,10 +1,10 @@
-# OpenCode v2 Application Study
+# OpenCode v2 Application Example
 
-These studies describe the [cloned OpenCode v2 repository](/Users/phtngyn/Developer/skills/repos/opencode) on branch `v2` at `4617210822bdbb31e5749751afbfb4584ccedac8`, reviewed on 2026-10-13 and expanded on 2026-10-14. Its [dependency catalog](/Users/phtngyn/Developer/skills/repos/opencode/package.json) pins Effect and the Node platform adapter to 4.0.1. The skill's adopted Effect revision and executed checks are in [provenance](../PROVENANCE.md). Resolve API details against the consuming project's declarations; OpenCode supplies application evidence.
+OpenCode v2 illustrates dynamic service graphs, reloadable registrations, shared session execution and an embedded Promise host. This example uses the [local source](/Users/phtngyn/Developer/skills/repos/opencode) at `4617210822bdbb31e5749751afbfb4584ccedac8`; its [dependency catalog](/Users/phtngyn/Developer/skills/repos/opencode/package.json) pins Effect and the Node platform adapter to 4.0.1. Review dates and executed checks are recorded in [provenance](../PROVENANCE.md). Resolve APIs against the consuming project's declarations.
 
 ## Choose A Workflow
 
-Study OpenCode v2 to learn how a substantial application uses Effect. The workflows below organize source evidence; their product features do not define the scope of this skill. Read a study when it helps explain a construction, ownership, failure or concurrency decision in the current task.
+Use these workflows for construction, ownership, replacement and cancellation decisions. For durable work, publication ordering and replayable delivery, see the [T3 Code example](T3_CODE.md). The [shared index](APPLICATIONS.md) routes both examples by the guarantee required.
 
 | General decision | Source study | OpenCode v2 workflow |
 | --- | --- | --- |
@@ -32,9 +32,9 @@ The adopted Effect checkout at `742976ce97f5157b00e67e4a5ece6bc04e1899e3` indepe
 
 ## Regression Tests
 
-Each workflow's regression table links the exact test, competing action and observable assertion. Those upstream tests were read as evidence of intended contracts; they were not run in this study. Bun and the OpenCode workspace dependencies were unavailable during the expansion. Implementation-only claims and missing direct acceptance cases are identified in each study.
+Each workflow's regression table links the exact test, competing action and observable assertion. Those upstream tests were read as evidence of intended contracts; they were not run in this study. Bun and the OpenCode workspace dependencies were unavailable during source review. Implementation-only claims and missing direct acceptance cases are identified in each study.
 
-Six isolated checks against the unmodified `OwnedFetch` source were executed on Node 24.19.0. They cover request release, gated body cancellation, handler settlement and close ordering; [provenance](../PROVENANCE.md#opencode-validation) records their scope. They do not execute the full embedded host or upstream Bun suite.
+Six isolated checks against the unmodified `OwnedFetch` source were executed on Node 24.19.0. They cover request release, gated body cancellation, handler settlement and close ordering; [provenance](../PROVENANCE.md#opencode) records their scope. They do not execute the full embedded host or upstream Bun suite.
 
 Additional cross-cutting sources were read:
 

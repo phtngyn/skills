@@ -1,5 +1,7 @@
 # Example prompts
 
+- `$sharpen improve this importer. Preserve the input format and verify the result with representative files.`
+
 - `$poteto-mode fix duplicate rows after a retry. Reproduce the duplicate, fix its cause, and verify retries preserve one row.`
 - `$architect with checkpoint redesign this importer around its callers and failure contract. Show the proposed types before implementation.`
 - `$how explain how this subsystem owns its resources and what happens during shutdown.`

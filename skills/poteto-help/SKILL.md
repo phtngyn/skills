@@ -17,7 +17,7 @@ Read [the Codex contract](../poteto-mode/references/codex.md) for delegation, hi
 
 ## Choose a workflow
 
-- Goal understanding: `in-your-own-words`.
+- Goal understanding: `in-your-own-words`. Improve task framing before execution: [sharpen](../sharpen/SKILL.md).
 - Current architecture and flow: `how`. Historical rationale: `why`. A combined explanation: `teach`.
 - Recent project context: `recall`. Progress within this chat: `ketchup`. A simpler last reply: `bro`.
 - General execution: `poteto-mode`. Ambitious unfamiliar work: `figure-it-out`.

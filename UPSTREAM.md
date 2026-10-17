@@ -8,7 +8,8 @@
 | Good CSS | https://github.com/vojtaholik/good-css | `repos/good-css` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` |
 | Effect | https://github.com/Effect-TS/effect | `repos/effect` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` |
 | OpenCode (v2) | https://github.com/anomalyco/opencode | `repos/opencode` | `4617210822bdbb31e5749751afbfb4584ccedac8` | `4617210822bdbb31e5749751afbfb4584ccedac8` |
-| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `ce649c03ac3b75b6ae80cbd15b7e2c536caedb5a` | `ce649c03ac3b75b6ae80cbd15b7e2c536caedb5a` |
+| T3 Code | https://github.com/pingdotgg/t3code | `repos/t3-code` | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` |
+| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `101b274dd991f694e1f7024be2157e5f3adf07de` | `101b274dd991f694e1f7024be2157e5f3adf07de` |
 
 `skills/design` loads Emil and Good CSS directly. The Poteto directories under `skills/` contain Codex adaptations of the pinned pstack source; see [POTETO.md](POTETO.md) for ownership, exclusions, and refresh rules. Keep source checkouts at their based-on commits. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. The consuming project's declarations and tests establish available Effect behavior. Matt is no longer an installation dependency; an existing local clone is left untouched.
 
@@ -21,4 +22,4 @@ For initial installation, use `./scripts/setup.sh`. It clones every missing sour
 3. Before adopting an update, compare its based-on and fetched revisions and inspect the relevant upstream changes and personal skills. Recommend what to adopt and why, preserving personal customizations.
 4. When adopting Emil, Good CSS, or Poteto, move the clean checkout and its based-on entry to the same reviewed commit. For Effect, advance the based-on entry when its guidance is adopted into the skill. For Poteto, review and refresh the Codex adaptations and reachable resources per POTETO.md. Skipped updates leave based-on entries unchanged.
 
-OpenCode is a pinned application study for `skills/effect`, with evidence in its [study reference](skills/effect/references/OPENCODE.md). Setup includes this source pin. The sync script does not manage it; fetch updates separately with `git -C repos/opencode fetch origin v2`, preserving the checkout, and review before advancing its based-on revision.
+OpenCode v2 and T3 Code are pinned application examples for `skills/effect`; the [example index](skills/effect/references/APPLICATIONS.md) routes their source evidence. Setup includes both adopted pins. The sync script does not manage them. Fetch OpenCode with `git -C repos/opencode fetch origin v2` and T3 Code with `git -C repos/t3-code fetch origin main`, preserving their checkouts. Review implementation and tests before advancing an adopted revision.

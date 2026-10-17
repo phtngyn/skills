@@ -8,7 +8,7 @@ A service earns its boundary when it provides a useful capability, owns shared s
 
 Choose the smallest boundary that expresses the caller's contract. A finite script can compose one program; an operation can remain an Effect-returning function; a reusable resource can expose scoped acquisition. Use a service and Layer when callers need a replaceable capability or a shared owner. For public consumer APIs, read [Libraries](LIBRARIES.md).
 
-Keep handlers thin: decode, read request context, call the capability, encode the result. Keep domain decisions outside transport types and vendor APIs. Use explicit state machines when legal transitions or modes need enforcement; straightforward workflows can remain sequential Effects.
+Keep handlers thin: decode, read request context, call the capability, encode the result. When HTTP, RPC, CLI or scheduled work need the same behavior, put that behavior below their adapters so each entry point reaches the same contract. Keep domain decisions outside transport types and vendor APIs. Use explicit state machines when legal transitions or modes need enforcement; straightforward workflows can remain sequential Effects.
 
 For an application capability with shared state and background work, a service constructed by a Layer can align construction and ownership. Keep framework or Promise adapters focused on running operations and translating the consumer contract. Choose the execution host from its owner; runtime ownership is covered in [Lifetimes](LIFETIMES.md#runtime-and-stream-boundaries).
 
@@ -68,7 +68,7 @@ Compose named subgraphs at executable, host, tenant, or test boundaries. Keep th
 
 When replacing an adapter, change the wiring that acquires it. Providing a tag around a workflow cannot replace an implementation that its Layer already supplies internally. Tests and embedding hooks should substitute dependencies before graph acquisition and verify the production adapter's side effects never start.
 
-Start with ordinary Layer composition. Add graph machinery only for requirements such as transitive replacement or separate sharing domains that ordinary wiring cannot express clearly. Resource identity and memoization are covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs). OpenCode v2 supplies [worked evidence](OPENCODE.md#composition-and-replacement) for those larger graph requirements and [dependency capture](OPENCODE_SESSION.md#put-each-owner-at-the-right-boundary).
+Start with ordinary Layer composition. Add graph machinery only for requirements such as transitive replacement or separate sharing domains that ordinary wiring cannot express clearly. Resource identity and memoization are covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs). The application examples show [ordinary shared Layers in T3 Code](T3_CODE.md#keep-capabilities-reachable-across-transports) and [graph replacement in OpenCode v2](OPENCODE.md#composition-and-replacement). OpenCode's [session workflow](OPENCODE_SESSION.md#put-each-owner-at-the-right-boundary) traces dependency capture across lifetime owners.
 
 Evidence: [Layer composition](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/20_layer-composition.ts), [Layer declarations](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Layer.ts).
 
