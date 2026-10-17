@@ -12,7 +12,7 @@ Use this skill for small programs, applications, framework integrations and reus
 ## Working Approach
 
 1. **Trace the behavior.** Follow the operation from input to result. Identify expected failures, dependencies, and any resource or background-work owner. For a review or bug, trace competing paths through failure, cancellation and cleanup too.
-2. **Choose the boundaries.** Keep pure decisions as functions. Introduce services where substitution or shared ownership helps, and compose their Layers at the owner. For new architecture, explain the important ownership and failure choices briefly; for an ordinary edit, work within the established design.
+2. **Choose the boundaries.** Keep pure decisions as functions. Introduce services where substitution or shared ownership helps, and compose their Layers at the owner. Explain important ownership and failure choices briefly. Keep an established design when it serves the task; apply the refactoring policy below when it exposes a concrete weakness.
 3. **Implement the contract.** Compose Effects, validate foreign inputs at their boundary, and translate results where the caller's representation changes. Run effects at the process, framework or consumer boundary that owns execution. Use [source lookup](references/SOURCE.md) to settle an unfamiliar API or uncertain semantics, then reuse that evidence.
 4. **Prove and simplify.** Check observable behavior, including the lifecycle or concurrency contract changed by the task. Remove redundant wrappers, service tags, error translations, and legacy paths within scope. Report the outcome and actual checks.
 
@@ -27,9 +27,17 @@ Use this skill for small programs, applications, framework integrations and reus
 - **Validation belongs at trust boundaries.** Decode foreign representations once, pass trusted domain values inward, and encode at the outward boundary.
 - **Use the existing mechanism.** Prefer Effect's resource, concurrency, scheduling, caching, and platform tools when their semantics fit. Add application machinery for a demonstrated contract that they do not supply.
 
+## Refactor When The Task Exposes A Design Weakness
+
+Within an implementation task, refactor an unsuitable Effect design when doing so improves correctness or materially simplifies the requested behavior. Ground the change in a concrete weakness, such as incorrect resource ownership, unreliable cancellation, unclear failure contracts or duplicated coordination. A stylistic preference alone does not justify a rewrite.
+
+Migrate all affected internal callers within scope and remove the superseded implementation in the same change. Do not add compatibility wrappers, deprecated aliases, dual paths or fallback behavior solely to preserve the old internal design. Preserve required behavior and verify the affected contract, including ownership, failures and cancellation where relevant.
+
+Proceed with scoped internal refactors. Consult the user before expanding into unrelated subsystems or breaking a public API, persisted format or externally consumed protocol, unless that change is already explicitly authorized.
+
 ## Guides
 
-Load guides for the decisions the task requires. Read Architecture when introducing capabilities or changing construction; Boundaries when handling foreign values or failure contracts; Libraries when designing reusable consumer APIs. Follow the established design for small edits. Domain-specific mechanisms such as HTTP, SQL, CLI, reactive state or durable workflows are indexed in Source lookup.
+Load guides for the decisions the task requires. Read Architecture when introducing capabilities or changing construction; Boundaries when handling foreign values or failure contracts; Libraries when designing reusable consumer APIs. Small edits need only the guides relevant to their changed contract. Domain-specific mechanisms such as HTTP, SQL, CLI, reactive state or durable workflows are indexed in Source lookup.
 
 | Decision | Guide |
 | --- | --- |

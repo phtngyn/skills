@@ -19,6 +19,8 @@ The [application examples](references/APPLICATIONS.md) route both codebases by t
 
 The skill covers small programs, applications, framework integrations and reusable libraries. Guidance follows the operation, its callers and its owners. Services and Layers express useful capability, dependency and ownership boundaries; functions and composed Effects remain appropriate when those boundaries add no value. Reusable APIs preserve the caller's requirements and execution ownership.
 
+Scoped internal refactoring is an explicit personal default: an implementation task can replace a concretely unsuitable Effect design, migrate its callers and remove the old path without compatibility scaffolding. Broader scope and externally breaking contracts require consultation unless already authorized.
+
 The preference for `Schema.Struct` with a same-name interface is personal. Class schemas remain appropriate when their behavior helps. The per-error type brand is also a personal default, with its runtime and type contract described in Boundaries.
 
 Application conventions are evidence to assess, not requirements to copy. OpenCode's graph compiler and retention policy address dynamic replacement and sharing. T3 Code's outbox and publication lane address durable admission and ordered delivery. Neither establishes a universal package layout, import style, service-per-file rule, persistence model or test runner.
