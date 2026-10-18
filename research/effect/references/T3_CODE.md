@@ -11,7 +11,7 @@ T3 Code illustrates shared Layers, durable command admission, worker recovery, p
 | Keep live delivery in commit order | [Commit-to-publication handoff](#preserve-publication-order-explicitly) |
 | Deliver stored history with live events | [Replay, retention and cleanup](#bound-the-whole-replay-and-live-pipeline) |
 
-For dynamic resource replacement and Promise host ownership, see the [OpenCode v2 example](OPENCODE.md). The [shared index](APPLICATIONS.md) routes both examples by the guarantee required.
+For dynamic resource replacement and Promise host ownership, see the [OpenCode v2 example](OPENCODE.md). The [shared index](APPLICATIONS.md) routes all three examples by the guarantee required.
 
 ## Keep Capabilities Reachable Across Transports
 
@@ -36,7 +36,7 @@ An outbox does not make an external operation exactly-once. Execution can succee
 
 For cancellation, claim registration creates a local Deferred, the worker arms its cancellation path before rereading the authoritative row, and then races execution against cancellation. This combines durable state with a local wakeup to cover the gap between claim and execution. It still relies on the external adapter's cancellation and settlement behavior.
 
-Use this machinery only when the task requires durable work. A scoped fiber or bounded `forEach` is sufficient for many finite or process-owned workflows. Effect's durable workflow facilities are another option to assess through [Source lookup](SOURCE.md).
+Use this machinery only when the task requires durable work. A scoped fiber or bounded `forEach` is sufficient for many finite or process-owned workflows. Effect's durable workflow facilities are another option to assess through [Source lookup](../../../skills/effect/references/SOURCE.md).
 
 ## Preserve Publication Order Explicitly
 

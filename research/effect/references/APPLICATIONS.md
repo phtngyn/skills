@@ -1,6 +1,6 @@
 # Application Examples
 
-OpenCode v2 and T3 Code show how Effect supports two substantial applications. Use them to understand a decision's requirements, ownership, failure policy and observable guarantees. Effect's declarations and tests establish API behavior; the consuming project's requirements determine which application patterns fit.
+OpenCode v2, T3 Code and Alchemy show how Effect supports substantial applications. Use them to understand a decision's requirements, ownership, failure policy and observable guarantees. Effect's declarations and tests establish API behavior; the consuming project's requirements determine which application patterns fit.
 
 ## Choose The Relevant Workflow
 
@@ -13,7 +13,15 @@ OpenCode v2 and T3 Code show how Effect supports two substantial applications. U
 | Deliver events | [Host-owned streams and iterators](OPENCODE_HOST.md#plugin-context-iterators-and-representation) | [Publication order](T3_CODE.md#preserve-publication-order-explicitly), [bounded replay and live delivery](T3_CODE.md#bound-the-whole-replay-and-live-pipeline) |
 | Verify a race or lifecycle | [Session](OPENCODE_SESSION.md#regression-evidence), [reload](OPENCODE_PLUGINS.md#regression-evidence), [host](OPENCODE_HOST.md#regression-evidence) | [Admission, settlement, publication and stream regressions](T3_CODE.md#regression-evidence-and-executed-checks) |
 
-Read the workflow that matches the current problem. Neither application needs to be loaded in full for an ordinary edit.
+Alchemy adds these workflows:
+
+- [Capability setup and invocation](ALCHEMY.md#separate-capability-setup-from-invocation) for deploy/runtime phases and replaceable clients.
+- [Observed-state reconciliation](ALCHEMY.md#reconcile-observed-state-after-partial-failure) for partial external success, drift and checkpoint recovery.
+- [Identity versus completed readiness](ALCHEMY.md#distinguish-identity-from-completed-readiness) for staged dependency graphs.
+- [Execution-owned lazy acquisition](ALCHEMY.md#key-lazy-acquisition-and-release-to-the-same-scope) for shared hosts with per-execution I/O.
+- [Regression evidence](ALCHEMY.md#regression-evidence-and-executed-checks) for the inspected engine cases and five executed memo tests.
+
+Read the workflow that matches the current problem. No application needs to be loaded in full for an ordinary edit.
 
 ## Apply The Contract
 

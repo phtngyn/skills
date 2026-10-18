@@ -64,4 +64,4 @@ The selected tests do not independently isolate the late update-check generation
 
 ## Apply The Reasoning
 
-A reloadable service can start with a scoped source subscription, one sequential consumer and explicit readiness. Add generation tracking when accepted work can overlap activation or late results can arrive after replacement. Choose whether a broken update retains the current resource, reconstructs a fallback, or disables the capability before implementing cleanup. Use [Concurrency](CONCURRENCY.md) for competition policy and [Lifetimes](LIFETIMES.md) for scope ownership.
+A reloadable service can start with a scoped source subscription, one sequential consumer and explicit readiness. Add generation tracking when accepted work can overlap activation or late results can arrive after replacement. Choose whether a broken update retains the current resource, reconstructs a fallback, or disables the capability before implementing cleanup. Use [Concurrency](../../../skills/effect/references/CONCURRENCY.md) for competition policy and [Lifetimes](../../../skills/effect/references/LIFETIMES.md) for scope ownership.

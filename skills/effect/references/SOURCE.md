@@ -1,42 +1,32 @@
 # Source Lookup
 
-Use this guide for an unfamiliar API, an uncertain operational detail, or a feature beyond the core guides. Look up the concrete question needed to make the implementation decision.
+## Establish The Release
 
-## Look Up The Question
+For implementation or migration, verify the latest stable release from the package registry (`npm view effect dist-tags --json`, or the project's registry equivalent). Use the `latest` release rather than snapshot, beta or rc tags. Upgrade the project's declarations and lockfile with its package manager when needed, and choose compatible companion packages. Reuse that result during the task.
 
-Use the project's package declarations and public exports to establish available APIs. For examples and implementation, prefer a task-specified checkout or a nearby version-matched source, then the [cloned Effect repository](/Users/phtngyn/Developer/skills/repos/effect). Keep reference checkouts read-only. Link cloned source with its absolute filesystem path and a line locator when useful; record revision context in provenance.
+Check the resolved package and its public exports. A source checkout whose package.json declares the same version can contain unreleased commits; match a release tag or verify the source against the installed package before relying on implementation details.
 
-Search `LLMS.md` and `ai-docs/src` for the concept or symbol, then inspect the relevant exported declaration. Read implementation and focused tests for cancellation, sharing, failure retention, ordering, and cleanup when a signature does not settle them. Use supported public imports, including domain entrypoints such as `effect/http` and `effect/testing`.
+## Look Up The Concrete Question
 
-Use application examples to study workflows and composition. Use public modules and type tests to study reusable libraries. OpenCode and T3 Code provide application evidence rather than Effect API authority. When an example fails against the consuming project, resolve the specific mismatch from that package's declarations instead of adding a compatibility layer.
+Prefer the resolved package's declarations and included source, then official documentation or a release-matched source checkout. Discover available checkouts from the task and workspace rather than assuming a fixed machine path. Keep reference sources read-only; use an isolated checkout if a different revision is needed.
 
-Choose architectural evidence through the [application examples](APPLICATIONS.md). OpenCode v2 covers dynamic service graphs, reloadable registrations, shared execution and embedded hosting. T3 Code covers shared Layers, durable admission, worker recovery, publication ordering and replayable streams. In either example, trace the requirement, Effect mechanism, owner, failure policy and supporting assertion. Apply that relationship to the current task; assess custom infrastructure against its requirements.
+Search the relevant symbol and inspect public declarations first. Read implementation and focused tests when types do not establish cancellation, sharing, failure retention, ordering or cleanup. If the release includes `LLMS.md` or `ai-docs`, use their index to find the relevant example. Do not load a full manual for a single API question.
 
-For uncertain overloads or semantics, make a small compiling/executable probe in an isolated workspace. Reuse established evidence until a new API, error, or contradictory result requires another lookup. If local sources are missing, use official documentation/source and report gaps that materially limit the result.
+Use a small compiling or executable probe for an uncertain overload or lifecycle guarantee. Reuse evidence until a new requirement or contradictory result calls for another lookup. An application's custom helpers and conventions do not establish Effect API behavior.
 
 ## Find The Mechanism
 
-Example directories below are under `ai-docs/src`; root modules live in `packages/effect/src` and other package paths are relative to the checkout. Use the exported symbol and concept as search terms, not a copied signature as a specification.
+Paths below are relative to an Effect source checkout; published packages commonly include `src/` and declarations instead. Use supported public exports for application imports.
 
-| Decision | Starting source |
+| Decision | Starting modules or examples |
 | --- | --- |
-| Service and layer construction | `01_effect/03_services`; `Context.ts`, `Layer.ts` |
-| Acquisition and host integration | `01_effect/05_resources`, `04_integration`; `Scope.ts`, `ManagedRuntime.ts`, `LayerMap.ts` |
-| Coordination and concurrency | `Ref.ts`, `SynchronizedRef.ts`, `Semaphore.ts`, `Deferred.ts`, `FiberMap.ts`, `FiberSet.ts` |
-| Events and backpressure | `03_stream`; `Stream.ts`, `Queue.ts`, `PubSub.ts`, `SubscriptionRef.ts` |
-| Retry, TTL, batching | `06_schedule`, `05_batching`; `Schedule.ts`, `Cache.ts`, `ScopedCache.ts`, `RequestResolver.ts` |
-| SQL and transactions | `40_sql`; `sql/` and the selected driver package |
-| HTTP clients and APIs | `50_http-client`, `51_http-server`; `http/`, `http-api/` |
-| Typed GraphQL operations, client tests, batching | `52_graphql`; `graphql/`, `packages/tools/graphql-generator` |
-| RPC, durable workflow, distributed entities | `rpc/`, `workflow/`, `cluster/`; `80_cluster` |
-| Reactive state and framework bindings | `reactivity/`, `packages/atom`; `Atom`, `AtomRuntime` |
-| CLI, subprocesses, platform I/O | `70_cli`, `60_child-process`; `cli/`, `process/`, platform adapter packages |
-| AI models, tools, chat | `71_ai`; `ai/` and the selected provider package |
-| Observability and calendar/time | `08_observability`, `07_datetime`; `Metric.ts`, `Clock.ts`, `DateTime.ts`, `Cron.ts` |
-| Tests and public types | `09_testing`; `test/`, `typetest/`, `packages/vitest` |
+| Construction and ownership | `Context`, `Layer`, `Scope`, `ManagedRuntime`, `LayerMap` |
+| Coordination and state | `Ref`, `SynchronizedRef`, `Semaphore`, `Deferred`, `FiberMap`, `FiberSet` |
+| Streams and delivery | `Stream`, `Queue`, `PubSub`, `SubscriptionRef` |
+| Scheduling and reuse | `Schedule`, `Cache`, `ScopedCache`, `Request`, `RequestResolver` |
+| Schemas and errors | `Schema`, `SchemaParser`, `Data`, `Cause`, `Exit` |
+| HTTP, SQL, RPC and workflows | `http/`, `http-api/`, `sql/`, `rpc/`, `workflow/`, `cluster/` |
+| Framework and platform features | `reactivity/`, `cli/`, `process/`, `ai/`, and compatible platform packages |
+| Tests and consumer types | `testing/`, `test/`, `typetest/`, and `@effect/vitest` |
 
-Check existing scheduling, caching, coordination, and platform mechanisms before building a substitute. Select by the contract: a result cache, resource cache, fiber registry, and durable workflow solve different problems.
-
-When contributing to Effect itself, read its current repository instructions and task-relevant contributor skills for validation, code generation, and package registration. Those commands do not define checks for a consuming application.
-
-Evidence: [LLMS.md](/Users/phtngyn/Developer/skills/repos/effect/LLMS.md), [public export map](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/package.json), [provenance](../PROVENANCE.md).
+Check existing native mechanisms before adding custom infrastructure. Select by the required guarantee: result retention, resource ownership, joining work and durable recovery are distinct contracts. When contributing to Effect itself, read its contributor instructions for that work.

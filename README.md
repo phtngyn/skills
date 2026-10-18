@@ -35,7 +35,7 @@ $design improve this dialog's layout and keyboard interactions.
 $effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-A typical flow is goal clarification, system understanding, design when needed, implementation, real verification, and review. `poteto-mode` connects those phases. `design` supplies UI craft; `effect` supplies Effect v4 decisions. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills.
+A typical flow is goal clarification, system understanding, design when needed, implementation, real verification, and review. `poteto-mode` connects those phases. `design` supplies UI craft; `effect` supplies decisions for the latest stable Effect release. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills.
 
 ## Skills
 
@@ -70,7 +70,7 @@ A typical flow is goal clarification, system understanding, design when needed, 
 | `reflect` | Turn repeated session lessons into authorized skill improvements. |
 | `setup-pstack` | Configure optional model preferences for Codex delegation roles. |
 | `design` | UI craft, CSS, prototyping, motion, critique, and mobile web polish using Emil and Good CSS. |
-| `effect` | Design, implement, and review Effect v4 programs and libraries. |
+| `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
 
 The remaining 24 skills are principles, each prefixed with `principle-`:
 
@@ -107,7 +107,7 @@ All roles inherit the current model by default. `$setup-pstack` can record optio
 
 History comes from supported host tools, identified transcripts, or the visible conversation. Missing history is reported. Persistent monitoring requires an explicitly requested and supported mechanism. Available browser, app-control, shell, and project verification tools provide live proof; absent proof stays unverified.
 
-[POTETO.md](POTETO.md) records adaptation decisions and the reviewed [Aqua-123 Codex port](https://github.com/Aqua-123/pstack-for-codex/tree/3d2770d638d8fb9eabd85c977fe76d90e6b426ce). [UPSTREAM.md](UPSTREAM.md) records source pins and maintenance. The source checkouts remain unchanged.
+[POTETO.md](POTETO.md) records adaptation decisions and the reviewed [Aqua-123 Codex port](https://github.com/Aqua-123/pstack-for-codex/tree/3d2770d638d8fb9eabd85c977fe76d90e6b426ce). [UPSTREAM.md](UPSTREAM.md) records source pins and maintenance. [Effect research](research/effect/MAINTENANCE.md) retains historical studies and preferences outside the installed skill; application research clones are optional.
 
 ## Validation
 

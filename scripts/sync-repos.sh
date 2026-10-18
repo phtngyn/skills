@@ -5,7 +5,7 @@ REPOS=(
   "Poteto|repos/pstack|https://github.com/cursor/plugins.git|pinned|pstack"
   "Emil|repos/emil|https://github.com/emilkowalski/skills.git|pinned"
   "Good CSS|repos/good-css|https://github.com/vojtaholik/good-css.git|pinned"
-  "Effect|repos/effect|https://github.com/Effect-TS/effect.git|tracking"
+  "Effect|repos/effect|https://github.com/Effect-TS/effect.git|pinned"
 )
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."

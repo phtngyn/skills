@@ -62,4 +62,4 @@ The selected tests do not directly isolate `awaitSettlement` following exactly o
 
 ## Apply The Reasoning
 
-For a shared worker, choose its execution owner and same-key policy first. A service Layer can construct a shared owner and its fibers. Introduce an instance selector when operations cross owners, and a wake signal when the work itself is retained elsewhere. Derive tests from the caller promises before choosing a coordinator. General mechanisms live in [Architecture](ARCHITECTURE.md), [Lifetimes](LIFETIMES.md), and [Concurrency](CONCURRENCY.md).
+For a shared worker, choose its execution owner and same-key policy first. A service Layer can construct a shared owner and its fibers. Introduce an instance selector when operations cross owners, and a wake signal when the work itself is retained elsewhere. Derive tests from the caller promises before choosing a coordinator. General mechanisms live in [Architecture](../../../skills/effect/references/ARCHITECTURE.md), [Lifetimes](../../../skills/effect/references/LIFETIMES.md), and [Concurrency](../../../skills/effect/references/CONCURRENCY.md).

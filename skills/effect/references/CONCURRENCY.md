@@ -1,77 +1,39 @@
 # Concurrency
 
-## Work Ownership
+## Choose Ownership And Competition
 
-Choose lifetime, failure, and competition policy before starting concurrent work.
+Before forking, choose the work's lifetime, failure policy and competition policy.
 
-| Work | Starting mechanism |
+| Requirement | Starting mechanism |
 | --- | --- |
-| Independent finite operations | `all` / `forEach` with a deliberate concurrency bound |
-| Child of the calling fiber | `forkChild`, with its result accounted for |
-| Work owned by a Layer or subscriber Scope | `forkScoped`; `forkIn` for an explicitly captured owner |
-| Dynamic set of fibers | `FiberSet` |
-| Keyed fibers with replacement policy | `FiberMap` |
-| Independently owned detached work | `forkDetach` with explicit lifetime and reporting |
+| Independent finite operations | `all` / `forEach` with deliberate concurrency |
+| Child work joined by the caller | `forkChild` and an accounted-for result |
+| Work owned by a Scope | `forkScoped` or `forkIn` |
+| Dynamic or keyed fiber ownership | `FiberSet` or `FiberMap` |
+| Independent detached work | `forkDetach` with explicit supervision and shutdown |
 
-Forking gives work a lifetime but does not guarantee a later failure reaches its caller. Join, report, or supervise according to the contract. Prefer typed recovery for operational failures. Cause-level supervisors must make interruption policy explicit; read [Boundaries](BOUNDARIES.md#errors-callers-can-act-on).
+Forking alone does not guarantee a later failure reaches the caller. Join, report or supervise it. Do not submit work after its owner closes or rely on a closed scope to suppress an invalid submission. Keep uninterruptible regions limited to transitions that must settle consistently.
 
-Do not submit new work after its owner closes. In the reviewed source, passing a closed Scope to `forkIn` or providing it to `forkScoped` returns an interrupted fiber without executing the supplied work, even with `startImmediately` or `uninterruptible` enabled.
+Choose whether one item failure fails a parallel group or is handled per item. Bound concurrency by the scarce resource and ordering contract. Same-key requests may join one computation, queue every command, replace current work, or coalesce a burst into a follow-up. A fiber registry and a mutex do not supply all of these policies.
 
-Choose whether one item failure should fail a parallel group or be handled around that item. Bound work according to the scarce resource and ordering requirement. Keep layer construction finite even when a consumer runs forever in its scope.
+## Coordinate State Transitions
 
-Evidence: [Effect fibers](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Effect.ts), [FiberSet](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/FiberSet.ts), [FiberMap](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/FiberMap.ts).
+`Ref` supplies atomic synchronous updates; `SynchronizedRef` serializes effectful changes; a Semaphore limits or serializes access. `Deferred` represents one completion result; a Latch represents a reusable gate.
 
-## State Transitions
+A closure-owned Map can be enough when its whole transition is synchronous. Reads and writes separated by suspension need coordination; separate `Ref.get` / `set` are not atomic read-modify-write. Return cleanup or notification work from a critical section when it need not hold the lock. Waiting inside a lock for work that needs the same lock deadlocks.
 
-| Primitive | Contract |
-| --- | --- |
-| `Ref` | Atomic synchronous update/modify of one state value |
-| `SynchronizedRef` | Serialized effectful modifications of one value |
-| `Semaphore` | Bound or serialize access to a resource/critical section |
-| `Deferred` | One completion or readiness result |
-| `Latch` | Reusable open/close gate |
-| `Queue` | Work distribution, one consumer per item |
-| `PubSub` | Broadcast to subscribers |
-| `SubscriptionRef` | Current value plus changes |
+For refreshes that recompute current state, a capacity-one sliding queue and a sequential consumer can preserve the newest pending change. Commands that must all execute need retention of every command. Subscribe before the initial refresh when changes can arrive during it.
 
-A synchronous closure-owned Map can be enough when the complete transition happens without suspension. When a transition reads state, suspends, and then writes based on that read, coordinate it explicitly. Separate `Ref.get` / `set` are not an atomic read-modify-write. Atomic replacement of a pointer does not serialize mutation of its object.
-
-Keep critical sections focused on the transition they protect. An effectful lock can hold across I/O, but waiting inside it for work that needs the same lock creates a deadlock. Return cleanup work or notifications from the protected transition and execute them outside when the invariant permits. A mutex does not establish database transaction guarantees.
-
-Evidence: [Ref](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts), [SynchronizedRef](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/SynchronizedRef.ts), [OpenCode keyed mutex](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/effect/keyed-mutex.ts).
-
-## Choose The Same-Key Policy
-
-| Behavior | Design |
-| --- | --- |
-| Replace active work | `FiberMap` replacement; cancellation is observable behavior |
-| Keep active work and ignore another start | `FiberMap` with its only-if-missing policy |
-| Join the same computation | Memoized Effect or cache when result retention fits; otherwise shared pending work with explicit ownership |
-| Run every item in order, keys independently | Keyed queue/lock or grouped Stream consumption |
-| Run once more with the newest state after active work | Coalescing state machine or serialized sliding-queue consumer |
-
-These policies are different. A fiber registry is not a queue, and a lock that executes every request does not coalesce them. Use [Operations](OPERATIONS.md#caching-and-batching) to decide whether result caching satisfies the joining contract. For grouped streams, consume groups and bound their cardinality, buffers, idle lifetime, and concurrent processing so an unconsumed group cannot stall the source.
-
-Evidence: [Stream.groupByKey](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Stream.ts). OpenCode v2's [execution study](OPENCODE_SESSION.md#choose-the-competition-and-stop-contracts) illustrates how one application combines joining and coalescing with explicit cancellation ownership.
-
-## Refresh And Readiness
-
-For refreshes that recompute current state, one capacity-one sliding queue and one sequential consumer can retain the newest pending request while active work finishes. Subscribe producers before the initial refresh. Debounce controls bursts; serialization controls overlap. Commands that must all execute need retention of every command.
-
-When exposing readiness for asynchronous updates, define which accepted work it waits for. Track accepted/settled generations when new changes can arrive during an update. Check generation identity before late results update shared state. A notification arriving at the transition to idle must be retained or start a successor. Distinguish stop acknowledgement, one execution's settlement, and waiting until the owner is idle even across successors.
-
-OpenCode v2's [readiness study](OPENCODE_PLUGINS.md#readiness-tracks-accepted-work) supplies implementation and regression evidence for these contracts. Use them when the current feature exposes refresh or readiness behavior.
+Define readiness by the fact it establishes. An identifier or accepted request can precede usable initialization or completed execution. Track generations when accepted work overlaps refresh or replacement, guard late results, and settle relevant waiters on failure or cancellation. Distinguish stop acknowledgement from cleanup settlement.
 
 ## Streams And Backpressure
 
-Expose Streams for event sources and keep producer controls with their owner. Use a Queue for work distribution, PubSub for broadcast, and SubscriptionRef for a current snapshot plus updates. Choose native Effect/platform sources before adapting a foreign async iterable.
+Use a Queue for work distribution, PubSub for broadcast, and SubscriptionRef for current state plus updates. Prefer existing platform sources when their semantics fit.
 
-For callback sources, install listeners before events can arrive and register their release in the stream's Scope. The reviewed `Stream.callback` / `Channel.callback` implementation starts registration before the first pull; asynchronous setup can still suspend, so expose readiness when callers need to know setup has finished. Check early events and release behavior at the adapter boundary.
+Pull-based pipelines propagate consumer demand. Push sources need an explicit capacity and overflow policy: suspend cooperative producers, drop, slide, coalesce or disconnect as the contract permits. `Stream.callback` defaults to an unbounded queue; set its buffer options deliberately. Synchronous foreign emitters cannot automatically be slowed by an Effect queue.
 
-Use `map` for pure transformations, `mapEffect` for effectful work, and `runForEach` for a sequential consumer. Choose bounded concurrent transformation only when ordering permits it. Run long-lived consumers in an owned Scope; collect only bounded streams in memory.
+Install listeners before promising readiness and release them in the stream's Scope. Check setup timing against the selected release instead of assuming registration precedes the first pull. Use `map` for pure transformation, `mapEffect` for effectful work, and `runForEach` for sequential consumption. Concurrent transformation needs deliberate ordering and capacity.
 
-Backpressure is the default policy. Add buffering when producer and consumer must decouple, and choose what full capacity means: suspend producers, drop new values, or slide out old values. Unbounded buffers need a bound elsewhere. A live broadcast is not durable delivery; recovery across disconnection needs stored history or another explicit reliability mechanism.
+Collect only bounded streams in memory. A bounded final queue does not bound earlier subscriptions, chunks or in-flight delivery. Consider bytes as well as item count when payload sizes vary. If replay is required, define durable cursors, overlap handling, overflow and cleanup across the replay/live handoff. A live broadcast alone does not supply durable delivery.
 
-For replay plus a live tail, subscribe before reading the replay high-water mark and define how overlap is discarded. Bound retention across the whole pipeline, including subscriptions, chunks, projection and items awaiting consumer acknowledgement. When payload sizes vary, consider a byte budget alongside item count. Overflow must release the upstream subscription and blocked work; disconnect-and-resume requires a durable cursor contract. [T3 Code's stream study](T3_CODE.md#bound-the-whole-replay-and-live-pipeline) supplies an implementation and executed regression evidence. A bounded final queue alone does not bound upstream retention.
-
-Evidence: [Stream](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Stream.ts), [stream regressions](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/test/Stream.test.ts), [PubSub](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/07_pubsub/10_pubsub.ts), [OpenCode live versus durable events](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/bus.ts). Verify ordering and shutdown with [Testing](TESTING.md#control-the-interleaving).
+Verify meaningful interleavings with [Testing](TESTING.md#control-the-interleaving).

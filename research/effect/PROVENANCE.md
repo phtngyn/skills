@@ -1,6 +1,8 @@
-# Effect Provenance
+# Historical Effect Research
 
-This skill teaches design and implementation decisions for Effect v4. Its organization and defaults are our synthesis. Effect source establishes API behavior; OpenCode v2 and T3 Code supply application evidence for construction, ownership, concurrency and delivery guarantees.
+Archived on 2026-10-18. This records earlier guidance, source revisions and evaluations; it is outside the installed skill. Source links follow their checkouts, which may now differ from the historical revisions. Current maintenance is recorded in [MAINTENANCE.md](MAINTENANCE.md).
+
+This skill teaches design and implementation decisions for Effect v4. Its organization and defaults are our synthesis. Effect source establishes API behavior; OpenCode v2, T3 Code and Alchemy supply application evidence for construction, ownership, concurrency, delivery and reconciliation guarantees.
 
 ## Reviewed Sources
 
@@ -9,11 +11,12 @@ This skill teaches design and implementation decisions for Effect v4. Its organi
 | [Effect](/Users/phtngyn/Developer/skills/repos/effect) | `0c8b446709c737c10d0e11af4313bb29fdff2588` | `LLMS.md`, focused application examples, public declarations/implementation, test/type-test conventions, and focused sharing, failure, disposal, stream and SQL callback changes |
 | [OpenCode v2](/Users/phtngyn/Developer/skills/repos/opencode) | `4617210822bdbb31e5749751afbfb4584ccedac8` | Service graph composition, location ownership, plugin registrations, reloads, session coordination, host adapters, and focused regression tests |
 | [T3 Code](/Users/phtngyn/Developer/skills/repos/t3-code) | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | Shared Layer wiring, durable command/outbox execution, cancellation registration, commit/publication ordering, bounded replay/live streams and focused regression tests |
+| [Alchemy](/Users/phtngyn/Developer/skills/repos/alchemy) | `9e3c0584342d67b24a4215f931047aabd230327b` | Capability setup and invocation, observed-state reconciliation, phased dependency readiness, execution-scoped memoization and focused regression tests |
 | [Writing for Agents](/Users/phtngyn/Developer/skills/repos/mattpocock) | `49dd158d1076134a641b33efb035946536778336` | Decision-oriented hierarchy, conditional context pointers, co-location, and pruning |
 
-The local checkouts live under `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. The Effect checkout declares version 4.0.5 and includes subsequent changes with unreleased changesets; that version number alone does not establish availability of the newer fixes or APIs. OpenCode's reviewed dependency catalog uses 4.0.1, and T3 Code's uses 4.0.5. Resolve available APIs against the consuming project's declarations.
+The local checkouts live under `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. The Effect checkout declares version 4.0.5 and includes subsequent changes with unreleased changesets; that version number alone does not establish availability of the newer fixes or APIs. OpenCode's reviewed dependency catalog uses 4.0.1, and T3 Code's uses 4.0.5. Alchemy's catalog declares `^4.0.0` with a workspace override to 4.0.4. Resolve available APIs against the consuming project's declarations.
 
-The [application examples](references/APPLICATIONS.md) route both codebases by the guarantee required. OpenCode covers dynamic graphs, reloads, shared execution and embedded hosting. T3 Code covers shared Layers, durable execution, ordered publication and replayable streams. Source links use absolute paths to these checkouts. A local link follows its checkout, so recheck claims when adopting another revision.
+The [application examples](references/APPLICATIONS.md) route all three codebases by the guarantee required. OpenCode covers dynamic graphs, reloads, shared execution and embedded hosting. T3 Code covers shared Layers, durable execution, ordered publication and replayable streams. Alchemy covers deploy/runtime capability wiring, reconciliation, phased readiness and execution-owned lazy acquisition. Source links use absolute paths to these checkouts. A local link follows its checkout, so recheck claims when adopting another revision.
 
 ## Design Choices
 
@@ -23,7 +26,7 @@ Scoped internal refactoring is an explicit personal default: an implementation t
 
 The preference for `Schema.Struct` with a same-name interface is personal. Class schemas remain appropriate when their behavior helps. The per-error type brand is also a personal default, with its runtime and type contract described in Boundaries.
 
-Application conventions are evidence to assess, not requirements to copy. OpenCode's graph compiler and retention policy address dynamic replacement and sharing. T3 Code's outbox and publication lane address durable admission and ordered delivery. Neither establishes a universal package layout, import style, service-per-file rule, persistence model or test runner.
+Application conventions are evidence to assess, not requirements to copy. OpenCode's graph compiler and retention policy address dynamic replacement and sharing. T3 Code's outbox and publication lane address durable admission and ordered delivery. Alchemy's binding protocol, resource graph and execution memo address deploy/runtime phases, recovery and host-specific I/O ownership. These examples do not establish a universal package layout, import style, service-per-file rule, persistence model or test runner.
 
 ## Validation
 
@@ -48,6 +51,12 @@ These checks exercise `OwnedFetch` only. Full host startup cleanup, plugin unloa
 The source was reviewed on 2026-10-17. Persistence and worker regression tests were read, not executed.
 
 Nine isolated upstream LiveStreamBudget tests passed on Node 24.21.0 with Effect 4.0.5, `@effect/vitest` 4.0.5 and Vitest 5.0.4. The implementation was copied unchanged to a temporary workspace. Only the test import from `vite-plus/test` was adapted to `vitest`; T3's runner patch was not applied. These tests cover item/serialized-byte limits, unacknowledged retention, source cleanup, blocked high-water/replay/projection and replay/live overlap. They do not validate real RPC acknowledgement, persistence, full startup/shutdown or worker recovery. Neither application checkout was changed.
+
+### Alchemy
+
+The source was reviewed on 2026-10-18 at `9e3c0584342d67b24a4215f931047aabd230327b`. Binding setup and runtime invocation, R2 reconciliation, Apply checkpoints and readiness, Worker scopes, and execution-memo ownership were inspected alongside focused regressions. Apply and live-cloud tests were read, not executed.
+
+All five upstream ExecutionMemo tests passed on Node 24.21.0 with Effect 4.0.4, `@effect/vitest` 4.0.4 and Vitest 5.0.4 in an isolated temporary workspace. The implementation was copied unchanged; test imports, the source path and runner-specific suite tags were adapted. Coverage includes scope sharing and release, concurrent first acquisition, separate memo cells, Layer finalizers and retry in a new scope after failure. This does not validate the deployed bridges, database integration, full engine recovery or cloud adapters. The Alchemy checkout was left unchanged.
 
 ## Forward Evaluation
 

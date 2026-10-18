@@ -1,39 +1,23 @@
 # Libraries
 
-Read this branch for a reusable public module. Application service design is in [Architecture](ARCHITECTURE.md).
-
 ## Start With Consumer Expressions
 
-Write the imports, construction, direct calls, and compositions consumers need before designing machinery. Establish inferred success, error, and requirement types, along with absence and ownership. A useful public model may expose constructors, guards, operations, and associated types; include only the pieces consumers need.
+Write the imports, construction, direct calls and compositions consumers need before designing machinery. Establish inferred success, error and requirement types, absence representation and execution ownership.
 
-Study the closest analogous Effect module: [Ref](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts) for a small state handle, [Request](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Request.ts) for associated types, or [HttpClient](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/http/HttpClient.ts) for a service-backed API. Name operations by their contracts: `make`, `from...`, `to...`, `is...`, and effectful counterparts such as `mapEffect` have distinct jobs.
-
-Keep implementation helpers private. A namespace barrel can project related exports, but the implementation should depend directly on owning modules. Follow the library's import/export conventions rather than imposing Effect's repository formatting.
+A useful public model may expose constructors, guards, operations and associated types; include the pieces consumers need. Study an analogous module in the selected Effect release when its contract is unfamiliar. Follow the consuming library's export and formatting conventions.
 
 ## Preserve Composition And Inference
 
-Offer data-first and data-last forms when both direct and piped use are useful. `dual` is one implementation tool; arity dispatch and optional arguments still need deliberate contracts. Preserve callback success, failure, and requirement types. Keep pure callbacks separate from effectful callbacks where consumers benefit from the distinction.
+Preserve callback success, error and requirement types through combinators. Keep pure and effectful callback contracts distinct where that helps callers. Offer data-first and data-last forms when both are useful; `dual` is an implementation tool, while arity dispatch and optional arguments still need deliberate behavior.
 
-Choose variance from what the abstraction consumes and produces. A mutable state handle requires different analysis from a producer. Use `NoInfer` or another constraint for a demonstrated inference problem, with a consumer expression proving the desired behavior. Avoid broad overloads or erased generics that make a useful contract appear more permissive.
+Choose variance from what the abstraction consumes and produces. Use `NoInfer` for a demonstrated inference problem and prove it with the consumer expression. Avoid broad overloads or erased generics that make a contract appear more permissive.
 
-Internal casts may connect a proven runtime representation to the public interface. Keep them local and explain non-obvious invariants. A cast does not prove assignability, narrowing, or inference; verify the consumer expression itself.
+An internal cast can connect a verified representation to a public interface, but cannot prove inference or assignability. Keep casts local and verify the consumer type independently.
 
-Evidence: [Function.dual](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Function.ts), [Ref types](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts), [Effect type tests](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/typetest).
+## Describe Ownership And Representation
 
-## Representations And Ownership
+Expose acquisition through Effects or Layers whose types describe dependencies and Scope ownership. Capture dependencies when they belong to the handle; preserve call-time requirements when the caller supplies them. Keep execution caller-owned until a host boundary is actually needed.
 
-Type IDs, prototypes, Pipeable, inspection, equality, and hashing are protocols to implement when the abstraction needs them. A plain record or service adapter rarely needs the whole set. Inspect an analogous implementation and its tests before adding a protocol.
+Type IDs, prototypes, Pipeable, inspection, equality and hashing are protocols to implement when consumers need them. A plain record or service adapter rarely needs them all. Unsafe constructors should name the guarantee assumed by the caller; options should express useful policies.
 
-Expose acquisition through Effects or Layers whose types and Scope describe ownership. Capture dependencies when they belong to the handle; preserve call-time requirements when the caller supplies them. Unsafe constructors should name and document the guarantee assumed by the caller. Options and alternate layers should express useful policies rather than anticipated flexibility.
-
-Document what consumers can rely on, when to choose the API, and verified constraints. Examples should show useful composition or surprising semantics. Stability tags, JSDoc categories, and generated barrels follow the target repository's procedure.
-
-Evidence: [Ref model](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Ref.ts), [Request model](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Request.ts), [Lifetimes](LIFETIMES.md).
-
-## Verification
-
-- Runtime: direct and piped behavior, expected failure, resource release, and other changed semantics.
-- Compiler: useful inferred types, assignability/rejection, narrowing, and overload selection where part of the requirement.
-- Packaging: consumer imports against the published surface when exports/build output changed.
-
-An ordinary declaration change needs type-checking, not automatically a type-test suite. A runtime regression with unchanged types needs runtime coverage. Use [Testing](TESTING.md) and the project's established harness; public documentation examples should compile.
+Document observable guarantees and surprising semantics. Use [Testing](TESTING.md#runtime-types-and-packaging) for runtime, compiler and packaging checks, and [Architecture](ARCHITECTURE.md) when a replaceable service boundary is justified.

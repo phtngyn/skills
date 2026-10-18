@@ -2,5 +2,6 @@ Poteto skills and supporting resources derive from pstack by Lauren Tan,
 distributed under the MIT License in https://github.com/cursor/plugins.
 Adopted source: 4382e687a50b8d2c5ce4d141d001186589cff8d5, pstack/.
 Local modifications adapt the workflows to Codex. See POTETO.md.
-The retained design and effect skills record their own sources in their
-PROVENANCE.md files. The repository is not an official OpenAI or Cursor project.
+Design sources are recorded in skills/design/PROVENANCE.md. Effect
+maintenance and historical sources are recorded under research/effect/.
+The repository is not an official OpenAI or Cursor project.

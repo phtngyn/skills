@@ -1,83 +1,57 @@
 # Architecture
 
-## Start With The Workflow
+## Choose A Useful Boundary
 
-Organize by the domain job: `documents/publication.ts`, `orders/placement.ts`, or `media/removal.ts`. Keep transport, business decisions, and persistence responsibilities visible, without requiring a separate file or tag for each step. Package boundaries should follow consumers and dependency direction.
+Start from the operation and its callers. Pure decisions can remain functions; finite workflows can compose Effects directly. Introduce a service when callers need a replaceable capability or a shared owner for state and resources. Keep transport-specific decoding and encoding at its boundary, and share domain behavior below adapters that need it.
 
-A service earns its boundary when it provides a useful capability, owns shared state or resources, or lets callers substitute an implementation. Its interface describes what callers can rely on: success, expected failures, and call-time requirements. A repository, coordinator, provider adapter, or policy engine may earn a tag; a parsing helper usually stays a function.
+A service interface describes success, expected failures and call-time requirements. Use `Context.Service` with an identifier unique in the application. Keep contract and implementation together when small; split them when dependency direction or alternate implementations justify it. File layout and import style follow the consuming project.
 
-Choose the smallest boundary that expresses the caller's contract. A finite script can compose one program; an operation can remain an Effect-returning function; a reusable resource can expose scoped acquisition. Use a service and Layer when callers need a replaceable capability or a shared owner. For public consumer APIs, read [Libraries](LIBRARIES.md).
+## Capture Dependencies At Their Owner
 
-Keep handlers thin: decode, read request context, call the capability, encode the result. When HTTP, RPC, CLI or scheduled work need the same behavior, put that behavior below their adapters so each entry point reaches the same contract. Keep domain decisions outside transport types and vendor APIs. Use explicit state machines when legal transitions or modes need enforcement; straightforward workflows can remain sequential Effects.
-
-For an application capability with shared state and background work, a service constructed by a Layer can align construction and ownership. Keep framework or Promise adapters focused on running operations and translating the consumer contract. Choose the execution host from its owner; runtime ownership is covered in [Lifetimes](LIFETIMES.md#runtime-and-stream-boundaries).
-
-## Construct Services Once
-
-Use `Context.Service` with a unique package/path identifier. Put the implementation beside the contract when it is small; separate alternate or substantial adapters. A service tag identifies a capability, while the returned object and its closure own implementation state.
+Acquire stable dependencies when constructing a service. Retain request, tenant, transaction or execution requirements on methods when their callers supply them. A long-lived service must not permanently capture a shorter-lived capability.
 
 ```ts
 import { Context, Data, Effect, Layer } from "effect"
 
-export class InvalidTitle extends Data.TaggedError("InvalidTitle")<{}> {}
-export class StoreUnavailable extends Data.TaggedError("StoreUnavailable")<{
+export class StoreError extends Data.TaggedError("StoreError")<{
   readonly cause: unknown
 }> {}
 
-export class DocumentStore extends Context.Service<DocumentStore, {
-  readonly put: (title: string) => Effect.Effect<void, StoreUnavailable>
-}>()("app/documents/DocumentStore") {}
+export class Store extends Context.Service<Store, {
+  readonly put: (value: string) => Effect.Effect<void, StoreError>
+}>()("app/Store") {}
 
 export class Documents extends Context.Service<Documents, {
-  readonly publish: (title: string) => Effect.Effect<void, InvalidTitle | StoreUnavailable>
-}>()("app/documents/Documents") {
-  static readonly layer = Layer.effect(
-    Documents,
-    Effect.gen(function* () {
-      const store = yield* DocumentStore
-      const publish = Effect.fn("Documents.publish")(function* (title: string) {
-        const normalized = title.trim()
-        if (normalized.length === 0) return yield* Effect.fail(new InvalidTitle())
-        yield* store.put(normalized)
-      })
-      return Documents.of({ publish })
-    }),
-  )
+  readonly publish: (value: string) => Effect.Effect<void, StoreError>
+}>()("app/Documents") {
+  static readonly layer = Layer.effect(Documents, Effect.gen(function* () {
+    const store = yield* Store
+    const publish = Effect.fn("Documents.publish")(function* (value: string) {
+      yield* store.put(value.trim())
+    })
+    return Documents.of({ publish })
+  }))
 }
 ```
 
-`Documents.layer` requires `DocumentStore` during construction. The acquired `publish` method uses that implementation without requiring the tag again. Keep dependencies acquired once when they belong to the service's owner. Keep request-specific requirements on the method when the caller should supply them. Derive an implementation type with `Documents["Service"]` when useful; introduce a separate interface only when it improves reuse or readability.
-
-An Effect-valued member expresses repeatable work, a Stream-valued member expresses a source, and a plain value expresses already-acquired data. Do not turn immutable values into zero-argument Effects merely for uniformity.
-
-Evidence: [service construction](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/01_service.ts), [application integration](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/04_integration/10_managed-runtime.ts).
+`Documents.layer` requires `Store` during construction; `publish` uses the acquired implementation. Some platform clients read context again during execution, so check the adapter's actual capture behavior before assuming construction-time provision fixes its transport or authority.
 
 ## Compose At The Owner
 
-| Layer operation | Decision |
+| Layer operation | Purpose |
 | --- | --- |
-| `Layer.succeed` / `Layer.sync` | Supply an existing implementation / construct it lazily without effectful acquisition |
-| `Layer.effect` | Construct a service effectfully, including scoped resources |
-| `Layer.unwrap` | Choose a Layer after reading configuration or discovering a backend |
-| `Layer.effectDiscard` | Start owned initialization or background work without inventing a service |
-| `Layer.mergeAll` | Expose independent capabilities together |
-| `Layer.provide` | Satisfy construction requirements and keep those dependencies private |
-| `Layer.provideMerge` | Satisfy requirements while also exposing the dependency outputs |
+| `succeed` / `sync` | Supply an implementation / construct it lazily without effectful acquisition |
+| `effect` | Construct a service effectfully, including scoped acquisition |
+| `unwrap` | Choose a Layer after configuration or discovery |
+| `effectDiscard` | Own initialization or background work without inventing a service |
+| `mergeAll` | Expose independent capabilities together |
+| `provide` | Satisfy construction requirements while keeping dependencies private |
+| `provideMerge` | Satisfy requirements and expose the dependency outputs too |
 
-Compose named subgraphs at executable, host, tenant, or test boundaries. Keep the requirements visible until that boundary can supply the right implementations. The Layer's type establishes its outputs, errors, and requirements; a name such as `layerNoDeps` is only a project convention.
+Compose at the executable, framework, tenant or test boundary that owns acquisition. Replace dependencies before graph acquisition; an outer provided service cannot override an implementation already supplied internally. Start with ordinary Layers and add graph machinery only for requirements they cannot express clearly. Sharing is covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs).
 
-When replacing an adapter, change the wiring that acquires it. Providing a tag around a workflow cannot replace an implementation that its Layer already supplies internally. Tests and embedding hooks should substitute dependencies before graph acquisition and verify the production adapter's side effects never start.
+## Keep Execution Composable
 
-Start with ordinary Layer composition. Add graph machinery only for requirements such as transitive replacement or separate sharing domains that ordinary wiring cannot express clearly. Resource identity and memoization are covered in [Lifetimes](LIFETIMES.md#sharing-and-keyed-graphs). The application examples show [ordinary shared Layers in T3 Code](T3_CODE.md#keep-capabilities-reachable-across-transports) and [graph replacement in OpenCode v2](OPENCODE.md#composition-and-replacement). OpenCode's [session workflow](OPENCODE_SESSION.md#put-each-owner-at-the-right-boundary) traces dependency capture across lifetime owners.
+`Effect.gen` sequences inline workflows. Use `Effect.fn` when a reusable operation benefits from tracing; use `fnUntraced` when tracing adds no value. Keep pure transformations synchronous, and wrap side effects in lazy Effect constructors. Capturing an already-started Promise does not defer or repeat its underlying work.
 
-Evidence: [Layer composition](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/03_services/20_layer-composition.ts), [Layer declarations](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Layer.ts).
-
-## Make Operations Readable
-
-Use `Effect.gen` for inline sequencing and `Effect.fn("Domain.operation")` for reusable operations with useful tracing. Use `fnUntraced` for helpers or hot paths where a span adds no value. Keep pure transformation, option building, and trusted validation synchronous.
-
-Bind services to meaningful local names before calling methods. Use generators for branching and sequencing; use combinators for whole-operation policy such as error translation, annotations, deadlines, or provisioning. Extra `Effect.fn` arguments transform the returned Effect and receive the original arguments; apply policy there when it covers the whole call.
-
-Name capabilities and operations by their domain job. Keep implementation state private and public contracts explicit where callers rely on them. Follow the consuming project's import, formatter, and export conventions. Import public Effect modules; upstream implementation formatting and namespace style are not architectural requirements.
-
-Evidence: [Effect functions](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/01_basics/02_effect-fn.ts). For public combinators rather than application operations, read [Libraries](LIBRARIES.md).
+Run Effects at the process, framework or consumer boundary that owns execution. Reusable operations retain their callers' requirements. Named functions, combinators and explicit options are often sufficient; see [Libraries](LIBRARIES.md) for public APIs.

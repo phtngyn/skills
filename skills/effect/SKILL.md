@@ -1,53 +1,32 @@
 ---
 name: effect
-description: Design, implement, refactor, and review Effect v4 code. Use for effect composition, schemas and typed errors, services and layers, resources, concurrency, integrations, testing, and reusable APIs.
+description: Design, implement, refactor, and review Effect code using the latest stable release. Use for composition, typed errors, schemas, services and layers, resource ownership, concurrency, integrations, testing, and reusable APIs.
 ---
 
 # Effect
 
-Match the design to the operation and its callers. An Effect describes work; ordinary functions and composed Effects can be enough. A service exposes a useful capability, a Layer constructs its implementation, and a Scope owns resources and background work. Introduce those boundaries where dependencies, substitution or ownership justify them.
+Use the latest published stable Effect release. Verify the registry's `latest` version once at the start of implementation or migration, align companion packages with their compatibility requirements, and update the project's dependency declarations and lockfile when needed. Make the upgrade and its affected behavior visible in the work. Use declarations and source matching that release; an unreleased checkout can have different behavior despite the same package version.
 
-Use this skill for small programs, applications, framework integrations and reusable libraries. The consuming project's requirements determine the architecture. When used with `poteto-mode`, this skill supplies Effect design and implementation decisions.
+Choose the smallest design that satisfies the caller. A finite program can compose Effects directly. A service exposes a useful replaceable capability, a Layer constructs it, and a Scope owns resources. Introduce each boundary for a concrete dependency, substitution or lifetime requirement.
 
-## Working Approach
+## Work From The Contract
 
-1. **Trace the behavior.** Follow the operation from input to result. Identify expected failures, dependencies, and any resource or background-work owner. For a review or bug, trace competing paths through failure, cancellation and cleanup too.
-2. **Choose the boundaries.** Keep pure decisions as functions. Introduce services where substitution or shared ownership helps, and compose their Layers at the owner. Explain important ownership and failure choices briefly. Keep an established design when it serves the task; apply the refactoring policy below when it exposes a concrete weakness.
-3. **Implement the contract.** Compose Effects, validate foreign inputs at their boundary, and translate results where the caller's representation changes. Run effects at the process, framework or consumer boundary that owns execution. Use [source lookup](references/SOURCE.md) to settle an unfamiliar API or uncertain semantics, then reuse that evidence.
-4. **Prove and simplify.** Check observable behavior, including the lifecycle or concurrency contract changed by the task. Remove redundant wrappers, service tags, error translations, and legacy paths within scope. Report the outcome and actual checks.
+1. Trace inputs, results, expected failures, dependencies and resource owners. For a bug or review, include failure, interruption and cleanup paths.
+2. Keep pure decisions as functions. Preserve the success, error and requirement types of composed operations. Capture stable dependencies at construction; leave invocation-specific context with the caller.
+3. Keep side effects lazy and compose them until the execution boundary. Decode foreign input and translate failure where representations or responsibilities change.
+4. Verify the changed caller contract and simplify within scope. Preserve project conventions and public contracts; refactor for a demonstrated correctness or complexity problem.
 
-## Design Defaults
+A fiber needs a lifetime and a failure policy. Shared mutable state needs an owner and coordination across suspension points. Concurrent requests need a deliberate policy: join, queue, replace or coalesce. Retry requires a transient failure and a safe repeated operation.
 
-- **Services represent capabilities.** Introduce a tag for a useful caller contract, replaceable dependency, or lifetime owner. A function or file does not automatically need a service.
-- **Dependencies follow lifetimes.** Capture stable dependencies when constructing a service. Supply request context and borrow keyed resources when the operation needs them. A long-lived service must not retain a shorter-lived resource beyond its owner.
-- **Effects compose until the edge.** Use `Effect.gen` for inline workflows and named `Effect.fn` when an operation benefits from tracing. Run Effects at the boundary that owns execution; reusable operations preserve their callers' requirements.
-- **Failure is part of the contract.** Typed errors describe expected failure; defects describe broken assumptions; interruption describes cancellation. Recover where the caller can make a truthful decision.
-- **State has one owner.** Keep mutable implementation state private. Coordinate transitions that cross suspension points. Define which concurrent requests join, queue, replace, or coalesce.
-- **Resources have a closing path.** Acquire resources and start background work in the scope that owns them. A fiber needs a failure policy as well as a lifetime.
-- **Validation belongs at trust boundaries.** Decode foreign representations once, pass trusted domain values inward, and encode at the outward boundary.
-- **Use the existing mechanism.** Prefer Effect's resource, concurrency, scheduling, caching, and platform tools when their semantics fit. Add application machinery for a demonstrated contract that they do not supply.
+## Read Only The Relevant Guide
 
-## Refactor When The Task Exposes A Design Weakness
+- [Architecture](references/ARCHITECTURE.md): service boundaries, dependency capture and Layer composition.
+- [Boundaries](references/BOUNDARIES.md): schemas, errors, foreign adapters and configuration.
+- [Lifetimes](references/LIFETIMES.md): acquisition, sharing, runtime ownership and shutdown.
+- [Concurrency](references/CONCURRENCY.md): fibers, state transitions, readiness and streams.
+- [Operations](references/OPERATIONS.md): retry, deadlines, caching, batching and persistence.
+- [Testing](references/TESTING.md): fakes, controlled races, virtual time and compiler checks.
+- [Libraries](references/LIBRARIES.md): consumer APIs, inference and reusable abstractions.
+- [Source lookup](references/SOURCE.md): uncertain APIs, platform features or release-specific behavior.
 
-Within an implementation task, refactor an unsuitable Effect design when doing so improves correctness or materially simplifies the requested behavior. Ground the change in a concrete weakness, such as incorrect resource ownership, unreliable cancellation, unclear failure contracts or duplicated coordination. A stylistic preference alone does not justify a rewrite.
-
-Migrate all affected internal callers within scope and remove the superseded implementation in the same change. Do not add compatibility wrappers, deprecated aliases, dual paths or fallback behavior solely to preserve the old internal design. Preserve required behavior and verify the affected contract, including ownership, failures and cancellation where relevant.
-
-Proceed with scoped internal refactors. Consult the user before expanding into unrelated subsystems or breaking a public API, persisted format or externally consumed protocol, unless that change is already explicitly authorized.
-
-## Guides
-
-Load guides for the decisions the task requires. Read Architecture when introducing capabilities or changing construction; Boundaries when handling foreign values or failure contracts; Libraries when designing reusable consumer APIs. Small edits need only the guides relevant to their changed contract. Domain-specific mechanisms such as HTTP, SQL, CLI, reactive state or durable workflows are indexed in Source lookup.
-
-| Decision | Guide |
-| --- | --- |
-| Module shape, service contracts, dependency capture, layer composition | [Architecture](references/ARCHITECTURE.md) |
-| Schemas, expected errors, transport adapters, configuration | [Boundaries](references/BOUNDARIES.md) |
-| Acquisition, sharing, runtimes, keyed graphs, registrations, shutdown | [Lifetimes](references/LIFETIMES.md) |
-| Fibers, shared state, streams, keyed work, cancellation and readiness | [Concurrency](references/CONCURRENCY.md) |
-| Retry, deadlines, caching, batching, HTTP policy, observability and time | [Operations](references/OPERATIONS.md) |
-| Fakes, virtual time, controlled races, runtime and compiler checks | [Testing](references/TESTING.md) |
-| Consumer expressions, combinators, inference, public models | [Libraries](references/LIBRARIES.md) |
-| Unfamiliar APIs or platform features | [Source lookup](references/SOURCE.md) |
-
-The [application examples](references/APPLICATIONS.md) use OpenCode v2 and T3 Code to examine construction, ownership, concurrency, durable execution and streaming. Choose a workflow by the guarantee the caller needs, then apply its lesson to the current domain. [Provenance](PROVENANCE.md) distinguishes observed source behavior from general guidance and personal defaults.
+Small edits need only the guides relevant to their changed behavior. Reuse verified API evidence during the task; investigate again when a new requirement, failure or contradictory result warrants it.

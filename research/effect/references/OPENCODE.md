@@ -4,7 +4,7 @@ OpenCode v2 illustrates dynamic service graphs, reloadable registrations, shared
 
 ## Choose A Workflow
 
-Use these workflows for construction, ownership, replacement and cancellation decisions. For durable work, publication ordering and replayable delivery, see the [T3 Code example](T3_CODE.md). The [shared index](APPLICATIONS.md) routes both examples by the guarantee required.
+Use these workflows for construction, ownership, replacement and cancellation decisions. For durable work, publication ordering and replayable delivery, see the [T3 Code example](T3_CODE.md). The [shared index](APPLICATIONS.md) routes all three examples by the guarantee required.
 
 | General decision | Source study | OpenCode v2 workflow |
 | --- | --- | --- |
