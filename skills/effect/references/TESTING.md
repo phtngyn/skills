@@ -52,9 +52,12 @@ For a race, block one path, introduce the competing action, release the block, a
 | Replaceable resource graph | Old boot fails/releases after its replacement becomes available |
 | Coalesced refresh | Change arrives during the initial refresh or just before idle |
 | Serialized work | Another trigger arrives while the first operation is gated |
+| Combined failure | An expected failure coincides with a finalizer or sibling defect; assert the complete failed Exit and that typed recovery does not hide the defect |
 | Scoped registrations | One subscriber closes while a healthy peer remains |
+| Shutdown settlement | Gate a finalizer and overlap close calls; assert when each caller may finish according to the Scope, runtime or host contract |
 | Cancellation | Stop acknowledges while cleanup is gated; settlement waits for the right generation |
-| Streaming resource | Its owner closes while a body/iterator is still being consumed |
+| Callback source | Emit as soon as registration is available; gate asynchronous setup separately when readiness is promised |
+| Streaming resource | Gate consumer demand or cancellation, then close its owner; assert bounded upstream pulls, cleanup completion and visibility of cancellation defects |
 | Durable work | Duplicate admission, execution success followed by settlement failure, or restart before execution |
 | Ordered publication | First writer commits but pauses before publication while a second writer proceeds |
 | Replay/live stream | Consumer acknowledgement or replay is blocked while the live tail fills; assert bounded retention and upstream cleanup |

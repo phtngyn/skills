@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-55 skills: the 53 Poteto core skills excluding `make-bot-ui`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+54 skills: the 52 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, and `create-formal-verification-skill`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -49,7 +49,7 @@ A typical flow is goal clarification, system understanding, design when needed, 
 | `why` | Investigate design rationale with cited evidence and explicit uncertainty. |
 | `teach` | Combine mechanics and rationale into a clear explanation. |
 | `recall` | Reconstruct recent project context from available history and live state. |
-| `ketchup` | Catch up on progress and decisions within the current chat. |
+| `ketchup` | Catch up on progress and every pending decision within the current chat. |
 | `bro` | Restate the last response plainly. |
 | `architect` | Compare interface and module designs before implementation. |
 | `figure-it-out` | Design and execute an auditable workflow for ambitious unfamiliar work. |
@@ -66,7 +66,6 @@ A typical flow is goal clarification, system understanding, design when needed, 
 | `correct` | Prevent recurring agent mistakes structurally. |
 | `technical-writing` | Structure and edit technical documents. |
 | `unslop` | Remove formulaic AI prose. |
-| `typescript-best-practices` | Apply TypeScript modeling and verification guidance. |
 | `automate-me` | Capture personal working conventions in a mode skill. |
 | `reflect` | Turn repeated session lessons into authorized skill improvements. |
 | `setup-pstack` | Configure optional model preferences for Codex delegation roles. |
@@ -114,11 +113,12 @@ History comes from supported host tools, identified transcripts, or the visible 
 
 ```bash
 python3 scripts/validate.py
+python3 tests/test_validate.py
 python3 tests/test_setup.py
 ./scripts/setup.sh --check
 ```
 
-Collection validation checks the included catalog, invocation policy, and linked Markdown resources. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
+Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, and local Markdown links and heading anchors. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
 
 The imported orchestration and GitHub watcher helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
 

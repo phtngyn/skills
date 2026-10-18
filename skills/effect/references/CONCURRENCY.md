@@ -15,6 +15,8 @@ Choose lifetime, failure, and competition policy before starting concurrent work
 
 Forking gives work a lifetime but does not guarantee a later failure reaches its caller. Join, report, or supervise according to the contract. Prefer typed recovery for operational failures. Cause-level supervisors must make interruption policy explicit; read [Boundaries](BOUNDARIES.md#errors-callers-can-act-on).
 
+Do not submit new work after its owner closes. In the reviewed source, passing a closed Scope to `forkIn` or providing it to `forkScoped` returns an interrupted fiber without executing the supplied work, even with `startImmediately` or `uninterruptible` enabled.
+
 Choose whether one item failure should fail a parallel group or be handled around that item. Bound work according to the scarce resource and ordering requirement. Keep layer construction finite even when a consumer runs forever in its scope.
 
 Evidence: [Effect fibers](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Effect.ts), [FiberSet](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/FiberSet.ts), [FiberMap](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/FiberMap.ts).
@@ -64,10 +66,12 @@ OpenCode v2's [readiness study](OPENCODE_PLUGINS.md#readiness-tracks-accepted-wo
 
 Expose Streams for event sources and keep producer controls with their owner. Use a Queue for work distribution, PubSub for broadcast, and SubscriptionRef for a current snapshot plus updates. Choose native Effect/platform sources before adapting a foreign async iterable.
 
+For callback sources, install listeners before events can arrive and register their release in the stream's Scope. The reviewed `Stream.callback` / `Channel.callback` implementation starts registration before the first pull; asynchronous setup can still suspend, so expose readiness when callers need to know setup has finished. Check early events and release behavior at the adapter boundary.
+
 Use `map` for pure transformations, `mapEffect` for effectful work, and `runForEach` for a sequential consumer. Choose bounded concurrent transformation only when ordering permits it. Run long-lived consumers in an owned Scope; collect only bounded streams in memory.
 
 Backpressure is the default policy. Add buffering when producer and consumer must decouple, and choose what full capacity means: suspend producers, drop new values, or slide out old values. Unbounded buffers need a bound elsewhere. A live broadcast is not durable delivery; recovery across disconnection needs stored history or another explicit reliability mechanism.
 
 For replay plus a live tail, subscribe before reading the replay high-water mark and define how overlap is discarded. Bound retention across the whole pipeline, including subscriptions, chunks, projection and items awaiting consumer acknowledgement. When payload sizes vary, consider a byte budget alongside item count. Overflow must release the upstream subscription and blocked work; disconnect-and-resume requires a durable cursor contract. [T3 Code's stream study](T3_CODE.md#bound-the-whole-replay-and-live-pipeline) supplies an implementation and executed regression evidence. A bounded final queue alone does not bound upstream retention.
 
-Evidence: [Stream](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Stream.ts), [PubSub](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/07_pubsub/10_pubsub.ts), [OpenCode live versus durable events](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/bus.ts). Verify ordering and shutdown with [Testing](TESTING.md#control-the-interleaving).
+Evidence: [Stream](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Stream.ts), [stream regressions](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/test/Stream.test.ts), [PubSub](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/07_pubsub/10_pubsub.ts), [OpenCode live versus durable events](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/bus.ts). Verify ordering and shutdown with [Testing](TESTING.md#control-the-interleaving).

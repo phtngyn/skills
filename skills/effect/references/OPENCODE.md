@@ -28,7 +28,7 @@ The [replacement regression](/Users/phtngyn/Developer/skills/repos/opencode/pack
 
 **Lesson:** resource cache lifetime, application inactivity, routing replacement, and active-work cancellation are separate contracts. A failed build with delayed cleanup needs generation-aware eviction when replacement is allowed. Adopt these details only for an application that needs them; infinite retention and custom sweeps are not defaults.
 
-The adopted Effect checkout at `742976ce97f5157b00e67e4a5ece6bc04e1899e3` independently confirms that `LayerMap.invalidate` delegates to `RcMap.invalidate`, whose implementation removes routing immediately and closes an entry immediately only when its reference count is zero: [LayerMap.make](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/LayerMap.ts), [RcMap.invalidate](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/RcMap.ts:624).
+The Effect source review at `742976ce97f5157b00e67e4a5ece6bc04e1899e3` independently confirmed that `LayerMap.invalidate` delegates to `RcMap.invalidate`, whose implementation removes routing immediately and closes an entry immediately only when its reference count is zero. That behavior remains in the current adopted source: [LayerMap.make](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/LayerMap.ts), [RcMap.invalidate](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/RcMap.ts:624).
 
 ## Regression Tests
 

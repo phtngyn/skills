@@ -6,12 +6,12 @@ This skill teaches design and implementation decisions for Effect v4. Its organi
 
 | Source | Reviewed revision | Material used |
 | --- | --- | --- |
-| [Effect](/Users/phtngyn/Developer/skills/repos/effect) | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` | `LLMS.md`, focused application examples, public declarations/implementation, and test/type-test conventions |
+| [Effect](/Users/phtngyn/Developer/skills/repos/effect) | `0c8b446709c737c10d0e11af4313bb29fdff2588` | `LLMS.md`, focused application examples, public declarations/implementation, test/type-test conventions, and focused sharing, failure, disposal, stream and SQL callback changes |
 | [OpenCode v2](/Users/phtngyn/Developer/skills/repos/opencode) | `4617210822bdbb31e5749751afbfb4584ccedac8` | Service graph composition, location ownership, plugin registrations, reloads, session coordination, host adapters, and focused regression tests |
 | [T3 Code](/Users/phtngyn/Developer/skills/repos/t3-code) | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | Shared Layer wiring, durable command/outbox execution, cancellation registration, commit/publication ordering, bounded replay/live streams and focused regression tests |
 | [Writing for Agents](/Users/phtngyn/Developer/skills/repos/mattpocock) | `49dd158d1076134a641b33efb035946536778336` | Decision-oriented hierarchy, conditional context pointers, co-location, and pruning |
 
-The local checkouts live under `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. The Effect checkout is version 4.0.4. OpenCode's reviewed dependency catalog uses 4.0.1, and T3 Code's uses 4.0.5. Resolve available APIs against the consuming project's declarations.
+The local checkouts live under `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. The Effect checkout declares version 4.0.5 and includes subsequent changes with unreleased changesets; that version number alone does not establish availability of the newer fixes or APIs. OpenCode's reviewed dependency catalog uses 4.0.1, and T3 Code's uses 4.0.5. Resolve available APIs against the consuming project's declarations.
 
 The [application examples](references/APPLICATIONS.md) route both codebases by the guarantee required. OpenCode covers dynamic graphs, reloads, shared execution and embedded hosting. T3 Code covers shared Layers, durable execution, ordered publication and replayable streams. Source links use absolute paths to these checkouts. A local link follows its checkout, so recheck claims when adopting another revision.
 
@@ -28,6 +28,12 @@ Application conventions are evidence to assess, not requirements to copy. OpenCo
 ## Validation
 
 The embedded TypeScript examples were type-checked during their development. Eight isolated checks covered dependency capture, expected failures, schema rejection, scoped registration release, virtual time and reference-counted invalidation. Application checks below have narrower scopes than a full server or workspace test run.
+
+### Effect Refresh
+
+On 2026-10-18, the 153 commits since `742976ce97f5157b00e67e4a5ece6bc04e1899e3` were screened for guidance changes. Relevant implementation and regression tests were inspected for Layer memoization, combined defects and typed failures, closed-scope forks, overlapping runtime disposal, callback stream registration, Web stream demand and cancellation, and `SqlClient.afterCommit`. The guides incorporate those findings. These upstream tests were read, not executed. No executable examples changed; earlier executed checks retain their original revision and package contexts.
+
+At this review, OpenCode v2 had no new commits. T3 Code's 53 new commits left the cited Effect workflows unchanged, so both application source pins remain at their previously reviewed revisions.
 
 ### OpenCode
 
@@ -65,4 +71,4 @@ This checks one reusable-module task. There was no comparison run without the sk
 
 Review relevant implementation, examples and tests when adopting a source revision or changing guidance. Keep general rules in the topic guides and source evidence in the application examples. Validate instructions against realistic tasks, compile executable examples when they change, and test the ownership or concurrency contract affected. Preserve reference checkouts during ordinary work.
 
-Earlier Effect sources included 4.0.1 revisions `b1d200c40a1dad69def51ebdbf0a1a612a12b8ac` and `757821fe99b7179f907d6d1a34a4e86de4173112`, and 4.0.3 revision `8aee3b9caa796aa79316c82c7c83f98c89dc49f5`. The adopted Effect source was reviewed on 2026-10-14 for GraphQL examples, HTTP retry and redaction, stream deadlines, schema and Match validation, interruption, workflow suspension and platform behavior. These records describe past evidence; ordinary application tasks do not need to repeat the source-adoption review.
+Earlier Effect sources included 4.0.1 revisions `b1d200c40a1dad69def51ebdbf0a1a612a12b8ac` and `757821fe99b7179f907d6d1a34a4e86de4173112`, and 4.0.3 revision `8aee3b9caa796aa79316c82c7c83f98c89dc49f5`. The previously adopted Effect source, `742976ce97f5157b00e67e4a5ece6bc04e1899e3` (4.0.4), was reviewed on 2026-10-14 for GraphQL examples, HTTP retry and redaction, stream deadlines, schema and Match validation, interruption, workflow suspension and platform behavior. These records describe past evidence; ordinary application tasks do not need to repeat the source-adoption review.

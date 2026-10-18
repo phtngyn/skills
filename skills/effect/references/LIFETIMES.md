@@ -34,7 +34,7 @@ Evidence: [acquisition](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src
 
 ## Sharing And Keyed Graphs
 
-Layer sharing depends on Layer identity and the relevant memo map/scope. Reuse named Layer values for shared resources. Equal options in repeated factory calls do not imply the same Layer identity. Provide clients at their owner instead of constructing/providing them in every business call. Use `Layer.fresh` when isolation is intentional.
+Layer sharing depends on Layer identity and the relevant memo map/scope. An enclosing `Effect.provide` or runtime can supply an already-built Layer; sibling `provide` calls build separate copies even when given the same Layer value. Reuse named Layers at a common owner, or share an explicit memo map when separate runtimes must share acquisition. Equal options in repeated factory calls do not imply the same Layer identity. Use `Layer.fresh` or `provide`'s `local` option when isolation is intentional.
 
 Storage identity and service identity are separate. Instances using the same database can own different process-local wakeups, cancellation signals or caches. Share the instance when its protocol depends on those signals, as in [T3 Code's outbox wiring](T3_CODE.md#keep-capabilities-reachable-across-transports). Persisted intent can outlive a process; its native handles and fibers still need process-owned lifetimes.
 
@@ -48,7 +48,7 @@ Reuse a shared Layer for one resource owner; use `LayerMap` when callers borrow 
 
 When build cleanup can overlap replacement, check generation identity before deleting the current entry. Avoid awaiting cleanup that waits for the same lookup or readiness transition; let an independent owner settle it when that contract requires it. These are dynamic-replacement concerns, not reasons to add a custom cache to every service.
 
-Evidence: [LayerMap](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/05_resources/30_layer-map.ts), [RcMap.invalidate](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/RcMap.ts), [OpenCode keyed graphs](OPENCODE.md#keyed-service-graphs). For result retention rather than resource lifetime, read [Operations](OPERATIONS.md#caching-and-batching).
+Evidence: [Layer memoization](/Users/phtngyn/Developer/skills/repos/effect/migration/layer-memoization.md), [LayerMap](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/05_resources/30_layer-map.ts), [RcMap.invalidate](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/RcMap.ts), [OpenCode keyed graphs](OPENCODE.md#keyed-service-graphs). For result retention rather than resource lifetime, read [Operations](OPERATIONS.md#caching-and-batching).
 
 OpenCode v2's [ownership map](OPENCODE_SESSION.md#put-each-owner-at-the-right-boundary) illustrates borrowing a shorter-lived capability from a long-lived service. Apply the ownership relationship using the consuming project's resource identities.
 
@@ -58,8 +58,10 @@ Use the platform's `runMain` at a process entrypoint; use `Layer.launch` for an 
 
 A runtime per request reacquires application resources. A global runtime is wrong when the actual owner is a test, account, or hot-reloaded host. Separate runtimes share acquisition only when an intentional memo-map policy connects them. If startup fails after runtime creation, dispose the partially constructed host.
 
+Closing starts before cleanup finishes. A Scope enters its closed state when closing starts; another `Scope.close` returns immediately even while earlier finalizers run. A host that promises settlement must retain and await its closing operation. In the reviewed source, overlapping external `ManagedRuntime.dispose` / `disposeEffect` calls wait for disposal to finish. Runtime-owned fibers and finalizers that call disposal again do not wait for it, because disposal must interrupt or run them to finish.
+
 An Effect-to-Promise facade must preserve the needed service context and deliberately assign scopes: long-lived registrations belong to their subscriber, while call resources belong to the invocation. Capturing a Scope in a context alone does not define the lifetime of every future operation.
 
 Streaming responses and async iterators remain active after the creating Promise resolves. Track exhaustion, early return, failure, and abort; close underlying consumers and remove abort listeners. Shutdown stops admission, cancels or drains active work, awaits cleanup, then disposes the runtime. Define whether an interruption method acknowledges the stop request or waits for cleanup; expose a separate settlement operation when callers need both.
 
-Evidence: [ManagedRuntime integration](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/04_integration/10_managed-runtime.ts), [process entrypoints](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/06_running). For host construction and close during streaming consumption, read [OpenCode embedded host](OPENCODE_HOST.md#trace-startup-a-request-and-close).
+Evidence: [ManagedRuntime integration](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/04_integration/10_managed-runtime.ts), [disposal implementation](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/ManagedRuntime.ts), [Scope.close](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/Scope.ts), [process entrypoints](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/06_running). For host construction and close during streaming consumption, read [OpenCode embedded host](OPENCODE_HOST.md#trace-startup-a-request-and-close).

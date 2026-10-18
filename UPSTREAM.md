@@ -6,10 +6,10 @@
 | --- | --- | --- | --- | --- |
 | Emil | https://github.com/emilkowalski/skills | `repos/emil` | `2d228630ba1446365f614a108cb8252f1feda202` | `2d228630ba1446365f614a108cb8252f1feda202` |
 | Good CSS | https://github.com/vojtaholik/good-css | `repos/good-css` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` | `92d436ba1937d1b1407c47e35abb3e199eaace2e` |
-| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` | `742976ce97f5157b00e67e4a5ece6bc04e1899e3` |
+| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `0c8b446709c737c10d0e11af4313bb29fdff2588` | `0c8b446709c737c10d0e11af4313bb29fdff2588` |
 | OpenCode (v2) | https://github.com/anomalyco/opencode | `repos/opencode` | `4617210822bdbb31e5749751afbfb4584ccedac8` | `4617210822bdbb31e5749751afbfb4584ccedac8` |
-| T3 Code | https://github.com/pingdotgg/t3code | `repos/t3-code` | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` |
-| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `101b274dd991f694e1f7024be2157e5f3adf07de` | `101b274dd991f694e1f7024be2157e5f3adf07de` |
+| T3 Code | https://github.com/pingdotgg/t3code | `repos/t3-code` | `d0918f1659f4c19172796c8d1910ca6e4bc18b51` | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` |
+| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `4382e687a50b8d2c5ce4d141d001186589cff8d5` | `4382e687a50b8d2c5ce4d141d001186589cff8d5` |
 
 `skills/design` loads Emil and Good CSS directly. The Poteto directories under `skills/` contain Codex adaptations of the pinned pstack source; see [POTETO.md](POTETO.md) for ownership, exclusions, and refresh rules. Keep source checkouts at their based-on commits. Effect's based-on commit records source considered for its guidance; its provenance retains earlier example revisions. The consuming project's declarations and tests establish available Effect behavior. Matt is no longer an installation dependency; an existing local clone is left untouched.
 

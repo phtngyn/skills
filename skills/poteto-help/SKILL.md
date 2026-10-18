@@ -19,13 +19,13 @@ Read [the Codex contract](../poteto-mode/references/codex.md) for delegation, hi
 
 - Goal understanding: `in-your-own-words`. Improve task framing before execution: [sharpen](../sharpen/SKILL.md).
 - Current architecture and flow: `how`. Historical rationale: `why`. A combined explanation: `teach`.
-- Recent project context: `recall`. Progress within this chat: `ketchup`. A simpler last reply: `bro`.
+- Recent project context: `recall`. Progress and every pending decision within this chat: `ketchup`. A simpler last reply: `bro`.
 - General execution: `poteto-mode`. Ambitious unfamiliar work: `figure-it-out`.
 - Interface and module design: `architect`. Competing solutions: `arena`. Parallel coverage: `swarm`.
 - Adversarial review: `interrogate`. Downstream breakage: `blast-radius`. Comment review: `no-comments`.
 - Bug regression tests: `tdd`. Performance measurement: `benchmark-checklist`.
 - App-driving harness: `create-verification-skill`. Harness and map upkeep: `maintain-verification-skill`.
-- Writing: `technical-writing` and `unslop`. TypeScript decisions: `typescript-best-practices`.
+- Writing: `technical-writing` and `unslop`.
 - Personal conventions: `automate-me`. Session lessons: `reflect`. Structural prevention of repeated mistakes: `correct`.
 - Auditable execution: `show-me-your-work`. Agent role preferences: `setup-pstack`.
 - UI craft: `design`. Effect v4: `effect`.

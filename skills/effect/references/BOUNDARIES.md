@@ -57,9 +57,11 @@ Accept `unknown` at the raw foreign boundary, then translate it into a named fai
 
 Use `catchTag` or another typed recovery for expected failures. Use cause-level recovery at the boundary that owns supervision or reporting, with an explicit interruption policy. Preserve mixed causes containing interruption unless that owner deliberately handles them. Cancellation should not silently become a successful fallback or retryable domain error.
 
+The reviewed runtime promotes ordinary typed failures to defects when combining them with defects from finalizers or concurrent siblings. Typed recovery must not hide a crashing finalizer or sibling. At a reporting boundary, inspect the complete Cause instead of extracting one expected error and discarding the remaining reasons. Verify this behavior against the consuming project's Effect version when recovery depends on it.
+
 Use `try` / `tryPromise` around foreign operations whose throws/rejections are expected failures. `sync` / `promise` represent unexpected throws/rejections as defects. `orDie` belongs where an expected lower-level failure is an invariant violation for this caller; it is not a way to satisfy a narrower method signature.
 
-Evidence: [error handling](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/01_error-handling.ts), [typed reasons](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/20_reason-errors.ts).
+Evidence: [error handling](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/01_error-handling.ts), [typed reasons](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/01_effect/04_errors/20_reason-errors.ts), [failure and finalization regressions](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/test/Effect.test.ts).
 
 ## Foreign And Transport Adapters
 

@@ -41,11 +41,13 @@ Prefer native Effect HTTP/platform services when their contracts fit. Configure 
 
 Keep authoritative database transactions limited to the facts that must commit together. External I/O needs its own retry and idempotency policy outside that transaction. Fiber supervision supplies process-local ownership; crash recovery requires persisted intent and a recovery protocol.
 
+When supported by the consuming client, use `SqlClient.afterCommit` for short wakeups, cache invalidation or subscriber notifications. Buffered callbacks run after the outermost transaction commits. Callbacks registered in a transaction or savepoint that rolls back are discarded. Outside a transaction they run immediately. Check driver support: transactions outside the standard transaction wrapper can also run callbacks immediately. After commit, callbacks run uninterruptibly, and `withTransaction` waits for them to finish. Keep them short. They can be lost on process exit, so required durable work still belongs in the transaction's outbox.
+
 When committed intent must survive a crash, an outbox can atomically store state changes and required work, then execute external I/O after commit. Distinguish accepted intent from completed execution. Deduplicating admission does not make external execution exactly-once: success followed by failed settlement needs an explicit replay, reconciliation or terminal-failure policy based on the adapter's idempotency contract. Process-bound handles may require a different recovery policy from replay-safe work. In-memory notifications accelerate discovery; durable rows remain authoritative.
 
 Commit order also does not automatically establish live publication order. If consumers advance monotonic cursors, coordinate or reconstruct ordered publication across the commit-to-notify handoff. A local semaphore only coordinates its local participants. The [T3 Code example](T3_CODE.md#separate-durable-acceptance-from-execution) traces admission and recovery, and its [publication workflow](T3_CODE.md#preserve-publication-order-explicitly) traces the ordering handoff. Use a scoped worker or finite operation when crash recovery is outside the task's requirements.
 
-Evidence: [HttpClient](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/http/HttpClient.ts), [SQL examples](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/40_sql), [OpenCode session admission and execution](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/session/execution.ts).
+Evidence: [HttpClient](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/http/HttpClient.ts), [SQL examples](/Users/phtngyn/Developer/skills/repos/effect/ai-docs/src/40_sql), [SqlClient.afterCommit](/Users/phtngyn/Developer/skills/repos/effect/packages/effect/src/sql/SqlClient.ts), [OpenCode session admission and execution](/Users/phtngyn/Developer/skills/repos/opencode/packages/core/src/session/execution.ts).
 
 ## Observability And Time
 
