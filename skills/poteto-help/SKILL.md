@@ -17,13 +17,14 @@ Read [the Codex contract](../poteto-mode/references/codex.md) for delegation, hi
 
 ## Choose a workflow
 
-- Goal understanding: `in-your-own-words`. Improve task framing before execution: [sharpen](../sharpen/SKILL.md).
+- Goal understanding: `in-your-own-words`. Rewrite a task prompt without executing it: [sharpen](../sharpen/SKILL.md).
 - Current architecture and flow: `how`. Historical rationale: `why`. A combined explanation: `teach`.
 - Recent project context: `recall`. Progress and every pending decision within this chat: `ketchup`. A simpler last reply: `bro`.
 - General execution: `poteto-mode`. Ambitious unfamiliar work: `figure-it-out`.
 - Interface and module design: `architect`. Competing solutions: `arena`. Parallel coverage: `swarm`.
 - Adversarial review: `interrogate`. Downstream breakage: `blast-radius`. Comment review: `no-comments`.
 - Bug regression tests: `tdd`. Performance measurement: `benchmark-checklist`.
+- Model-backed charts of user-visible behavior: `statechart`.
 - App-driving harness: `create-verification-skill`. Harness and map upkeep: `maintain-verification-skill`.
 - Writing: `technical-writing` and `unslop`.
 - Personal conventions: `automate-me`. Session lessons: `reflect`. Structural prevention of repeated mistakes: `correct`.

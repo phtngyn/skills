@@ -18,7 +18,7 @@ class ValidationTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.upstream = self.root / 'repos/pstack/pstack/skills'
-        for name in ['alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill']:
+        for name in ['alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill']:
             self.write_skill(self.upstream / name, name, upstream=True)
         for name in ['alpha', 'principle-check', 'design', 'effect']:
             self.write_skill(self.root / 'skills' / name, name)

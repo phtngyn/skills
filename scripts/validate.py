@@ -7,7 +7,7 @@ import sys
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill'}
+EXCLUDED = {'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill'}
 PERSONAL = {'design', 'effect'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
 

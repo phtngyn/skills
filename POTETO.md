@@ -1,6 +1,6 @@
 # Poteto for Codex
 
-The 52 Poteto skill directories in `skills/` derive from the pinned `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). Every upstream core skill is included except `make-bot-ui`, `typescript-best-practices`, and `create-formal-verification-skill`. Benny's automation pack is excluded. `design` and `effect` are retained personal skills. Retired skills are removed rather than kept as aliases.
+The 53 Poteto skill directories in `skills/` derive from the pinned `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). Every upstream core skill is included except `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`. Benny's automation pack is excluded. `design` and `effect` are retained personal skills. Retired skills are removed rather than kept as aliases.
 
 ## Adaptation
 
@@ -16,11 +16,15 @@ The upstream checkout remains unchanged. Installed skill directories contain loc
 
 ## Adopted refresh
 
+On 2026-10-23, the port adopted `8b3326d99fd4b993cb33a24dad8af03175c642c5` (pstack 0.15.28). The standalone `statechart` skill and its reachable scripts, model, and test fixtures are included with explicit-only Codex invocation. It requires Java and TLC for model checking, and a Mermaid renderer for PNG output; the command documents missing prerequisites. `sharpen` now returns a rewritten prompt rather than executing the task, preserving explicit user constraints and scope. Help, recipes, and the catalog reflect that behavior.
+
+The formal-verification creation exclusion is preserved and its new maintenance companion is excluded too. Setup offers and help routes to those excluded skills, Cursor/Claude packaging, and upstream guide-only changes are not imported. Statechart validation passed 29 tests; 38 TLC-dependent tests were skipped because TLC is unavailable. Full model-checking and PNG rendering were not exercised. No existing playbooks, principles, or orchestration helpers changed upstream. The collection now contains 55 skills.
+
 On 2026-10-18, the port adopted `4382e687a50b8d2c5ce4d141d001186589cff8d5` (still labeled pstack 0.15.25). The upstream formal verification skill was reviewed and excluded at the user's request.
 
 Ketchup lists every pending decision and every item covered by a shared decision, with evidence and risk. Completeness takes precedence over a word target. Existing visual guidance and authorization boundaries remain. Collection validation now checks README coverage and counts, root documentation links, Markdown heading anchors, and titled links. Upstream's name fixes are already covered locally, and its autopilot documentation correction already matches this port. Claude Code packaging and Cursor-specific validation are excluded. Playbooks, principles apart from the retired-skill pointer, helpers, and dependencies are unchanged.
 
-The user retired `typescript-best-practices` and declined `create-formal-verification-skill`; their installed links and routing references are removed. The collection contains 54 skills. Upstream's absolute rule requiring type guards for every brand is not imported.
+The user retired `typescript-best-practices` and declined `create-formal-verification-skill`; their installed links and routing references are removed. That revision contained 54 entries. Upstream's absolute rule requiring type guards for every brand is not imported.
 
 On 2026-10-17, the port adopted pstack 0.15.25 at `101b274dd991f694e1f7024be2157e5f3adf07de`. The refresh adds explicit-only `sharpen`, generalizes premise testing and idempotency, distinguishes legitimate defensive handling from symptom suppression, and judges tests by observable behavior and refactor tolerance. Principle summaries and `correct` follow those changes.
 

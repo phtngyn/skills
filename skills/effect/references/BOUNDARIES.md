@@ -28,7 +28,7 @@ Use tagged errors when callers discriminate cases. `Data.TaggedError` works for 
 
 Translate failures when the abstraction changes. Keep an existing error when it already expresses the caller's contract. At a raw foreign boundary, accept `unknown` and map expected failures to a meaningful error while retaining opaque evidence in `cause`. Avoid widening a useful domain error channel to `unknown`.
 
-Use typed recovery for expected failures. At supervision and reporting boundaries, inspect the complete Cause when cleanup, concurrent failure or interruption matters. Verify the selected release's mixed-cause behavior; recovering one typed failure must not silently erase other failures that the owner promises to report. Preserve cancellation through recovery and retry unless the owner deliberately handles it.
+Use typed recovery for expected failures. At supervision and reporting boundaries, inspect the complete Cause when cleanup, concurrent failure or interruption matters. In Effect 4.0.6, typed recovery skips causes containing a defect and converts their typed errors to defects. An interrupt alongside a typed error still permits recovery or retry, which can discard that interrupt. Use cause-level handling when the owner must retain all reasons; recheck this behavior when changing releases. Preserve cancellation through recovery and retry unless the owner deliberately handles it.
 
 Use `try` / `tryPromise` for expected foreign throws or rejections. `sync` / `promise` treat unexpected throws or rejections as defects. Use `orDie` where a lower-level failure is an invariant violation for this caller.
 

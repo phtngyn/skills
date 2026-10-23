@@ -12,7 +12,7 @@ Before forking, choose the work's lifetime, failure policy and competition polic
 | Dynamic or keyed fiber ownership | `FiberSet` or `FiberMap` |
 | Independent detached work | `forkDetach` with explicit supervision and shutdown |
 
-Forking alone does not guarantee a later failure reaches the caller. Join, report or supervise it. Do not submit work after its owner closes or rely on a closed scope to suppress an invalid submission. Keep uninterruptible regions limited to transitions that must settle consistently.
+Forking alone does not guarantee a later failure reaches the caller. Join, report or supervise it. Effect 4.0.6 returns an interrupted fiber without executing work submitted to an already-closed scope, including immediate or uninterruptible forks. Still stop admission when the owner closes; suppression does not establish successful execution. Keep uninterruptible regions limited to transitions that must settle consistently.
 
 Choose whether one item failure fails a parallel group or is handled per item. Bound concurrency by the scarce resource and ordering contract. Same-key requests may join one computation, queue every command, replace current work, or coalesce a burst into a follow-up. A fiber registry and a mutex do not supply all of these policies.
 

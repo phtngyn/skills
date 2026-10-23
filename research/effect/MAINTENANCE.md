@@ -4,7 +4,15 @@ This directory is maintainer research, outside `skills/effect` and its installed
 
 ## Current Baseline
 
-On 2026-10-18, the npm registry's `latest` release was Effect 4.0.5. The official `effect@4.0.5` release tag resolves to `7f524e25cfb49a71ac39b0f44278d08d40dda5de`. [UPSTREAM.md](../../UPSTREAM.md) pins the reference checkout to that release. The skill verifies the latest stable release at task start, so this record is evidence for this revision rather than a permanent version requirement.
+On 2026-10-23, the npm registry's `latest` release was Effect 4.0.6. Its official `effect@4.0.6` tag resolves to `3b28bf686bf26e9700edd39c025aff2744dc5303`, now adopted in [UPSTREAM.md](../../UPSTREAM.md). Default-branch fetching remains separate from release adoption.
+
+Reviewed the release changelog and guidance affected by mixed causes, closed-scope forks, runtime disposal, callback stream registration, and SQL changes. The failure and concurrency guides now state the relevant 4.0.6 semantics. The existing release-sensitive advice for disposal, stream ownership, and post-commit work remains applicable.
+
+In an isolated temporary npm workspace, all four embedded TypeScript examples compiled with strict TypeScript 6.0.3 against published `effect@4.0.6` and `@effect/vitest@4.0.6`. The embedded virtual-time test passed with Vitest 5.0.4. Three additional published-package checks passed: closed-scope forks do not execute, scoped acquisition releases once, and schema decoding rejects invalid input. These checks do not rerun the full earlier audit or establish general skill effectiveness.
+
+## Previous Baseline
+
+On 2026-10-18, the npm registry's `latest` release was Effect 4.0.5. The official `effect@4.0.5` release tag resolves to `7f524e25cfb49a71ac39b0f44278d08d40dda5de`. That revision pinned the reference checkout to that release. The skill verifies the latest stable release at task start, so this record is evidence for this revision rather than a permanent version requirement.
 
 The earlier checkout at `0c8b446709c737c10d0e11af4313bb29fdff2588` also declared 4.0.5 but contained unreleased fixes. The audit reproduced differences in mixed-cause recovery, closed-scope forking, overlapping runtime disposal and the SqlClient after-commit API. The revised guides avoid assuming those unreleased guarantees and explicitly separate pull backpressure from push-source buffering.
 
@@ -32,7 +40,7 @@ Keep transferable decisions in the skill, with each mechanism conditional on its
 
 A source audit or passing helper test does not establish general skill effectiveness. When evaluating future changes, use unrelated consumer tasks across small programs, reusable APIs and framework integrations. Judge behavior, inferred types and unnecessary machinery; distinguish inspected source, executed checks and independent agent evaluation.
 
-## Validation Of This Revision
+## Validation Of The 4.0.5 Revision
 
 The four embedded TypeScript examples compiled against published Effect 4.0.5 with strict TypeScript 6.0.3. Six runtime checks passed with Node 24.21.0, `@effect/vitest` 4.0.5 and Vitest 5.0.4: the documented virtual-time example, service adapter substitution and error identity, schema rejection before I/O, scoped listener disposal, interruption cleanup, and explicit callback-stream capacity and release. The checks ran in an isolated temporary workspace.
 
