@@ -23,4 +23,6 @@ Move findings best enforced by types, lint, scripts, or runtime checks to Backlo
 
 Present the proposed edits for approval unless the user already authorized applying reflection findings. Apply only the authorized subset. Use Codex's `skill-creator` for substantive skill changes and validate touched skills. Keep backlog items local unless filing them externally was explicitly authorized.
 
+Never edit a skill under `plugins/cache/`. Resolve installed symlinks to their maintained source. For a cache-owned skill without a writable source, show the proposed destination under `~/.agents/skills/` or the project’s skill directory before approval, then copy and edit it there. Reflection alone does not authorize a push or PR.
+
 Report applied edits, unresolved proposals, and rejected findings with reasons.

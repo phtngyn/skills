@@ -1,6 +1,6 @@
 # Poteto for Codex
 
-The 53 Poteto skill directories in `skills/` derive from the pinned `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). Every upstream core skill is included except `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`. Benny's automation pack is excluded. `design` and `effect` are retained personal skills. Retired skills are removed rather than kept as aliases.
+The 54 Poteto skill directories in `skills/` derive from the pinned `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). Every upstream core skill is included except `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`. Benny's automation pack is excluded. `design` and `effect` are retained personal skills. Retired skills are removed rather than kept as aliases.
 
 ## Adaptation
 
@@ -16,9 +16,15 @@ The upstream checkout remains unchanged. Installed skill directories contain loc
 
 ## Adopted refresh
 
+On 2026-10-26, the port adopted `99b609a72323b70204eab407c622f436e858e112` (pstack 0.15.32). Added explicit-only `ketchup-video`, which follows ketchup and renders an evidence-based silent slide video with pending decisions as text. Statechart now covers product flows, protocols, services, and designs, with the Pele PNG renderer, reduced overview coverage, goal paths, and clearer model evidence and counterexample handoffs. Its reachable scripts and fixtures are refreshed; removed upstream model fixtures are removed locally too. The command path in its entry point is corrected.
+
+Portable helpers now prefer active PRs over branch history, distinguish fork heads during stack discovery, and cap polling sleeps at the deadline. Reflect routes edits out of plugin caches to maintained sources or approved writable copies. Existing swarm wording already covers the upstream numbering and report correction. The unused plan checker and Cursor transcript audit remain excluded, as do formal-verification generators and Claude packaging. The collection contains 56 skills.
+
+Validation passed: collection and skill metadata checks, seven validator tests, nineteen installer tests, 75 Bun helper tests, strict helper typechecking, and installed-link/source-pin checks. Statechart passed 57 tests, including renderer checks; 93 TLC-dependent tests were skipped because TLC is unavailable. Full model-checking remains unverified. Bun checks ran through `npx bun` because Bun is not installed globally.
+
 On 2026-10-23, the port adopted `8b3326d99fd4b993cb33a24dad8af03175c642c5` (pstack 0.15.28). The standalone `statechart` skill and its reachable scripts, model, and test fixtures are included with explicit-only Codex invocation. It requires Java and TLC for model checking, and a Mermaid renderer for PNG output; the command documents missing prerequisites. `sharpen` now returns a rewritten prompt rather than executing the task, preserving explicit user constraints and scope. Help, recipes, and the catalog reflect that behavior.
 
-The formal-verification creation exclusion is preserved and its new maintenance companion is excluded too. Setup offers and help routes to those excluded skills, Cursor/Claude packaging, and upstream guide-only changes are not imported. Statechart validation passed 29 tests; 38 TLC-dependent tests were skipped because TLC is unavailable. Full model-checking and PNG rendering were not exercised. No existing playbooks, principles, or orchestration helpers changed upstream. The collection now contains 55 skills.
+The formal-verification creation exclusion is preserved and its new maintenance companion is excluded too. Setup offers and help routes to those excluded skills, Cursor/Claude packaging, and upstream guide-only changes are not imported. Statechart validation passed 29 tests; 38 TLC-dependent tests were skipped because TLC is unavailable. Full model-checking and PNG rendering were not exercised. No existing playbooks, principles, or orchestration helpers changed upstream. That revision contained 55 entries.
 
 On 2026-10-18, the port adopted `4382e687a50b8d2c5ce4d141d001186589cff8d5` (still labeled pstack 0.15.25). The upstream formal verification skill was reviewed and excluded at the user's request.
 
