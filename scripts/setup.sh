@@ -11,11 +11,12 @@ usage() {
   cat <<'EOF'
 Usage: ./scripts/setup.sh [--check | --uninstall] [--target DIRECTORY]
 
-Install: clone missing sources at UPSTREAM.md's adopted pins, then link skills.
+Install/update: reconcile sources to UPSTREAM.md's adopted pins, then link skills.
 Check: verify sources, resources, and installed links without fetching or writing.
 Uninstall: remove only this collection's links, preserving other entries.
 
-The default target is ~/.agents/skills. Existing sources are never updated or reset.
+The default target is ~/.agents/skills. Clean sources move to the adopted pins;
+missing commits are fetched as needed. Local edits and branch pointers are preserved.
 EOF
 }
 
@@ -130,9 +131,17 @@ while IFS=$'\t' read -r repo remote commit; do
   fi
   [[ -e "$checkout/.git" ]] || fail "not an upstream Git checkout: $repo"
   current="$(git -C "$checkout" rev-parse HEAD)" || fail "cannot read source revision: $repo"
-  [[ "$current" == "$commit" ]] || fail "$repo is at $current, expected $commit; checkout preserved"
   dirty="$(GIT_OPTIONAL_LOCKS=0 git -C "$checkout" status --porcelain)" || fail "cannot inspect source: $repo"
-  [[ -z "$dirty" ]] || fail "source has local changes: $repo; checkout preserved"
+  [[ -z "$dirty" ]] || fail "source has local changes: $repo; commit, stash, or move them, then rerun setup; checkout preserved"
+  if [[ "$current" != "$commit" ]]; then
+    [[ "$action" == install ]] || fail "$repo is at $current, expected $commit; run ./scripts/setup.sh to update it"
+    if ! GIT_NO_LAZY_FETCH=1 git -C "$checkout" cat-file -e "$commit^{commit}" 2>/dev/null; then
+      printf 'fetch: %s adopted revision %s\n' "$repo" "$commit"
+      git -C "$checkout" fetch --no-tags -- "$remote" "$commit" || fail "cannot fetch adopted revision for $repo; checkout preserved; check network access and rerun setup"
+    fi
+    printf 'update: %s from %s to %s\n' "$repo" "$current" "$commit"
+    git -C "$checkout" checkout --detach "$commit" || fail "cannot adopt revision for $repo; no forced reset was attempted"
+  fi
   printf 'source ready: %s @ %s\n' "$repo" "$commit"
 done <<< "$source_rows"
 

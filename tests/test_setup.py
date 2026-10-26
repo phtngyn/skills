@@ -142,13 +142,58 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(snapshot(self.target), before)
         self.assertFalse((self.root / "repos").exists())
 
-    def test_revision_mismatch_is_never_reset(self):
+    def test_clean_revision_mismatch_moves_to_adopted_pin_without_rewriting_branch(self):
         self.run_setup()
         checkout = self.root / "repos/source"
-        git(checkout, "checkout", "--detach", self.tip)
+        git(checkout, "checkout", "-b", "local-work", self.tip)
+        self.run_setup()
+        self.assertEqual(git(checkout, "rev-parse", "HEAD"), self.pin)
+        self.assertEqual(git(checkout, "rev-parse", "local-work"), self.tip)
+        self.assertEqual((checkout / "source-version").read_text(), "adopted\n")
+        self.run_setup("--check")
+
+    def test_pulled_pin_fetches_missing_commit_and_updates_installed_resources(self):
+        self.run_setup()
+        checkout = self.root / "repos/source"
+        before = snapshot(self.target)
+        (self.origin / "SKILL.md").write_text("---\nname: bro\ndescription: Simplify text.\n---\nUpdated source.\n")
+        git(self.origin, "commit", "-am", "new adopted source")
+        adopted = git(self.origin, "rev-parse", "HEAD")
+        self.write_sources(pin=adopted)
+        result = self.run_setup()
+        self.assertIn("fetch:", result.stdout)
+        self.assertEqual(git(checkout, "rev-parse", "HEAD"), adopted)
+        self.assertIn("Updated source.", (self.target / "bro/SKILL.md").read_text())
+        self.assertEqual(snapshot(self.target), before)
+        self.run_setup("--check")
+
+    def test_check_revision_mismatch_is_read_only_and_explains_repair(self):
+        self.run_setup()
+        self.write_sources(pin=self.tip)
+        before = snapshot(self.base)
+        result = self.run_setup("--check", succeeds=False)
+        self.assertIn("run ./scripts/setup.sh", result.stderr)
+        self.assertEqual(snapshot(self.base), before)
+
+    def test_dirty_revision_mismatch_preserves_checkout_and_links(self):
+        self.run_setup()
+        self.write_sources(pin=self.tip)
+        checkout = self.root / "repos/source"
+        (checkout / "source-version").write_text("local edit\n")
+        before = snapshot(self.base)
         self.run_setup(succeeds=False)
-        self.assertEqual(git(checkout, "rev-parse", "HEAD"), self.tip)
-        self.assertEqual((checkout / "source-version").read_text(), "newer upstream\n")
+        self.assertEqual(snapshot(self.base), before)
+        self.assertEqual(git(checkout, "rev-parse", "HEAD"), self.pin)
+
+    def test_unavailable_update_keeps_current_checkout_and_installed_links(self):
+        self.run_setup()
+        self.write_sources(pin="f" * 40)
+        checkout = self.root / "repos/source"
+        before = snapshot(self.target)
+        self.run_setup(succeeds=False)
+        self.assertEqual(git(checkout, "rev-parse", "HEAD"), self.pin)
+        self.assertEqual((checkout / "source-version").read_text(), "adopted\n")
+        self.assertEqual(snapshot(self.target), before)
 
     def test_dirty_source_is_preserved(self):
         self.run_setup()

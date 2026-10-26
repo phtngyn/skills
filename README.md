@@ -11,7 +11,16 @@ Keep this repository in a permanent location, then run:
 ./scripts/setup.sh --check
 ```
 
-Setup clones missing upstream sources at the adopted revisions in [UPSTREAM.md](UPSTREAM.md), verifies existing checkouts, and links each skill into `~/.agents/skills`. Existing sources are never fetched, advanced, or reset during setup. Retired links owned by this collection are removed after preflight succeeds. Foreign links and real directories are preserved; a conflicting current skill name stops installation before changing links.
+Setup clones missing upstream sources and moves clean existing checkouts to the adopted revisions in [UPSTREAM.md](UPSTREAM.md), fetching missing commits only when needed. It then links each skill into `~/.agents/skills`. Local source edits stop setup with repair guidance; branch pointers are never rewritten. Retired links owned by this collection are removed after preflight succeeds. Foreign links and real directories are preserved; a conflicting current skill name stops installation before changing links.
+
+On each machine, update with:
+
+```bash
+git pull --ff-only
+./scripts/setup.sh
+```
+
+Setup follows this collection’s reviewed pins, not upstream’s latest development branches. Rerunning it at the current pins needs no fetch. `--check` only reports drift; running setup repairs clean revision mismatches. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
 
 Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Most Poteto skills are explicit-only, preserving upstream policy; `setup-pstack` can also be selected automatically. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
 
