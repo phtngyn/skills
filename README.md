@@ -11,6 +11,15 @@ Keep this repository in a permanent location, then run:
 ./scripts/setup.sh --check
 ```
 
+The global Codex instructions are saved in [global/AGENTS.md](global/AGENTS.md). Install them on a new machine alongside the skills:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}"
+cp -i global/AGENTS.md "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"
+```
+
+`cp -i` asks before replacing existing instructions. This installs a copy; rerun it after updating the saved instructions. The skill setup and uninstall commands manage only skills.
+
 Setup clones missing upstream sources and moves clean existing checkouts to the adopted revisions in [UPSTREAM.md](UPSTREAM.md), fetching missing commits only when needed. It then links each skill into `~/.agents/skills`. Local source edits stop setup with repair guidance; branch pointers are never rewritten. Retired links owned by this collection are removed after preflight succeeds. Foreign links and real directories are preserved; a conflicting current skill name stops installation before changing links.
 
 On each machine, update with:
