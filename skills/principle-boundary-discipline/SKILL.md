@@ -5,13 +5,13 @@ description: "Apply when wiring validation, error handling, or framework adapter
 
 # Boundary Discipline
 
-Validate foreign representations at system boundaries and pass trusted domain values inward. Keep pure business decisions separate from framework wiring. Handle operational failures and enforce state transitions where the owning capability has enough context.
+Place validation, type narrowing, and error handling at system boundaries. Trust internal code unconditionally. Business logic lives in pure functions. The shell is thin and mechanical.
 
 **Why:** Scattered validation is noisy, redundant, and gives a false sense of safety. Keep logic out of framework wiring so it can be tested without the framework.
 
 **The pattern:**
 - **At boundaries** (CLI args, config files, external APIs, network protocols): validate, return errors, handle defensively.
-- **Inside the system:** use validated types without repeating their input checks. Keep checks for permissions, changing state and external failures where the operation needs them.
+- **Inside the system:** typed data, error propagation, no re-validation. Trust the types.
 - **Across the boundary.** Expose domain concepts, not the boundary's private representation. Keep general-purpose mechanism inside and special-purpose policy at the edge.
 
 **Applications:**
@@ -29,5 +29,5 @@ Code organization:
 - Scoring and assessment: pure transforms from state to results
 
 **The tests:**
-- "Am I checking the input representation again, or a fact that can change during execution?" Avoid repeated parsing; preserve checks for changing facts.
+- "Is this data crossing a system boundary right now?" If not, validation is redundant.
 - "Can this be a pure function that the shell just calls?" If yes, extract it.

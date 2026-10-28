@@ -8,7 +8,7 @@ This is personal integration guidance. Apply it when the selected CSS technique 
 | Layout, sizing, typography, color derivation, overflow, and native CSS mechanisms | Good CSS within the project's constraints |
 | Whether to animate, timing, springs, interruption, gestures, and mobile behavior | The relevant Emil component or mobile guidance |
 
-Use the [personal Design wrapper](../SKILL.md) to select its upstream branch. Continue the current workflow and reuse material already read.
+Use the matching local specialist from the [Design source map](SOURCE_MAP.md). Continue the current workflow and reuse material already read.
 
 ## Motion recipes
 

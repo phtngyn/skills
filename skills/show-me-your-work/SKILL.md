@@ -53,7 +53,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the transcript
 
-At the end of the run, before handing back, check the log told the truth. Use the visible conversation or an explicitly identified transcript under the [Codex history contract](../poteto-mode/references/codex.md). When tool history is unavailable, audit against inspected artifacts and report that limitation. Walk this run's rows against what actually happened. Each stretch of them begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
+At the end of the run, before handing back, check the log told the truth. Read this run's supported host history or explicitly identified workspace transcript. Mark missing tool traces as unverified. Walk this run's rows against what actually happened. Each stretch of them begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
 
 - Check that every row maps to a real decision or action.
 - Check that each row's evidence resolves and shows what the row claims.
@@ -61,16 +61,16 @@ At the end of the run, before handing back, check the log told the truth. Use th
 
 Correct the log, not the story. The audit never edits or removes a row, even an invented one. When a row records neither a real decision nor a real action, or its claim or evidence is wrong, add a row that supersedes it with what actually happened and a pointer that resolves. This audit does not check rows outside this run's stretches. If this run's own work shows one of them is wrong, supersede it like any wrong call.
 
-## Independent review of the trail
+## Cross-model review of the trail
 
-Before handing back, use a fresh read-only reviewer under the [Codex delegation contract](../poteto-mode/references/codex.md). Use a different model family when configured and available; otherwise distinguish independent-context review from model diversity. If delegation is unavailable, audit directly and disclose that no independent review ran. The reviewer reads the trail and available transcript or evidence digest to flag weak evidence, skipped verification and risky choices.
+Before handing back, spawn a subagent on a different model family from the one that did the work. Self-review is not a substitute. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Use the configured role and supported reasoning effort.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.
 - Choices that look risky in hindsight (premature, scope-creeping, papering over a symptom).
 - Gaps the user would otherwise miss on a casual skim.
 
-Every reply for a run that produced a trail ends with an "Attention" section. Name the review mode and any verified model identity, then list flags pointing to specific rows or moments. Do not invent a model identity or imply an independent review ran when it did not. "No flags" is a valid result.
+Every reply for a run that produced a trail ends with an "Attention" section. Lead with the reviewer's model on its own line (`reviewed by <model>`), then list each flag pointing to specific rows or moments. "No flags" is a valid value. The model name is not.
 
 ## Reviewing the trail
 

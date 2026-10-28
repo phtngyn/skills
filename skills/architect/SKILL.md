@@ -27,7 +27,7 @@ Skip Phase A only when the work is genuinely greenfield with no surrounding syst
 
 Run the **arena** skill with the design-sketch task and the Phase A grounding artifacts. Pass `references/runner-prompt.md` as each runner's prompt.
 
-Use the `architect runners` role from the [Codex delegation contract](../poteto-mode/references/codex.md). Default to two independent candidates inheriting the current model.
+Take the runners from the `architect runners` role from `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`, in place of `arena runners`. Default to two inherited candidates.
 
 Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. This is the **exhaust-the-design-space** principle skill made concrete. Whole-shape alternatives, not point fixes inside one shape.
 

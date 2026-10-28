@@ -1,11 +1,11 @@
 ---
 name: interrogate
-description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Independent reviewers challenge changes from multiple angles; model diversity is optional."
+description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Multiple LLM reviewers challenge changes from independent angles."
 ---
 
 # Interrogate
 
-Spawn one reviewer per configured model to adversarially review code changes. Prefer model diversity when available; otherwise use independent contexts with the same brief. The deliverable is a synthesized verdict. Do NOT auto-apply changes.
+Spawn one reviewer per configured model to adversarially review code changes. The adversarial signal comes from model diversity, not assigned personas. The deliverable is a synthesized verdict. Do NOT auto-apply changes.
 
 ## Step 1, Scope
 
@@ -23,9 +23,9 @@ Before spawning reviewers, state the intent in one clear paragraph from the user
 
 ## Step 3, Spawn Reviewers
 
-Use the [Codex delegation contract](../poteto-mode/references/codex.md), role `interrogate reviewers`. Default to two fresh reviewers inheriting the current model. Give both the same task and references, and forbid edits. Use model diversity when configured and supported; otherwise describe the result as independent-context review, not multi-model review. If agents are unavailable, perform one direct review and disclose that no independent panel ran.
+Launch all reviewers together, one per configured `interrogate reviewers` entry from `$setup-pstack`, labeled Reviewer A, B, and so on. Default to two fresh read-only reviewers inheriting the parent model. Report unavailable model diversity.
 
-Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Use the Codex delegation contract in [poteto-mode](../poteto-mode/SKILL.md).
+Read `references/reviewer-prompt.md` and fill in the same template for every reviewer with the stated intent, the diff or file contents, the rubric from `references/rubric.md`, and the code-quality lens from `references/code-quality-review.md`. Use the configured role and supported reasoning effort.
 
 ## Step 4, Synthesize
 

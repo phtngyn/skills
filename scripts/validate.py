@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check the catalog, documentation coverage, and local Markdown links."""
 from html import unescape
+import importlib.util
 from pathlib import Path
 import re
 import sys
@@ -8,8 +9,19 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill'}
-PERSONAL = {'design', 'effect'}
+DESIGN_SUBSKILLS = {
+    'design-ui', 'design-css', 'design-prototype', 'design-animate',
+    'design-animation-performance', 'design-review-animations',
+    'design-improve-animations', 'design-find-animation-opportunities',
+    'design-animation-vocabulary', 'design-apple', 'design-mobile', 'design-break-ui',
+}
+DESIGN = {'design'} | DESIGN_SUBSKILLS
+PERSONAL = DESIGN | {'effect'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
+
+PORT_SPEC = importlib.util.spec_from_file_location('port_poteto', Path(__file__).with_name('port_poteto.py'))
+PORT = importlib.util.module_from_spec(PORT_SPEC)
+PORT_SPEC.loader.exec_module(PORT)
 
 
 def heading_anchors(content):
@@ -40,19 +52,25 @@ def heading_anchors(content):
     return anchors
 
 
-def check_links(document, root):
+def check_links(document, root, forbidden_skills=()):
     errors = []
     for match in LINK.finditer(document.read_text()):
         target = match[1] if match[1] is not None else match[2]
         if re.match(r'[a-zA-Z][a-zA-Z0-9+.-]*:', target):
             continue
         # Examples and templates contain intentionally unresolved paths.
-        if '<' in target or '>' in target:
+        if '<' in target or '>' in target or (target == 'url' and document.name.endswith('-prompt.md')):
             continue
         path, _, anchor = target.partition('#')
         path = re.sub(r':\d+(?:-\d+)?$', '', unquote(path))
         destination = document.parent / path if path else document
         label = document.relative_to(root)
+        try:
+            linked_skill = destination.resolve().relative_to((root / 'skills').resolve()).parts[0]
+        except (ValueError, IndexError):
+            linked_skill = None
+        if linked_skill in forbidden_skills:
+            errors.append(f'{label}: Design family cannot depend on Poteto skill {linked_skill}')
         if not destination.exists():
             errors.append(f'{label}: missing link {target}')
         elif anchor and destination.is_file() and destination.suffix == '.md':
@@ -90,7 +108,8 @@ def validate(root=ROOT):
     actual = {p.parent.name for p in skills.glob('*/SKILL.md')}
     if not upstream.is_dir():
         return ['Missing pinned Poteto source; run setup before collection validation.']
-    expected = {p.parent.name for p in upstream.glob('*/SKILL.md')} - EXCLUDED
+    poteto = {p.parent.name for p in upstream.glob('*/SKILL.md')} - EXCLUDED
+    expected = poteto.copy()
     expected |= PERSONAL
     if actual != expected:
         errors.append(f'Catalog mismatch: missing={sorted(expected-actual)}, extra={sorted(actual-expected)}')
@@ -108,6 +127,12 @@ def validate(root=ROOT):
             errors.append(f'{name}: missing description')
         if len(name) > 64 or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', name):
             errors.append(f'{name}: invalid skill name')
+        if name in DESIGN:
+            policy = folder / 'agents/openai.yaml'
+            if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
+                errors.append(f'{name}: Design skills require explicit invocation')
+            if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
+                errors.append(f'{name}: unsupported host metadata')
         if name not in PERSONAL:
             if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
                 errors.append(f'{name}: unsupported host metadata')
@@ -126,10 +151,17 @@ def validate(root=ROOT):
         for document in folder.rglob('*.md'):
             if 'node_modules' in document.parts:
                 continue
-            errors.extend(check_links(document, root))
+            errors.extend(check_links(document, root, poteto if name in DESIGN else ()))
     for document in root.glob('*.md'):
         errors.extend(check_links(document, root))
     errors.extend(check_catalog_docs(root, actual))
+    for relative, payload in PORT.expected_files(root).items():
+        installed = skills / relative
+        if not installed.is_file() or installed.read_bytes() != payload:
+            errors.append(f'Poteto source drift: {relative}; regenerate with scripts/port_poteto.py')
+    for relative in PORT.REMOVED:
+        if (skills / relative).exists():
+            errors.append(f'Redundant port manual: {relative}')
     return errors
 
 

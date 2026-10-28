@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Animate"
+  short_description: "Design specialist for animate"
+  default_prompt: "Use $design-animate for this interface task."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Prototype"
+  short_description: "Design specialist for prototype"
+  default_prompt: "Use $design-prototype for this interface task."
+policy:
+  allow_implicit_invocation: false

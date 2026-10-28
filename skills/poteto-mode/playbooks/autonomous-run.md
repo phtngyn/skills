@@ -1,8 +1,13 @@
 ### Autonomous run
 
-1. Define a checkable exit condition and any user-specified budget or stop condition.
-2. Read `references/codex.md` relative to the poteto-mode directory. Continue in the current task using available event waits or bounded polling when needed. Use a persistent lifecycle only when explicitly requested and actually supported. Never claim an inactive task is monitoring.
-3. Work in small verifiable units. State each hypothesis, make the smallest justified change, check the real artifact, and keep only improvements.
-4. Stay within the authorized scope. Resolve incidental blockers needed for the task; record unrelated discoveries as follow-ups. A stalled experiment calls for new evidence or a new hypothesis, not a weaker completion condition.
-5. Log decisions through `show-me-your-work`. Checkpoint branch, revision, artifacts, processes, and remaining work at useful boundaries.
-6. Stop when the exit condition is met, the user stops work, a stated budget is exhausted, or a real external blocker prevents progress. Report which occurred and the actual predicate state.
+**You own the exit condition. Define done, then drive to it without stopping.**
+
+1. State the exit condition as a checkable predicate before the first iteration (tests green, repro fixed, all N PRs merged, pixel-diff zero).
+2. Pick the wake mechanism using the host's event watcher or scheduled wake-up. An event to watch (CI, a merge, a ref advancing) gets a watcher subagent that wakes you on the event, with a long time-based heartbeat as fallback. No event gets a fixed-interval heartbeat sized to when the result is worth re-checking. Use the configured role and supported reasoning effort.
+3. Each iteration makes the smallest change the evidence justifies, verifies it against the predicate, commits if it advanced, discards changes that didn't help. Belt-and-suspenders that "might help" gets reverted, not left to ride.
+   Sequence the work via the **sequence-verifiable-units** principle skill, verifying each unit before the next instead of batching checks at the end.
+4. Mid-run discoveries are yours. Address broken skills, related bugs, flaky verifiers, review noise, tooling failures, orphaned follow-ups, and fixable drift yourself via poteto-mode. Put out-of-band fixes in their own PR. Do not park reversible work for the human or use a user question. Surface only irreversible actions, genuine product or preference calls no experiment can settle, or a real dead end. Keep the predicate as the main drive, and return to it after each side fix.
+5. Checkpoint every iteration via the **show-me-your-work** skill, a row for what changed and whether the predicate moved.
+6. Stop when the predicate is met. A plateau is not a stop, so keep going and pivot your approach to push past it. Surface a genuine dead end rather than spinning, and never relax the predicate to declare victory.
+
+**Reply:** the exit condition, iterations run, what landed, what was discarded, final predicate state.

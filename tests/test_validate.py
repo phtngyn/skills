@@ -20,13 +20,16 @@ class ValidationTests(unittest.TestCase):
         self.upstream = self.root / 'repos/pstack/pstack/skills'
         for name in ['alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill']:
             self.write_skill(self.upstream / name, name, upstream=True)
-        for name in ['alpha', 'principle-check', 'design', 'effect']:
+        for name in ['alpha', 'principle-check', *sorted(validator.PERSONAL)]:
             self.write_skill(self.root / 'skills' / name, name)
+        self.skill_count = len(validator.PERSONAL) + 2
         self.readme = self.root / 'README.md'
         self.readme.write_text(
-            '# Collection\n\n4 skills: the 2 Poteto core skills retained.\n\n'
+            f'# Collection\n\n{self.skill_count} skills: the 2 Poteto core skills retained.\n\n'
             '| Skill | Purpose |\n| --- | --- |\n'
-            '| `alpha` | A workflow. |\n| `design` | Design. |\n| `effect` | Effect. |\n\n'
+            '| `alpha` | A workflow. |\n'
+            + ''.join(f'| `{name}` | Personal skill. |\n' for name in sorted(validator.PERSONAL))
+            + '\n'
             'The remaining 1 skills are principles:\n\n- `check`\n'
         )
 
@@ -34,7 +37,7 @@ class ValidationTests(unittest.TestCase):
         folder.mkdir(parents=True)
         extra = 'disable-model-invocation: true\n' if upstream else ''
         (folder / 'SKILL.md').write_text(f'---\nname: {name}\ndescription: Fixture skill.\n{extra}---\n\n# Fixture\n')
-        if not upstream and name not in {'design', 'effect'}:
+        if not upstream and name != 'effect':
             (folder / 'agents').mkdir()
             (folder / 'agents/openai.yaml').write_text('policy:\n  allow_implicit_invocation: false\n')
 
@@ -45,6 +48,17 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(self.validate(), [])
         self.write_skill(self.root / 'skills/typescript-best-practices', 'typescript-best-practices')
         self.assertTrue(any('Catalog mismatch' in error for error in self.validate()))
+
+    def test_unreviewed_poteto_prose_changes_are_reported_as_source_drift(self):
+        document = self.root / 'skills/alpha/SKILL.md'
+        document.write_text(document.read_text() + '\nReplace the upstream workflow.\n')
+        self.assertTrue(any('Poteto source drift: alpha/SKILL.md' in error for error in self.validate()))
+
+    def test_removed_runtime_manual_cannot_return(self):
+        document = self.root / 'skills/poteto-mode/references/codex.md'
+        document.parent.mkdir(parents=True)
+        document.write_text('# Runtime manual\n')
+        self.assertTrue(any('Redundant port manual' in error for error in self.validate()))
 
     def test_readme_must_list_every_skill_and_no_unknown_skill(self):
         original = self.readme.read_text()
@@ -60,7 +74,24 @@ class ValidationTests(unittest.TestCase):
             with self.subTest(claim=claim):
                 doc.write_text(claim + '\n')
                 self.assertTrue(any('claims 9' in error for error in self.validate()))
-        doc.write_text('4 skills, 2 Poteto skill directories, 1 principles, 0 playbooks.\n')
+        doc.write_text(f'{self.skill_count} skills, 2 Poteto skill directories, 1 principles, 0 playbooks.\n')
+        self.assertEqual(self.validate(), [])
+
+    def test_design_subskills_are_required_catalog_members(self):
+        (self.root / 'skills/design-mobile/SKILL.md').unlink()
+        self.assertTrue(any("missing=['design-mobile']" in error for error in self.validate()))
+
+    def test_design_family_requires_explicit_invocation(self):
+        policy = self.root / 'skills/design-ui/agents/openai.yaml'
+        policy.write_text('policy:\n  allow_implicit_invocation: true\n')
+        self.assertTrue(any('design-ui: Design skills require explicit invocation' in error for error in self.validate()))
+
+    def test_design_family_cannot_load_poteto_skills(self):
+        document = self.root / 'skills/design-ui/SKILL.md'
+        original = document.read_text()
+        document.write_text(original + '\nRead [alpha](../alpha/SKILL.md).\n')
+        self.assertTrue(any('Design family cannot depend on Poteto skill alpha' in error for error in self.validate()))
+        document.write_text(original + '\nRead [CSS](../design-css/SKILL.md).\n')
         self.assertEqual(self.validate(), [])
 
     def test_titled_links_are_checked_in_skills_and_root_docs(self):
@@ -96,6 +127,13 @@ class ValidationTests(unittest.TestCase):
         self.assertTrue(any('missing heading in link #example' in error for error in self.validate()))
         document.write_text(document.read_text().replace('[Example](#example)', '[Real](#real)'))
         self.assertEqual(self.validate(), [])
+
+    def test_upstream_prompt_link_placeholder_is_not_a_missing_resource(self):
+        document = self.root / 'skills/alpha/synthesizer-prompt.md'
+        document.write_text('Source: [PR #123](url).\n')
+        self.assertEqual(self.validate(), [])
+        document.write_text('[Actual reference](missing.md).\n')
+        self.assertTrue(any('missing link missing.md' in error for error in self.validate()))
 
 
 if __name__ == '__main__':

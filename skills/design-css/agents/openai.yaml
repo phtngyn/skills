@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: CSS"
+  short_description: "Design specialist for layout and native CSS"
+  default_prompt: "Use $design-css to implement or review these styles."
+policy:
+  allow_implicit_invocation: false

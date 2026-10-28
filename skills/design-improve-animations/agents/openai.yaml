@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Improve animations"
+  short_description: "Design specialist for improve animations"
+  default_prompt: "Use $design-improve-animations for this interface task."
+policy:
+  allow_implicit_invocation: false

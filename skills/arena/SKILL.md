@@ -13,19 +13,18 @@ Every candidate gets the same prompt, so the prompt is the contract.
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric, 3-6 concrete gradeable criteria for what success looks like on *this* task. It is the picker's tool in Phase D. Candidates only see the task.
-3. Pick the runners through the [Codex delegation contract](../poteto-mode/references/codex.md), role `arena runners`. Default to two independent candidates inheriting the current model. Use distinct configured models only when explicitly selected and supported.
-
+3. Pick the runners from `arena runners`, from `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`. Default to two inherited candidates. Spawn more runners when the arena covers multiple design directions. Use the same model N times when the work is generation-bound rather than judgment-sensitive.
 4. Give each candidate its own output location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`), per the **separate-before-serializing-shared-state** principle skill.
 
 ## Phase B: Fan out
 
-Launch candidates through the available Codex agent tool, within its concurrency limit. Give each the task, grounding paths, its exclusive output location, and a request for the artifact plus a short rationale identifying rejected alternatives. Read the delegation contract first. If agents are unavailable, produce candidates sequentially in separate directories and disclose the loss of independence.
+Spawn all N subagents in one message with each with the task, the path to the shared grounding, its own output path, and instructions to produce the artifact and a short rationale naming the alternatives it considered and what it rejected.
 
 If a candidate produces no output, proceed with N-1 and note the dropout.
 
 ## Phase C: Cross-judge
 
-After candidates finish writing, launch one independent read-only judge using role `arena cross-judge pool`. It sees the rubric and candidates by path label, scores each criterion, and recommends a base with rationale. Prefer a different configured model when available; fresh context is the default source of independence. Read the artifacts yourself while it judges. If delegation is unavailable, perform a separate rubric pass and label it as self-review.
+After all Phase B candidates complete, choose one model from `arena cross-judge pool`, from `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`, or inherit the parent model. Prefer a different model family when available. Spawn one read-only judge. It sees the rubric and candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.
 
 ## Phase D: Pick a base
 

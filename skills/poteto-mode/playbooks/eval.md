@@ -17,9 +17,9 @@
 1. **Frame.** State what variant is under test and what behavior counts as success. Write the rubric (3-6 concrete criteria) for the judge only. Hold it back from candidates.
 2. **Set up sanitized environments.** Per-candidate working dir with the variant in place. Plant any context an organic task would have: a project skeleton, the skills the candidate would naturally read.
 3. **Author one organic prompt.** What a user would type. No leakage of what's being measured.
-4. **Spawn N parallel candidates** on different models per the **arena** skill's Phase B. Each works in its own sanitized dir. Same prompt to each. Use the Codex delegation contract in `references/codex.md`, relative to the poteto-mode directory.
+4. **Spawn N parallel candidates** on different models per the **arena** skill's Phase B. Each works in its own sanitized dir. Same prompt to each. Use the configured role and supported reasoning effort.
 5. **Spawn one blinded judge** on a different model family per the **arena** skill's Phase C. Judge sees outputs by sanitized label and the rubric, never a model name.
-6. **Verify the chain from actual tool traces when exposed.** Use supported host history or an explicitly identified candidate trace under `references/codex.md`. Grade which files the agent opened from the trace, not its self-report. When traces are unavailable, mark chain-following unverified and score only observable artifacts. Do not crawl private host storage. Adhere to the runtime's isolation and model-override limits; independent contexts are not proof of model diversity.
+6. **Verify the chain from transcripts, not self-report.** Read each candidate's supported host tool traces or explicitly identified workspace transcript. Mark unavailable traces as unverified. Look at which files each candidate actually opened. Grade chain-following from the files it really read plus the shape of the code, never from the candidate's own claims.
 7. **Read every candidate output yourself** end to end. Compare to the judge's verdict. Disagreement means a model is biased or the rubric is ambiguous. Synthesize.
 
 **Reply:** variant under test, rubric, per-candidate notes, judge's verdict, your synthesis, and a recommendation for whether to promote the variant.

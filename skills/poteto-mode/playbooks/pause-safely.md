@@ -1,6 +1,10 @@
 ### Pause safely
 
-1. On an explicit pause or stop, stop launching work and notify active children. Interrupt or drain them through available agent tools. Respect a request for an immediate stop.
-2. Preserve uncommitted work, evidence, and logs. Record current branch and revision, completed units, outstanding gates, and the exact next step. Do not commit, push, merge, or delete simply to make a checkpoint unless authorized.
-3. Identify processes and watchers started by this run. Stop owned processes that should not outlive it and report any still running. Never kill unrelated processes by name.
-4. Return a compact handoff with artifact paths, unresolved blockers, and restart instructions. For imminent compaction, make this checkpoint and continue the authorized task afterward; compaction is not a user pause.
+**You own a clean stop. Leave a checkpoint a cold-start agent can resume from.** This is explicit only. On "keep going", "going to bed, keep going", or "don't stop", do not pause.
+
+1. Stop at a safe boundary. Finish the current atomic step or back out of it. Start nothing new, and cancel any nested subagents.
+2. Take no irreversible action to pause. No PR and no push unless you already had one out.
+3. Make the work durable. Commit uncommitted edits as one clear `wip:` commit on the current branch so nothing is lost. If the tree is broken, say so in the commit body in one line.
+4. Write the resume note off-context. Capture intent, what you were doing, progress and what's verified, current state, next steps, key files, and gotchas. For the compaction trigger write it to a file like `/tmp/<slug>-resume.md`. If a show-me-your-work trail exists, point at it instead of duplicating it.
+
+**Reply:** where you are in the loop, what's on disk versus still in your head (paths, no diff dumps), the commits you made and whether the tree is clean, and the first action on resume. This is a pause, not a final report.

@@ -7,7 +7,7 @@ description: "Apply when two or more fixes that share one premise have failed th
 
 When two or more fixes that share one premise have failed the same gate, suspect the premise, not the fixes.
 
-**Why:** Repeated failures are a reason to test the shared belief directly. The belief may be wrong, or the fixes may have addressed a consequence rather than its cause.
+**Why:** Each failed fix is evidence against the belief it assumed. A third fix on the same premise spends effort where the evidence already says the cause is not.
 
 **Pattern:**
 - **Write the premise down.** The premise is the one sentence that every failed fix assumed.

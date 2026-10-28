@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Animation vocabulary"
+  short_description: "Design specialist for animation vocabulary"
+  default_prompt: "Use $design-animation-vocabulary for this interface task."
+policy:
+  allow_implicit_invocation: false

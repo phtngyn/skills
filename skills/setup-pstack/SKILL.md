@@ -1,36 +1,22 @@
 ---
 name: setup-pstack
-description: "Configure pstack role and panel preferences for Codex using available models, reasoning controls, and inherited defaults."
+description: Configure pstack models per role and reasoning budget. Use for $setup-pstack or changing pstack's model choices.
 ---
 
-# Set up pstack for Codex
+# Setup pstack
 
-Configure model preferences for pstack roles without changing Codex's global settings.
+Write `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json` with optional model choices per role. Unconfigured roles inherit the parent model. This file is read by the skills, not applied globally.
 
-1. Read the [Codex delegation contract](../poteto-mode/references/codex.md). Inspect the active agent tool's schema and any runtime-provided model choices. Treat those as the available set. If overrides are unavailable, retain inheritance and explain the limitation.
-2. Read `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json` if it exists. Missing configuration means every role inherits the current model. Do not mine authentication files or guess model identifiers.
-3. Use the available user-input tool to ask which roles to change when the request does not specify them. Offer inheritance first, then only supported model choices. Ask about reasoning effort only when the runtime supports it. Preserve unspecified choices on updates.
-4. Write the JSON file with one object per role. A scalar role has `model: "inherit-parent"` or a supported model identifier, with optional `reasoning_effort`. A panel role has a list of these objects. Default panels have two inherited entries. The cross-judge pool selects one entry rather than launching the whole list.
-5. Validate the JSON by parsing it, then show the effective choices and the file path. This is a pstack convention read by these skills, not a native Codex configuration key. It applies when a skill next reads it. Do not claim it changes a running agent's model.
+## Steps
 
-Supported role names:
+1. Detect the model and reasoning-effort choices supported by the active agent tools. Do not write an unverified model name. `inherit-parent` and `auto` keep the parent model.
+2. Load the existing JSON if present. Preserve the current budget and role choices; drop retired roles.
+3. Ask for a budget: `unlimited` requests max, `large` requests xhigh, `medium` requests high, and `small` requests medium. Apply supported efforts to real model entries, keeping inheritance unchanged. Show the resulting roles and ask which choices to change. Do not replace a configured model family with another without a user choice.
+4. Validate every chosen model and reasoning effort against the available set.
+5. Write `budget` and `roles` as JSON. A role value is an object with `model` and optional `reasoning_effort`. Panel and pool values are lists of these objects; panel length sets the agent count and a pool supplies one cross-judge. Preserve unspecified choices and parse the written file to validate it.
+6. Report the path and effective choices. They apply when a skill next reads them.
+7. If the project has no way to drive the app for proof, offer once to create one with `$create-verification-skill`.
 
-- `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `hardest tasks`, `judgment and prose`
-- `how explorer`, `how explainer`, `why investigators`, `why synthesizer`
-- `reflect tooling`, `reflect judgment, divergent, synthesizer`
-- Panel roles: `arena runners`, `architect runners`, `interrogate reviewers`
-- Pool role: `arena cross-judge pool`
-- `swarm workers`
+Roles: `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `hardest tasks`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `swarm workers`.
 
-Example:
-
-```json
-{
-  "roles": {
-    "arena runners": [{"model": "inherit-parent"}, {"model": "inherit-parent"}],
-    "swarm workers": {"model": "inherit-parent"}
-  }
-}
-```
-
-Only pass fields the active agent tool accepts. A rejected configured override falls back once to inheritance, with an explicit report. Never manufacture a replacement model or reasoning level.
+Panels: `arena runners`, `architect runners`, `interrogate reviewers`. Pool: `arena cross-judge pool`.

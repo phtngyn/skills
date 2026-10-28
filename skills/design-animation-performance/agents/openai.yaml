@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Animation performance"
+  short_description: "Design specialist for animation performance"
+  default_prompt: "Use $design-animation-performance for this interface task."
+policy:
+  allow_implicit_invocation: false

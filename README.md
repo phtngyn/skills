@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-56 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, plus the personal `design` and `effect` skills. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+68 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and twelve subskills, and `effect`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -44,9 +44,11 @@ $design improve this dialog's layout and keyboard interactions.
 $effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-A typical flow is goal clarification, system understanding, design when needed, implementation, real verification, and review. `poteto-mode` connects those phases. `design` supplies UI craft; `effect` supplies decisions for the latest stable Effect release. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills.
+`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Invoke `$design` separately for UI work through its own Design specialists and shared workflow. Either family works without loading the other, and Poteto does not invoke Design. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` supplies decisions for the latest stable Effect release.
 
 ## Skills
+
+### Poteto
 
 | Skill | Purpose |
 | --- | --- |
@@ -80,8 +82,6 @@ A typical flow is goal clarification, system understanding, design when needed, 
 | `automate-me` | Capture personal working conventions in a mode skill. |
 | `reflect` | Turn repeated session lessons into authorized skill improvements. |
 | `setup-pstack` | Configure optional model preferences for Codex delegation roles. |
-| `design` | UI craft, CSS, prototyping, motion, critique, and mobile web polish using Emil and Good CSS. |
-| `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
 
 The remaining 24 skills are principles, each prefixed with `principle-`:
 
@@ -110,32 +110,56 @@ The remaining 24 skills are principles, each prefixed with `principle-`:
 - `test-behavior-not-implementation`
 - `type-system-discipline`
 
-## Codex adaptation
+### Design
 
-[The runtime contract](skills/poteto-mode/references/codex.md) defines delegation, model inheritance, writable isolation, history access, missing-capability fallbacks, and long-running work. It uses tools actually exposed by the current Codex host. It does not require Cursor, custom agent profiles, hooks, or a plugin marketplace.
+Invoke `$design` to coordinate the task, or invoke a specialist directly. All Design entries are explicit-only. The specialists share Design's own workflow and source rules and read their detailed guidance from the pinned Emil and Good CSS sources. See [Design ownership](skills/design/PROVENANCE.md).
 
-All roles inherit the current model by default. `$setup-pstack` can record optional role preferences at `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`; that file is this collection's convention rather than a native Codex configuration setting. Unavailable model overrides fall back explicitly. Independent contexts are not represented as model diversity.
+| Skill | Purpose |
+| --- | --- |
+| `design` | Coordinate UI work through the Design specialists. |
+| `design-ui` | Implement or critique interface craft, components, and interaction states. |
+| `design-css` | Implement and review layout, typography, overflow, and native CSS. |
+| `design-prototype` | Build distinct UI directions in an interactive picker. |
+| `design-animate` | Build purposeful, interruptible web motion. |
+| `design-animation-performance` | Diagnose frame drops and animation rendering costs. |
+| `design-review-animations` | Review a motion component or diff without editing. |
+| `design-improve-animations` | Audit product motion and prepare scoped execution plans. |
+| `design-find-animation-opportunities` | Find justified opportunities for motion without editing. |
+| `design-animation-vocabulary` | Identify and explain an animation effect. |
+| `design-apple` | Shape physical, Apple-inspired web interactions. |
+| `design-mobile` | Polish mobile web touch, viewport, scrolling, and safe areas. |
+| `design-break-ui` | Stress interfaces with difficult realistic data. |
 
-History comes from supported host tools, identified transcripts, or the visible conversation. Missing history is reported. Persistent monitoring requires an explicitly requested and supported mechanism. Available browser, app-control, shell, and project verification tools provide live proof; absent proof stays unverified.
+### Effect
 
-[POTETO.md](POTETO.md) records adaptation decisions and the reviewed [Aqua-123 Codex port](https://github.com/Aqua-123/pstack-for-codex/tree/3d2770d638d8fb9eabd85c977fe76d90e6b426ce). [UPSTREAM.md](UPSTREAM.md) records source pins and maintenance. [Effect research](research/effect/MAINTENANCE.md) retains historical studies and preferences outside the installed skill; application research clones are optional.
+| Skill | Purpose |
+| --- | --- |
+| `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
+
+## Source fidelity
+
+Poteto's retained skills are regenerated from the pinned upstream source by `scripts/port_poteto.py`. The port changes invocation metadata, unavailable tool calls, model configuration, and platform paths. It adds no runtime manual. [POTETO.md](POTETO.md) records those substitutions and exclusions; [UPSTREAM.md](UPSTREAM.md) records source pins.
+
+Design is an independent family with its own [source rules](skills/design/references/SOURCES.md). [Effect research](research/effect/MAINTENANCE.md) stays outside the installed skills.
 
 ## Validation
 
 ```bash
+python3 scripts/port_poteto.py --check
 python3 scripts/validate.py
 python3 tests/test_validate.py
+python3 tests/test_port_poteto.py
 python3 tests/test_setup.py
 ./scripts/setup.sh --check
 ```
 
-Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, and local Markdown links and heading anchors. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
+Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, local Markdown links and heading anchors, and the absence of Design dependencies on Poteto skills. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
 
 The imported orchestration and GitHub watcher helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
 
 ```bash
 bun install --frozen-lockfile
-bun test orch watch-pr
+bun test orch watch-pr check-plan.test.ts
 bun run typecheck
 ```
 

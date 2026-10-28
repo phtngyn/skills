@@ -7,7 +7,7 @@ description: "Use for \"how does X work\", code walkthroughs before changing som
 
 Explore the codebase to answer "how does X work?" questions. Produce architectural explanations at the level of a senior engineer onboarding onto a subsystem, enough to build a working mental model, not so much that it reads like annotated source code.
 
-Use the [Codex delegation contract](../poteto-mode/references/codex.md), roles `how explorer` and `how explainer`. Explorers and explainers inspect only; they do not edit. When delegation is unavailable, perform the same scoped passes directly and report that limitation.
+Use read-only agents. Explorers use the `how explorer` role and explainers use `how explainer`, from `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`; otherwise inherit the parent model.
 
 ## 1. Assess complexity
 

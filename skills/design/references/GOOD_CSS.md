@@ -8,11 +8,11 @@ Read the upstream [Good CSS entry point](/Users/phtngyn/Developer/skills/repos/g
 
 Prefer intrinsic layout and supported native CSS mechanisms where they preserve the required behavior. Use the project's styling system and established tokens. Apply changes within the requested scope; introducing this skill does not require replacing an existing reset, palette, breakpoint system, or component library. Its CSS-first preference governs presentation techniques; application state, data loading, and necessary focus management can still require JavaScript.
 
-Apply the [Design wrapper's Tailwind preference](../SKILL.md#css-implementation-support) to these techniques. Translate upstream CSS examples into Tailwind utilities, variants, or arbitrary properties when practical, using the installed version's supported syntax. Use small custom CSS rules for mechanisms that utilities cannot express clearly, such as `@property` or reusable keyframes. Preserve logical properties when translating; check the upstream version notes before using newer utilities.
+Apply the [Design CSS styling rules](../../design-css/SKILL.md#task-and-codex-adaptations) to these techniques. Translate upstream CSS examples into Tailwind utilities, variants, or arbitrary properties when practical, using the installed version's supported syntax. Use small custom CSS rules for mechanisms that utilities cannot express clearly, such as `@property` or reusable keyframes. Preserve logical properties when translating; check the upstream version notes before using newer utilities.
 
 ## Design workflow
 
-Keep the active workflow when arriving from Design. For animation design or mobile interaction decisions, read our [Design entry point](../SKILL.md) and its matching branch, reusing guidance already loaded. Route upstream references to Emil's skills through that wrapper so its exclusions and collaboration preferences still apply.
+Keep the active workflow when arriving from Design. For animation design or mobile interaction decisions, use the local adapter named in the [Design source map](SOURCE_MAP.md), reusing guidance already loaded. This preserves the family's exclusions and collaboration preferences without restarting the coordinator.
 
 For overlapping motion recipes, inherited animation variables, animated layout properties, or mobile root scrolling, read [CSS integration](CSS_INTEGRATION.md). It defines the division of responsibility and resolves those specific conflicts.
 

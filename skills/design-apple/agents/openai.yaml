@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Apple-inspired interactions"
+  short_description: "Design specialist for apple-inspired interactions"
+  default_prompt: "Use $design-apple for this interface task."
+policy:
+  allow_implicit_invocation: false

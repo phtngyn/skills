@@ -1,28 +1,62 @@
 ---
 name: reflect
-description: "Review the current conversation for recurring lessons and propose or apply authorized improvements to existing skills."
+description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
 ---
 
 # Reflect
 
-Review the active conversation for durable lessons and route them to existing skills.
+Mine the current conversation for durable learnings, then route them into skill edits.
 
-## Gather evidence
+Invoke when the user says "reflect" or "$reflect". Skip when the conversation is trivial, off-topic, or already covered by an existing skill the parent followed correctly. One-offs are not learnings.
 
-Use the visible conversation or an explicitly identified transcript for this session. If no transcript is exposed, prepare a concise digest with the user's corrections, decisions, failures, and artifacts. State its limits. Do not search unrelated session stores.
+## 1. Locate the active transcript
 
-## Review
+Use the current conversation, supported host history, or an explicitly identified transcript for this workspace. If complete tool traces are unavailable, pass a tight session digest and mark missing evidence.
 
-Read the [Codex delegation contract](../poteto-mode/references/codex.md). Launch three read-only reviewers using `references/judgment-reviewer.md`, `references/tooling-reviewer.md`, and `references/divergent-reviewer.md`. Use role `reflect tooling` for tooling, and `reflect judgment, divergent, synthesizer` for the others. Give them the transcript path or digest, and only the tool access necessary to check its cited evidence.
+## 2. Spawn three reviewers in parallel
 
-Use a fresh synthesizer with `references/synthesizer.md` to produce Accepted, Rejected, and Backlog lists. If delegation is unavailable, perform the lenses sequentially and disclose that limitation.
+Spawn three reviewers together, with access to relevant read tools and connectors. They return findings without edits.
 
-## Apply
+Use each role from `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json`, or inherit the parent model.
 
-Move findings best enforced by types, lint, scripts, or runtime checks to Backlog, following `principle-encode-lessons-in-structure`. Prefer existing skills and repeated evidence. A one-off is not a universal rule.
+| Lens | Role line | Default `model` | Prompt template |
+|---|---|---|---|
+| Judgment | `reflect judgment, divergent, synthesizer` | `inherit-parent` | `references/judgment-reviewer.md` |
+| Tooling | `reflect tooling` | `inherit-parent` | `references/tooling-reviewer.md` |
+| Divergent | `reflect judgment, divergent, synthesizer` | `inherit-parent` | `references/divergent-reviewer.md` |
 
-Present the proposed edits for approval unless the user already authorized applying reflection findings. Apply only the authorized subset. Use Codex's `skill-creator` for substantive skill changes and validate touched skills. Keep backlog items local unless filing them externally was explicitly authorized.
+Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the `spawn_agent` response body.
 
-Never edit a skill under `plugins/cache/`. Resolve installed symlinks to their maintained source. For a cache-owned skill without a writable source, show the proposed destination under `~/.agents/skills/` or the project’s skill directory before approval, then copy and edit it there. Reflection alone does not authorize a push or PR.
+## 3. Synthesize
 
-Report applied edits, unresolved proposals, and rejected findings with reasons.
+Spawn one synthesizer using `reflect judgment, divergent, synthesizer`, or inherit the parent model. It spot-verifies citations through the available connectors. Pass `references/synthesizer.md` verbatim, with every reviewer's full output inlined where marked. It returns an Accepted / Rejected / Backlog list.
+
+## 4. Structural enforcement check
+
+Move any Accepted item that a lint rule, script, metadata flag, or runtime check would enforce more reliably to Backlog. See the **encode-lessons-in-structure** principle skill.
+
+## 5. Apply
+
+Present the synthesizer's full Accepted / Rejected / Backlog output and wait for explicit approval before applying any Accepted edit. The user picks the subset and may redirect routings. Skill changes affect every future agent in the org. Do not auto-apply.
+
+File each Backlog item to your team's devex or backlog tracker without waiting. Only the Accepted list waits for approval.
+
+Never edit a skill under `plugins/cache/`. Before approval, show its destination, `.agents/skills/<skill>/` or `~/.agents/skills/<skill>/`. After approval, copy the skill folder there and edit the copy. Never open a PR or push.
+
+Follow each approved row's Routing exactly:
+
+- Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): the parent does it directly.
+- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): hand to `skill-creator` skill and run its draft / test / iterate loop.
+- `tune description: <skill path>` (the skill exists but didn't trigger when it should have): hand to `skill-creator` and run its description-optimization loop.
+- `new skill via create-skill: <kebab-name>`: hand creation to `skill-creator`. Do not invent the shape ad hoc.
+
+If your environment ships a SKILL.md validator, run it on every touched skill before declaring done.
+
+## 6. Summarize for the user
+
+Short list, no preamble:
+
+- Edits applied: `<skill path>`. What changed, one line each.
+- New skills created: `<skill path>`. One line each (rare).
+- Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
+- Dropped: one line per rejected finding + reason from the synthesizer.
