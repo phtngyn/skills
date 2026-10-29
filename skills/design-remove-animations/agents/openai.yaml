@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Remove animations"
+  short_description: "Remove motion that does not earn its place"
+  default_prompt: "Use $design-remove-animations for this interface task."
+policy:
+  allow_implicit_invocation: false

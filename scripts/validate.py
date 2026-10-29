@@ -12,7 +12,7 @@ EXCLUDED = {'make-bot-ui', 'typescript-best-practices', 'create-formal-verificat
 DESIGN_SUBSKILLS = {
     'design-ui', 'design-css', 'design-prototype', 'design-animate',
     'design-animation-performance', 'design-review-animations',
-    'design-improve-animations', 'design-find-animation-opportunities',
+    'design-improve-animations', 'design-find-animation-opportunities', 'design-remove-animations',
     'design-animation-vocabulary', 'design-apple', 'design-mobile', 'design-break-ui',
 }
 DESIGN = {'design'} | DESIGN_SUBSKILLS

@@ -4,7 +4,19 @@ This directory is maintainer research, outside `skills/effect` and its installed
 
 ## Current Baseline
 
-On 2026-10-23, the npm registry's `latest` release was Effect 4.0.6. Its official `effect@4.0.6` tag resolves to `3b28bf686bf26e9700edd39c025aff2744dc5303`, now adopted in [UPSTREAM.md](../../UPSTREAM.md). Default-branch fetching remains separate from release adoption.
+On 2026-10-29, npm's `latest` release is Effect 4.1.0. The official `effect@4.1.0` tag resolves to `9a91b1926a5fbfaffd302a7a41a94d4d53a1154e`, adopted in [UPSTREAM.md](../../UPSTREAM.md) with the clean reference checkout at that revision.
+
+The skill uses the consuming project's `repo/effect` clone (or `repos/effect` layout) for release-matched source, focused tests and companion packages. Keep API detail there rather than copying the upstream manual into installed guidance. The release review covers 4.0.7 and 4.1.0; unstable and experimental API annotations matter even when the package release is stable.
+
+Focused installed guidance now covers explicit crypto provision and mocks, opt-in HTTP Problem Details, scoped semaphore permits, cleanup-failure reporting, and migration checks for persisted and wire formats. The mixed-cause and closed-scope fork statements were revalidated on the published 4.1.0 package.
+
+Migration evidence from the [release changelog](https://github.com/Effect-TS/effect/blob/effect%404.1.0/packages/effect/CHANGELOG.md): KVS persistence keys change from concatenated store/key names to separated names, so earlier entries, including persisted chat histories, are unreachable without migration. Redis persistence keys change for store IDs containing `%` or `:`. Redis PersistedQueue locks are incompatible with old workers; stop them and let locks expire before starting upgraded workers on the same prefix. RPC SchemaBinary peers require coordinated upgrades for the changed discard envelope. These are release-specific migration facts, not instructions for every application.
+
+In `/tmp/effect-41-validation.dyyaLh`, all four embedded TypeScript examples and the focused probes compiled with strict TypeScript 6.0.3 against published `effect`, `@effect/vitest` and `@effect/platform-node` 4.1.0. Vitest 5.0.4 passed eight checks: the embedded virtual-time test, mixed-cause recovery and retry, closed-scope immediate and uninterruptible forks, scoped listener disposal, schema decoding, service replacement and error identity, permit release after interruption, and real/mock digest provision. This is focused validation, not a full upstream suite or independent skill-effectiveness evaluation.
+
+## Previous Baseline: 4.0.6
+
+On 2026-10-23, the npm registry's `latest` release was Effect 4.0.6. Its official `effect@4.0.6` tag resolves to `3b28bf686bf26e9700edd39c025aff2744dc5303`, adopted for that revision. Default-branch fetching remains separate from release adoption.
 
 Reviewed the release changelog and guidance affected by mixed causes, closed-scope forks, runtime disposal, callback stream registration, and SQL changes. The failure and concurrency guides now state the relevant 4.0.6 semantics. The existing release-sensitive advice for disposal, stream ownership, and post-commit work remains applicable.
 

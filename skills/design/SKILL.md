@@ -23,6 +23,7 @@ Choose the most specific subskill below and read it once; combine specialists on
 | Review existing motion or a motion diff | [design-review-animations](../design-review-animations/SKILL.md) |
 | Audit motion and plan improvements | [design-improve-animations](../design-improve-animations/SKILL.md) |
 | Find worthwhile places to add motion | [design-find-animation-opportunities](../design-find-animation-opportunities/SKILL.md) |
+| Remove unnecessary or excessive motion | [design-remove-animations](../design-remove-animations/SKILL.md) |
 | Name an animation effect | [design-animation-vocabulary](../design-animation-vocabulary/SKILL.md) |
 | Apple-inspired physical interaction or visual design | [design-apple](../design-apple/SKILL.md) |
 | Mobile web polish and touch behavior | [design-mobile](../design-mobile/SKILL.md) |

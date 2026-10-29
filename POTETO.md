@@ -22,6 +22,12 @@ User exclusions remain `make-bot-ui`, `typescript-best-practices`, `create-forma
 
 Reviewed on 2026-10-27: [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude/blob/main/plugins/pstack/skills/poteto-mode/references/codex-tools.md) separates shared workflows from tool mappings. [mdsmithaustin/pstack](https://github.com/mdsmithaustin/pstack/blob/main/PORTING.md) records systematic substitutions and treats upstream as the workflow source of truth. This collection applies the required substitutions during generation rather than loading another mapping manual at runtime. No other port's policy forks, hooks, native profiles, or model defaults are imported.
 
+## Adopted refresh
+
+On 2026-10-29, adopted pstack 0.15.36 at `1ba91fc25c0977741dd0e267849e6234b037ed0a`. The statechart compiler and tests replace the older helpers, Interrogate keeps only executed and reverified findings, and Orchestrate no longer uses its script store. Arena requires a judge from another model family or reports that judging was skipped. Upstream workflows and resources remain intact apart from the compatibility substitutions above. Regeneration removes obsolete tracked files in the managed Poteto skill directories and preserves untracked notes and personal skills.
+
+Validation passed 61 Bun helper tests and the watcher typecheck. The unchanged statechart suite passed 267 tests with 67 live TLC tests skipped without Java/TLC configuration. On this macOS host, its symlink launcher fixture needs a canonical temporary directory (`TMPDIR=/private/tmp npm test`); the default `/var/folders` path resolves under `/private/var/folders` and makes the fixture's relative link miss its target. No upstream code or tests were changed for that environment issue.
+
 ## Refresh and verify
 
 Review upstream changes before advancing the clean checkout and based-on pin together. Then run:

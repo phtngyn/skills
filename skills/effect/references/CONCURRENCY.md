@@ -12,13 +12,15 @@ Before forking, choose the work's lifetime, failure policy and competition polic
 | Dynamic or keyed fiber ownership | `FiberSet` or `FiberMap` |
 | Independent detached work | `forkDetach` with explicit supervision and shutdown |
 
-Forking alone does not guarantee a later failure reaches the caller. Join, report or supervise it. Effect 4.0.6 returns an interrupted fiber without executing work submitted to an already-closed scope, including immediate or uninterruptible forks. Still stop admission when the owner closes; suppression does not establish successful execution. Keep uninterruptible regions limited to transitions that must settle consistently.
+Forking alone does not guarantee a later failure reaches the caller. Join, report or supervise it. Effect 4.1.0 returns an interrupted fiber without executing work submitted to an already-closed scope, including immediate or uninterruptible forks. Still stop admission when the owner closes; suppression does not establish successful execution. Keep uninterruptible regions limited to transitions that must settle consistently.
 
 Choose whether one item failure fails a parallel group or is handled per item. Bound concurrency by the scarce resource and ordering contract. Same-key requests may join one computation, queue every command, replace current work, or coalesce a burst into a follow-up. A fiber registry and a mutex do not supply all of these policies.
 
 ## Coordinate State Transitions
 
 `Ref` supplies atomic synchronous updates; `SynchronizedRef` serializes effectful changes; a Semaphore limits or serializes access. `Deferred` represents one completion result; a Latch represents a reusable gate.
+
+Use `Semaphore.takeScoped` when the permit belongs to a Scope. It returns acquired permits when that Scope closes, including after interruption; waiting remains interruptible unless its caller masks interruption.
 
 A closure-owned Map can be enough when its whole transition is synchronous. Reads and writes separated by suspension need coordination; separate `Ref.get` / `set` are not atomic read-modify-write. Return cleanup or notification work from a critical section when it need not hold the lock. Waiting inside a lock for work that needs the same lock deadlocks.
 

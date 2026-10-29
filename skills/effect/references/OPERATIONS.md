@@ -33,6 +33,8 @@ Process-owned fibers provide local supervision. If intent must survive process l
 
 Deduplicating admission does not guarantee exactly-once external execution. Success followed by failed settlement needs replay, reconciliation or terminal-failure policy appropriate to the adapter. In-memory wakeups accelerate discovery while durable state supports recovery.
 
+Check backing-key, lock and wire formats when upgrading persistence or RPC. Plan migration of existing data and coordinated peer or worker upgrades where the release requires them. A cache becoming unreachable may be acceptable; losing persisted histories is a different contract. Server acknowledgement of a discarded call does not establish completed execution.
+
 For resumable synchronization, preserve stable identity, observe actual state and apply managed deltas toward desired state. Stored properties cannot prove current external state or authorize adoption. Classify conflicts and read-after-write failures per operation and bound retries.
 
 If consumers advance monotonic cursors, coordinate publication order across commit and notification. A local semaphore only coordinates local participants. Required recovery work must survive a process exit; post-commit notifications alone cannot establish that guarantee.

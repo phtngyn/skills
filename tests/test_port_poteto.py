@@ -1,6 +1,8 @@
 """Check the port's observable output at native compatibility boundaries."""
 import importlib.util
 from pathlib import Path
+import subprocess
+import tempfile
 import unittest
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'scripts/port_poteto.py'
@@ -30,6 +32,21 @@ class PortTests(unittest.TestCase):
         self.assertIn('node "${PSTACK_SKILLS_ROOT}/poteto-mode/scripts/check-plan.mjs" <plan>', result)
         self.assertIn('cat "${PSTACK_SKILLS_ROOT}/swarm/SKILL.md"`', result)
         self.assertIn('git show origin/main:<control skill path>`', result)
+
+    def test_refresh_removes_tracked_obsolete_helpers_without_touching_personal_files(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(['git', 'init', '-q', str(root)], check=True)
+            paths = ['skills/statechart/scripts/old.mjs', 'skills/effect/SKILL.md']
+            for relative in paths:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('existing content\n')
+            subprocess.run(['git', '-C', str(root), 'add', 'skills'], check=True)
+            local = root / 'skills/statechart/local-notes.md'
+            local.write_text('untracked notes\n')
+            expected = {'statechart/SKILL.md': b'new skill\n'}
+            self.assertEqual(porter.obsolete_files(root, expected), ['statechart/scripts/old.mjs'])
 
 
 if __name__ == '__main__':

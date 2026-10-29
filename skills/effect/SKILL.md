@@ -5,7 +5,7 @@ description: Design, implement, refactor, and review Effect code using the lates
 
 # Effect
 
-Use the latest published stable Effect release. Verify the registry's `latest` version once at the start of implementation or migration, align companion packages with their compatibility requirements, and update the project's dependency declarations and lockfile when needed. Make the upgrade and its affected behavior visible in the work. Use declarations and source matching that release; an unreleased checkout can have different behavior despite the same package version.
+Use the latest published stable Effect release. Verify the registry's `latest` version once at the start of implementation or migration, align companion packages with their compatibility requirements, and update the project's dependency declarations and lockfile when needed. Make the upgrade and its affected behavior visible in the work. Use the project's `repo/effect` (or `repos/effect`) clone and resolved declarations matching that release; an unreleased checkout can have different behavior despite the same package version.
 
 Choose the smallest design that satisfies the caller. A finite program can compose Effects directly. A service exposes a useful replaceable capability, a Layer constructs it, and a Scope owns resources. Introduce each boundary for a concrete dependency, substitution or lifetime requirement.
 

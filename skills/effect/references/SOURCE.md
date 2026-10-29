@@ -6,9 +6,11 @@ For implementation or migration, verify the latest stable release from the packa
 
 Check the resolved package and its public exports. A source checkout whose package.json declares the same version can contain unreleased commits; match a release tag or verify the source against the installed package before relying on implementation details.
 
+Read the release changelog before upgrading, including intervening patches. Check each affected API's stability annotation: unstable and experimental APIs can change within a stable package release. Include persisted formats and wire protocols in the migration review; passing types do not establish compatibility with old data or peers.
+
 ## Look Up The Concrete Question
 
-Prefer the resolved package's declarations and included source, then official documentation or a release-matched source checkout. Discover available checkouts from the task and workspace rather than assuming a fixed machine path. Keep reference sources read-only; use an isolated checkout if a different revision is needed.
+Use the project's Effect clone at `repo/effect` (or `repos/effect` where that layout is used). Match its revision to the selected release, then inspect `packages/effect/src`, focused tests and companion packages for the concrete question. Use the resolved package's declarations and included source to check the published surface. Keep reference sources read-only; use an isolated checkout if a different revision is needed.
 
 Search the relevant symbol and inspect public declarations first. Read implementation and focused tests when types do not establish cancellation, sharing, failure retention, ordering or cleanup. If the release includes `LLMS.md` or `ai-docs`, use their index to find the relevant example. Do not load a full manual for a single API question.
 
@@ -25,6 +27,8 @@ Paths below are relative to an Effect source checkout; published packages common
 | Streams and delivery | `Stream`, `Queue`, `PubSub`, `SubscriptionRef` |
 | Scheduling and reuse | `Schedule`, `Cache`, `ScopedCache`, `Request`, `RequestResolver` |
 | Schemas and errors | `Schema`, `SchemaParser`, `Data`, `Cause`, `Exit` |
+| Cryptography and platform provision | `crypto/` and the platform's crypto layers |
+| File discovery and encoded streams | `Glob`, `FileSystem`, `encoding/` |
 | HTTP, SQL, RPC and workflows | `http/`, `http-api/`, `sql/`, `rpc/`, `workflow/`, `cluster/` |
 | Framework and platform features | `reactivity/`, `cli/`, `process/`, `ai/`, and compatible platform packages |
 | Tests and consumer types | `testing/`, `test/`, `typetest/`, and `@effect/vitest` |

@@ -30,6 +30,8 @@ Layer sharing depends on Layer identity and the relevant memo map. Reuse named L
 
 Sharing a database does not share process-local wakeups, caches or cancellation signals. Share the implementation instance when its protocol depends on those signals.
 
+Unobserved release failures from `RcMap`, `RcRef` and `ScopedCache` use `UnhandledLogLevel`. Configure that level at the reporting owner; suppressing it does not make cleanup succeed. Caller-observed cleanup still propagates its failure.
+
 Use ordinary scoped composition for one owner and keyed resource mechanisms such as `LayerMap` or `RcMap` when callers borrow independent keyed resources. Define identity, authority, idle retention, failed acquisition, invalidation and active-borrower behavior. Routing replacement and active-work cancellation are separate contracts. Guard delayed cleanup by generation identity when it could remove a replacement.
 
 For lazy acquisition inside a shared host, align cache identity with the Scope that owns release. Some platforms permit shared service descriptions while restricting live I/O to one execution. Retain the Scope requirement on reusable APIs unless their host explicitly guarantees it.

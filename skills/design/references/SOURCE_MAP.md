@@ -12,6 +12,7 @@ When upstream guidance refers to another included skill, read its local adapter:
 | `review-animations` | [design-review-animations](../../design-review-animations/SKILL.md) |
 | `improve-animations` | [design-improve-animations](../../design-improve-animations/SKILL.md) |
 | `find-animation-opportunities` | [design-find-animation-opportunities](../../design-find-animation-opportunities/SKILL.md) |
+| `remove-animations` | [design-remove-animations](../../design-remove-animations/SKILL.md) |
 | `animation-vocabulary` | [design-animation-vocabulary](../../design-animation-vocabulary/SKILL.md) |
 | `apple-design` | [design-apple](../../design-apple/SKILL.md) |
 | `mobile-native` | [design-mobile](../../design-mobile/SKILL.md) |

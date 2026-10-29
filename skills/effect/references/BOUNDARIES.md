@@ -28,7 +28,7 @@ Use tagged errors when callers discriminate cases. `Data.TaggedError` works for 
 
 Translate failures when the abstraction changes. Keep an existing error when it already expresses the caller's contract. At a raw foreign boundary, accept `unknown` and map expected failures to a meaningful error while retaining opaque evidence in `cause`. Avoid widening a useful domain error channel to `unknown`.
 
-Use typed recovery for expected failures. At supervision and reporting boundaries, inspect the complete Cause when cleanup, concurrent failure or interruption matters. In Effect 4.0.6, typed recovery skips causes containing a defect and converts their typed errors to defects. An interrupt alongside a typed error still permits recovery or retry, which can discard that interrupt. Use cause-level handling when the owner must retain all reasons; recheck this behavior when changing releases. Preserve cancellation through recovery and retry unless the owner deliberately handles it.
+Use typed recovery for expected failures. At supervision and reporting boundaries, inspect the complete Cause when cleanup, concurrent failure or interruption matters. In Effect 4.1.0, typed recovery skips causes containing a defect and converts their typed errors to defects. An interrupt alongside a typed error still permits recovery or retry, which can discard that interrupt. Use cause-level handling when the owner must retain all reasons; recheck this behavior when changing releases. Preserve cancellation through recovery and retry unless the owner deliberately handles it.
 
 Use `try` / `tryPromise` for expected foreign throws or rejections. `sync` / `promise` treat unexpected throws or rejections as defects. Use `orDie` where a lower-level failure is an invariant violation for this caller.
 
@@ -39,6 +39,10 @@ A network adapter owns request construction, credentials, status classification,
 Pass Effect's AbortSignal into cooperative APIs. Subscription adapters register listener removal or cancellation with their owner. An interrupted wrapper cannot stop an API that ignores cancellation; distinguish prompt caller cancellation from underlying settlement. Streaming bodies and iterators can outlive the Promise that returned them; see [Lifetimes](LIFETIMES.md#runtime-and-stream-boundaries).
 
 Transport adapters map expected errors to deliberate status and payload contracts. Keep secrets and internal exception evidence out of public responses.
+
+For HTTP Problem Details contracts, assess `HttpApiError.Problem` and the opt-in `HttpApi` middleware before building a custom adapter. Enabling them changes the response contract; ordinary error responses do not opt in automatically.
+
+Use `effect/crypto` services for randomness, digests and key operations, with explicit platform crypto Layers at the owner. Runtime service bundles do not provide crypto. Mock the required services with `Layer.mock` in tests. Secret and private key encoding requires an explicit `allowEncode` choice; logging or serializing a value must not silently export key material.
 
 ## Match Configuration To Its Lifetime
 

@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-68 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and twelve subskills, and `effect`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+69 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, and `effect`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -83,7 +83,7 @@ $effect review this worker's interruption, retries, and resource lifetime.
 | `tdd` | Add a focused failing regression test where a practical test path exists. |
 | `create-verification-skill` | Generate and execute a project-specific real-app verification workflow. |
 | `maintain-verification-skill` | Audit a verification skill and feature map against source and live behavior. |
-| `statechart` | Draw model-backed charts of product flows, protocols, and services and turn agreed charts into TLA+ skeletons. |
+| `statechart` | Check TLA+ models and draw statecharts with paths to broken rules. |
 | `no-comments` | Review comments and address accepted clutter or unenforced constraints. |
 | `correct` | Prevent recurring agent mistakes structurally. |
 | `technical-writing` | Structure and edit technical documents. |
@@ -134,6 +134,7 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 | `design-review-animations` | Review a motion component or diff without editing. |
 | `design-improve-animations` | Audit product motion and prepare scoped execution plans. |
 | `design-find-animation-opportunities` | Find justified opportunities for motion without editing. |
+| `design-remove-animations` | Remove unnecessary motion and reduce excessive animation. |
 | `design-animation-vocabulary` | Identify and explain an animation effect. |
 | `design-apple` | Shape physical, Apple-inspired web interactions. |
 | `design-mobile` | Polish mobile web touch, viewport, scrolling, and safe areas. |
@@ -164,12 +165,22 @@ python3 tests/test_setup.py
 
 Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, local Markdown links and heading anchors, and the absence of Design dependencies on Poteto skills. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
 
-The imported orchestration and GitHub watcher helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
+The imported GitHub watcher and plan-checking helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
 
 ```bash
 bun install --frozen-lockfile
-bun test orch watch-pr check-plan.test.ts
+bun test watch-pr check-plan.test.ts
 bun run typecheck
 ```
 
 Without Bun, skills use their documented direct-tool fallback. The helpers are not required for skill installation or discovery.
+
+The statechart compiler uses a TypeScript-capable runtime through `skills/statechart/scripts/statechart`. Run its checks from `skills/statechart/scripts`:
+
+```bash
+npm install --no-package-lock
+npm test
+```
+
+Live TLC checks require Java and `TLA2TOOLS` pointing to `tla2tools.jar`; without it, those tests report skips.
+On macOS, use `TMPDIR=/private/tmp npm test` if the default temporary directory contains a symlink; upstream's relative-symlink fixture assumes a canonical path.

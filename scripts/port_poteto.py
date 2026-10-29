@@ -64,13 +64,10 @@ You own every subagent's work. Review the diff and write your own summary, don't
         text = line(text, 'Take the runners from', 'Take the runners from the `architect runners` role configured by `$setup-pstack`, in place of `arena runners`. Default to two inherited candidates.')
     elif relative == 'arena/SKILL.md':
         text = line(text, '3. Pick the runners.', '3. Pick the runners from `arena runners`, configured by `$setup-pstack`. Default to two inherited candidates. Spawn more runners when the arena covers multiple design directions. Use the same model N times when the work is generation-bound rather than judgment-sensitive.')
-        text = line(text, 'After all Phase B candidates complete, choose one model', "After all Phase B candidates complete, choose one model from `arena cross-judge pool`, configured by `$setup-pstack`, or inherit the parent model. Prefer a different model family when available. Spawn one read-only judge. It sees the rubric and candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.")
+        text = line(text, 'After all Phase B candidates complete, choose one model', "After all Phase B candidates complete, choose the first supported model from another family in `arena cross-judge pool`, configured by `$setup-pstack`. Inherited entries are the parent model and cannot judge. If no configured model from another family can run, skip the judge and say so. If the parent's model is unknown, try the configured models in pool order and report that the family check did not run. Spawn one read-only judge. It sees the rubric and candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with your reading in Phase D. Don't spawn it while candidates are still writing.")
     elif relative == 'interrogate/SKILL.md':
-        start = text.index('Launch all reviewers in a single message')
-        stop = text.index('Read `references/reviewer-prompt.md`', start)
-        text = text[:start] + '''Launch all reviewers together, one per configured `interrogate reviewers` entry from `$setup-pstack`, labeled Reviewer A, B, and so on. Default to two fresh read-only reviewers inheriting the parent model. Report unavailable model diversity.
-
-''' + text[stop:]
+        text = text.replace(' Spawn each adversary as `generalPurpose`.', '')
+        text = text.replace('with four changes.', 'with three changes.')
     elif relative == 'swarm/SKILL.md':
         text = line(text, '3. Pick the worker model', '3. Pick the worker model from the `swarm workers` role configured by `$setup-pstack`, or inherit the parent model. For a model race, name each available arm up front.')
         text = line(text, 'Spawn all N workers in one message', "Spawn all N workers with isolated writable workspaces. Use the current machine only when a worker needs access to local resources.")
@@ -212,6 +209,20 @@ def expected_files(root=ROOT):
     return files
 
 
+def obsolete_files(root, files):
+    managed = {Path(relative).parts[0] for relative in files}
+    tracked = subprocess.check_output(
+        ['git', '-C', str(root), 'ls-files', '-z', '--', 'skills/'], text=True,
+    ).split('\0')
+    return [
+        Path(path).relative_to('skills').as_posix()
+        for path in tracked if path
+        and Path(path).parts[1] in managed
+        and Path(path).relative_to('skills').as_posix() not in files
+        and (root / path).is_file()
+    ]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true', help='Report drift without writing.')
@@ -236,7 +247,7 @@ def main():
                 original = ROOT / 'repos/pstack/pstack/skills' / relative
                 if original.exists():
                     destination.chmod(original.stat().st_mode & 0o777)
-    for relative in REMOVED:
+    for relative in set(REMOVED) | set(obsolete_files(ROOT, files)):
         destination = ROOT / 'skills' / relative
         if destination.exists():
             changed.append(relative + ' (remove)')
