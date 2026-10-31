@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-69 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, and `effect`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+71 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, `effect`, and two personal pstack delivery entry points. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -145,6 +145,22 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 | Skill | Purpose |
 | --- | --- |
 | `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
+
+### Delivery entry points
+
+These personal skills use the existing pstack workflows. Their finish conditions and task permissions are inspired by [tstack](https://github.com/t3dotgg/tstack/tree/1085050f3baed1ac724caa4a8166145fb2ac88af/skills), with no tstack installation or fixed reviewer model. They are maintained locally rather than generated from Poteto.
+
+| Skill | Purpose |
+| --- | --- |
+| `full-send` | Build, prove, independently review, open a PR, babysit, and merge the requested change. |
+| `full-stop` | Perform the same work through merge-ready, leaving the PR open for the user to merge. |
+
+```text
+$full-send fix duplicate rows when the importer retries.
+$full-stop add keyboard navigation to the picker.
+```
+
+Use these skills through an explicit request. Discovery alone does not grant their task-branch, testing, or merge permissions. Full-stop prevents auto-merge and merge-queue entry. Both use Poteto's implementation, verification, review, and PR playbooks; full-send also uses Shipping.
 
 ## Source fidelity
 

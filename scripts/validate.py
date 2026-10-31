@@ -16,7 +16,7 @@ DESIGN_SUBSKILLS = {
     'design-animation-vocabulary', 'design-apple', 'design-mobile', 'design-break-ui',
 }
 DESIGN = {'design'} | DESIGN_SUBSKILLS
-PERSONAL = DESIGN | {'effect'}
+PERSONAL = DESIGN | {'effect', 'full-send', 'full-stop'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
 
 PORT_SPEC = importlib.util.spec_from_file_location('port_poteto', Path(__file__).with_name('port_poteto.py'))
