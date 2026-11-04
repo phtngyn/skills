@@ -17,6 +17,7 @@ DESIGN_SUBSKILLS = {
 }
 DESIGN = {'design'} | DESIGN_SUBSKILLS
 PERSONAL = DESIGN | {'effect', 'full-send', 'full-stop'}
+EXTERNAL = {'stageshow'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
 
 PORT_SPEC = importlib.util.spec_from_file_location('port_poteto', Path(__file__).with_name('port_poteto.py'))
@@ -88,7 +89,7 @@ def check_catalog_docs(root, actual):
         errors.append(f'README.md: catalog coverage mismatch: missing={sorted(actual-listed)}, extra={sorted(listed-actual)}')
     counts = [
         (r'\b(\d+) skills\b(?! are principles\b)', len(actual), 'skills'),
-        (r'\b(\d+) Poteto (?:core )?skill(?:s| directories)\b', len(actual - PERSONAL), 'Poteto skills'),
+        (r'\b(\d+) Poteto (?:core )?skill(?:s| directories)\b', len(actual - PERSONAL - EXTERNAL), 'Poteto skills'),
         (r'\b(\d+) (?:skills are )?principles\b', sum(name.startswith('principle-') for name in actual), 'principles'),
         (r'\b(\d+) playbooks\b', len(list((root / 'skills/poteto-mode/playbooks').glob('*.md'))), 'playbooks'),
     ]
@@ -110,7 +111,7 @@ def validate(root=ROOT):
         return ['Missing pinned Poteto source; run setup before collection validation.']
     poteto = {p.parent.name for p in upstream.glob('*/SKILL.md')} - EXCLUDED
     expected = poteto.copy()
-    expected |= PERSONAL
+    expected |= PERSONAL | EXTERNAL
     if actual != expected:
         errors.append(f'Catalog mismatch: missing={sorted(expected-actual)}, extra={sorted(actual-expected)}')
     for name in sorted(actual):
@@ -133,7 +134,7 @@ def validate(root=ROOT):
                 errors.append(f'{name}: Design skills require explicit invocation')
             if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
                 errors.append(f'{name}: unsupported host metadata')
-        if name not in PERSONAL:
+        if name not in PERSONAL | EXTERNAL:
             if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
                 errors.append(f'{name}: unsupported host metadata')
             if name not in expected:

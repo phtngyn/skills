@@ -5,3 +5,7 @@ Local modifications adapt the workflows to Codex. See POTETO.md.
 Design sources are recorded in skills/design/PROVENANCE.md. Effect
 maintenance and historical sources are recorded under research/effect/.
 The repository is not an official OpenAI or Cursor project.
+
+Stageshow by Benji Taylor is distributed under the MIT License.
+See skills/stageshow/LICENSE and skills/stageshow/NOTICE.md for third-party
+asset notices. Its adopted source revision is recorded in UPSTREAM.md.

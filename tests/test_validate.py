@@ -20,15 +20,15 @@ class ValidationTests(unittest.TestCase):
         self.upstream = self.root / 'repos/pstack/pstack/skills'
         for name in ['alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill']:
             self.write_skill(self.upstream / name, name, upstream=True)
-        for name in ['alpha', 'principle-check', *sorted(validator.PERSONAL)]:
+        for name in ['alpha', 'principle-check', *sorted(validator.PERSONAL | validator.EXTERNAL)]:
             self.write_skill(self.root / 'skills' / name, name)
-        self.skill_count = len(validator.PERSONAL) + 2
+        self.skill_count = len(validator.PERSONAL | validator.EXTERNAL) + 2
         self.readme = self.root / 'README.md'
         self.readme.write_text(
             f'# Collection\n\n{self.skill_count} skills: the 2 Poteto core skills retained.\n\n'
             '| Skill | Purpose |\n| --- | --- |\n'
             '| `alpha` | A workflow. |\n'
-            + ''.join(f'| `{name}` | Personal skill. |\n' for name in sorted(validator.PERSONAL))
+            + ''.join(f'| `{name}` | Personal skill. |\n' for name in sorted(validator.PERSONAL | validator.EXTERNAL))
             + '\n'
             'The remaining 1 skills are principles:\n\n- `check`\n'
         )

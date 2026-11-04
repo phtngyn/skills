@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-71 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, `effect`, and two personal pstack delivery entry points. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+72 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -145,6 +145,14 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 | Skill | Purpose |
 | --- | --- |
 | `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
+
+### Stageshow
+
+| Skill | Purpose |
+| --- | --- |
+| `stageshow` | Build polished product UI illustrations, feature cards, bento grids, and animated cursor demos with React and CSS. |
+
+From [Benji Taylor's skills](https://github.com/benjitaylor/skills), installed with its complete kit, examples, references, and filming tools. Invoke `$stageshow` with your illustration or demo brief. Follow its README for optional playground dependencies; setup does not install npm packages.
 
 ### Delivery entry points
 
