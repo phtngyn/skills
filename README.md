@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-72 skills: the 54 Poteto core skills retained after excluding `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, and `maintain-formal-verification-skill`, an independent Design family with a coordinator and thirteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+75 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, an independent Design family with a coordinator and fourteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -83,6 +83,8 @@ $effect review this worker's interruption, retries, and resource lifetime.
 | `tdd` | Add a focused failing regression test where a practical test path exists. |
 | `create-verification-skill` | Generate and execute a project-specific real-app verification workflow. |
 | `maintain-verification-skill` | Audit a verification skill and feature map against source and live behavior. |
+| `create-formal-verification-skill` | Generate and prove a project-specific formal verification workflow. |
+| `maintain-formal-verification-skill` | Keep formal models, properties, and harnesses aligned with changed code. |
 | `statechart` | Check TLA+ models and draw statecharts with paths to broken rules. |
 | `no-comments` | Review comments and address accepted clutter or unenforced constraints. |
 | `correct` | Prevent recurring agent mistakes structurally. |
@@ -129,6 +131,7 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 | `design-ui` | Implement or critique interface craft, components, and interaction states. |
 | `design-css` | Implement and review layout, typography, overflow, and native CSS. |
 | `design-prototype` | Build distinct UI directions in an interactive picker. |
+| `design-choreograph` | Coordinate order, overlap, timing, and interruption across moving elements. |
 | `design-animate` | Build purposeful, interruptible web motion. |
 | `design-animation-performance` | Diagnose frame drops and animation rendering costs. |
 | `design-review-animations` | Review a motion component or diff without editing. |

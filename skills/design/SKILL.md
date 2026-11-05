@@ -18,6 +18,7 @@ Choose the most specific subskill below and read it once; combine specialists on
 | General UI craft, implementation, or critique | [design-ui](../design-ui/SKILL.md) |
 | CSS layout, sizing, typography, overflow, or native controls | [design-css](../design-css/SKILL.md) |
 | Explore competing visual or interaction directions | [design-prototype](../design-prototype/SKILL.md) |
+| Coordinate several moving elements, staggers, or view transitions | [design-choreograph](../design-choreograph/SKILL.md) |
 | Build or fix web motion | [design-animate](../design-animate/SKILL.md) |
 | Diagnose dropped frames or choose animation properties and drivers | [design-animation-performance](../design-animation-performance/SKILL.md) |
 | Review existing motion or a motion diff | [design-review-animations](../design-review-animations/SKILL.md) |

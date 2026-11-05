@@ -1,6 +1,6 @@
 # Poteto source and port
 
-The 54 Poteto skill directories derive from the pinned `repos/pstack/pstack/skills/` source in [UPSTREAM.md](UPSTREAM.md). The upstream checkout stays unchanged. The installed files retain upstream workflows, principles, prompts, and supporting tools rather than locally shortened versions.
+The 56 Poteto skill directories derive from the pinned `repos/pstack/pstack/skills/` source in [UPSTREAM.md](UPSTREAM.md). The upstream checkout stays unchanged. The installed files retain upstream workflows, principles, prompts, and supporting tools rather than locally shortened versions.
 
 ## Compatibility changes
 
@@ -16,7 +16,7 @@ There is no shared Codex runtime manual or mandatory read explaining how to use 
 
 ## Retained exclusions
 
-User exclusions remain `make-bot-ui`, `typescript-best-practices`, `create-formal-verification-skill`, `maintain-formal-verification-skill`, and Benny. References that would activate those excluded skills are removed. Design and Effect remain separate personal skills; Poteto does not route to Design.
+User exclusions remain `make-bot-ui`, `typescript-best-practices`, and Benny. References that would activate those excluded skills are removed. Design and Effect remain separate personal skills; Poteto does not route to Design.
 
 ## Other ports reviewed
 
@@ -27,6 +27,10 @@ Reviewed on 2026-10-27: [michael-denyer/pstack-claude](https://github.com/michae
 On 2026-10-29, adopted pstack 0.15.36 at `1ba91fc25c0977741dd0e267849e6234b037ed0a`. The statechart compiler and tests replace the older helpers, Interrogate keeps only executed and reverified findings, and Orchestrate no longer uses its script store. Arena requires a judge from another model family or reports that judging was skipped. Upstream workflows and resources remain intact apart from the compatibility substitutions above. Regeneration removes obsolete tracked files in the managed Poteto skill directories and preserves untracked notes and personal skills.
 
 Validation passed 61 Bun helper tests and the watcher typecheck. The unchanged statechart suite passed 267 tests with 67 live TLC tests skipped without Java/TLC configuration. On this macOS host, its symlink launcher fixture needs a canonical temporary directory (`TMPDIR=/private/tmp npm test`); the default `/var/folders` path resolves under `/private/var/folders` and makes the fixture's relative link miss its target. No upstream code or tests were changed for that environment issue.
+
+## Source refresh on 2026-11-05
+
+Advanced the source pin to `2776ddd2355d6d6c8747d3964600f28daf62f049`. The `pstack/` tree is unchanged from the previously adopted revision; the upstream workflows need no source changes. Restored `create-formal-verification-skill` and `maintain-formal-verification-skill`, including their workflow references and setup offers. Other exclusions and compatibility substitutions remain unchanged.
 
 ## Refresh and verify
 

@@ -4,6 +4,14 @@ This directory is maintainer research, outside `skills/effect` and its installed
 
 ## Current Baseline
 
+On 2026-11-05, npm's `latest` release is Effect 4.1.2. The official `effect@4.1.2` tag resolves to `506eef143bcc1750ce58920aac1e45da7265d103`, adopted in [UPSTREAM.md](../../UPSTREAM.md). Unreleased main remains a separately recorded fetched revision.
+
+Reviewed the 4.1.1 and 4.1.2 changelogs: cluster transaction/replay and transient storage handling, RPC transport cancellation, Redis rate-limit key isolation, HTTP cookies, crypto declarations, and idle exporter cleanup. The existing ownership, retry, persistence, and cancellation guidance remains applicable. New `effect/jose` APIs are unstable despite the stable package release; inspect their annotations before use.
+
+In `/private/tmp/skills-effect-412`, all four embedded TypeScript examples compiled against published `effect`, `@effect/vitest`, and `@effect/platform-node` 4.1.2 with strict TypeScript. Vitest passed eight checks: virtual time, defect precedence, recovery and retry with mixed interruption, two closed-scope fork modes, listener disposal, schema rejection, and service replacement with error identity. The initial service probe compared entire Exits and failed on expected tracing annotations; the corrected assertion checks the promised error object identity. No installed example required changes. These focused checks do not exercise every upstream release fix or measure independent agent effectiveness.
+
+## Previous Baseline: 4.1.0
+
 On 2026-10-29, npm's `latest` release is Effect 4.1.0. The official `effect@4.1.0` tag resolves to `9a91b1926a5fbfaffd302a7a41a94d4d53a1154e`, adopted in [UPSTREAM.md](../../UPSTREAM.md) with the clean reference checkout at that revision.
 
 The skill uses the consuming project's `repo/effect` clone (or `repos/effect` layout) for release-matched source, focused tests and companion packages. Keep API detail there rather than copying the upstream manual into installed guidance. The release review covers 4.0.7 and 4.1.0; unstable and experimental API annotations matter even when the package release is stable.

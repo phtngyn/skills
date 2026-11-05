@@ -16,6 +16,7 @@ Write `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json` with optional model choice
 5. Write `budget` and `roles` as JSON. A role value is an object with `model` and optional `reasoning_effort`. Panel and pool values are lists of these objects; panel length sets the agent count and a pool supplies one cross-judge. Preserve unspecified choices and parse the written file to validate it.
 6. Report the path and effective choices. They apply when a skill next reads them.
 7. If the project has no way to drive the app for proof, offer once to create one with `$create-verification-skill`.
+8. If the project has no formal verification skill, offer once to create one with `$create-formal-verification-skill`.
 
 Roles: `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `hardest tasks`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `swarm workers`.
 

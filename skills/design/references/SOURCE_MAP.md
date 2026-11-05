@@ -7,6 +7,7 @@ When upstream guidance refers to another included skill, read its local adapter:
 | `emil-design-eng` | [design-ui](../../design-ui/SKILL.md) |
 | `good-css` | [design-css](../../design-css/SKILL.md) |
 | `prototype` | [design-prototype](../../design-prototype/SKILL.md) |
+| `choreograph` | [design-choreograph](../../design-choreograph/SKILL.md) |
 | `animate` | [design-animate](../../design-animate/SKILL.md) |
 | `animation-performance` | [design-animation-performance](../../design-animation-performance/SKILL.md) |
 | `review-animations` | [design-review-animations](../../design-review-animations/SKILL.md) |

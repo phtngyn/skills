@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {'make-bot-ui', 'typescript-best-practices', 'create-formal-verification-skill', 'maintain-formal-verification-skill'}
+EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
 REMOVED = ('poteto-mode/references/codex.md', 'no-comments/references/comment-reviewer.md')
 
 
@@ -93,7 +93,6 @@ Use the current conversation, supported host history, or an explicitly identifie
         text = text.replace('It was started with Enter. Start it as a Custom Mode, or start each task with `/poteto-mode`.', 'Start each new task with `$poteto-mode`.')
         text = text.replace('1. Install with `/add-plugin pstack` in chat, or from Customize in the sidebar.', '1. Install using the [collection setup](../../README.md#install).')
         text = text.replace(' and mention once that a Custom Mode keeps it on.', '.')
-        text = text.replace('Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.', 'Then it offers to generate a verification skill unless the project already has one.')
     elif relative == 'setup-pstack/SKILL.md':
         text = '''---
 name: setup-pstack
@@ -113,6 +112,7 @@ Write `${CODEX_HOME:-$HOME/.codex}/pstack/roles.json` with optional model choice
 5. Write `budget` and `roles` as JSON. A role value is an object with `model` and optional `reasoning_effort`. Panel and pool values are lists of these objects; panel length sets the agent count and a pool supplies one cross-judge. Preserve unspecified choices and parse the written file to validate it.
 6. Report the path and effective choices. They apply when a skill next reads them.
 7. If the project has no way to drive the app for proof, offer once to create one with `$create-verification-skill`.
+8. If the project has no formal verification skill, offer once to create one with `$create-formal-verification-skill`.
 
 Roles: `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `hardest tasks`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `swarm workers`.
 
@@ -122,7 +122,6 @@ Panels: `arena runners`, `architect runners`, `interrogate reviewers`. Pool: `ar
     # Source references to retired skills remain excluded from this installation.
     text = '\n'.join(row for row in text.split('\n') if not any(name in row for name in EXCLUDED - {'typescript-best-practices'}))
     text = '\n'.join(row for row in text.split('\n') if not (row.startswith('|') and 'typescript-best-practices' in row))
-    text = re.sub(r'^- No formal verification skill.*\n', '', text, flags=re.M)
     text = text.replace(' For TypeScript syntax, see the `typescript-best-practices` skill.', '')
     text = text.replace('- Frontmatter `disable-model-invocation: true` by default.', '- Set `policy.allow_implicit_invocation: false` in `agents/openai.yaml` by default.')
 
