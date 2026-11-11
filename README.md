@@ -31,7 +31,7 @@ git pull --ff-only
 
 Setup follows this collection’s reviewed pins, not upstream’s latest development branches. Rerunning it at the current pins needs no fetch. `--check` only reports drift; running setup repairs clean revision mismatches. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
 
-Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Most Poteto skills are explicit-only, preserving upstream policy; `setup-pstack` can also be selected automatically. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
+Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Most Poteto skills are explicit-only, preserving upstream policy; `setup-pstack` and `stageshow` are also explicit-only by local preference. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
 
 ```bash
 ./scripts/setup.sh --target /path/to/isolated-skills

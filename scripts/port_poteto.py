@@ -200,7 +200,7 @@ def expected_files(root=ROOT):
                 text = text.replace('# Transcripts dir: ~/.cursor/projects/<slugified-repo-path>/agent-transcripts.\nslug=$(printf \'%s\' "$main_wt" | sed \'s#^/##; s#/#-#g\')\ntranscripts="$HOME/.cursor/projects/$slug/agent-transcripts"', '# Optional workspace transcript directory supplied by the caller.\ntranscripts="${PSTACK_TRANSCRIPTS:-}"')
                 payload = text.encode()
             files[relative] = payload
-        implicit = 'false' if 'disable-model-invocation: true' in original else 'true'
+        implicit = 'false' if folder.name == 'setup-pstack' or 'disable-model-invocation: true' in original else 'true'
         files[f'{folder.name}/agents/openai.yaml'] = f'policy:\n  allow_implicit_invocation: {implicit}\n'.encode()
     persona = source.parent / 'agents/comment-sicko.md'
     if persona.exists():

@@ -12,7 +12,7 @@
 
 `skills/design` coordinates fifteen local `design-*` Codex adapters that load Emil and Good CSS directly. This family maintains its own workflow and source rules; see [Design ownership](skills/design/PROVENANCE.md). The Poteto directories under `skills/` contain Codex adaptations of the pinned pstack source; see [POTETO.md](POTETO.md) for ownership, exclusions, and refresh rules. Keep source checkouts at their based-on commits. Effect's based-on commit matches the reviewed stable release. Its maintenance and historical research live outside the installed skill in [research/effect](research/effect/MAINTENANCE.md). The consuming project's declarations and tests establish available Effect behavior. Matt is no longer an installation dependency; an existing local clone is left untouched.
 
-`skills/stageshow` links the complete, unmodified upstream Stageshow folder, including its MIT license, third-party notices, kit, examples, references, and tools.
+`skills/stageshow` links the complete, unmodified upstream Stageshow folder, including its MIT license, third-party notices, kit, examples, references, and tools. Local `agents/openai.yaml` metadata makes invocation explicit-only.
 
 ## Maintenance
 

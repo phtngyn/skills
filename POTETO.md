@@ -6,7 +6,7 @@ The 56 Poteto skill directories derive from the pinned `repos/pstack/pstack/skil
 
 The reproducible substitutions live in [port_poteto.py](scripts/port_poteto.py), outside the installed skill prompts:
 
-- Convert `/skill-name` examples to `$skill-name`, remove unsupported frontmatter, and preserve invocation policy in `agents/openai.yaml`.
+- Convert `/skill-name` examples to `$skill-name`, remove unsupported frontmatter, and preserve invocation policy in `agents/openai.yaml`, except `setup-pstack` is explicit-only by local preference.
 - Replace unavailable agent/tool fields and provider-only model defaults with native calls and the existing per-role model choices. Unconfigured roles inherit. The role names, panel sizes, and workflow stages stay intact.
 - Map project skill locations, skill authoring, source references, and runtime verification to their local equivalents.
 - Use supported host history or explicitly identified transcripts instead of Cursor-private paths. The worktree audit accepts an optional `PSTACK_TRANSCRIPTS` directory.

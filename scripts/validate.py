@@ -140,7 +140,7 @@ def validate(root=ROOT):
             if name not in expected:
                 continue
             original = (upstream / name / 'SKILL.md').read_text()
-            implicit = 'false' if 'disable-model-invocation: true' in original else 'true'
+            implicit = 'false' if name == 'setup-pstack' or 'disable-model-invocation: true' in original else 'true'
             policy = folder / 'agents/openai.yaml'
             if not policy.is_file() or not re.search(r'allow_implicit_invocation: ' + implicit + r'\b', policy.read_text()):
                 errors.append(f'{name}: invocation policy differs from upstream')
