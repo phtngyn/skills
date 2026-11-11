@@ -34,6 +34,8 @@ Unobserved release failures from `RcMap`, `RcRef` and `ScopedCache` use `Unhandl
 
 Use ordinary scoped composition for one owner and keyed resource mechanisms such as `LayerMap` or `RcMap` when callers borrow independent keyed resources. Define identity, authority, idle retention, failed acquisition, invalidation and active-borrower behavior. Routing replacement and active-work cancellation are separate contracts. Guard delayed cleanup by generation identity when it could remove a replacement.
 
+On Effect 4.1.4, `RcMap` measures idle time and runs its idle timers using the context in which the map was constructed, including when release or `touch` runs under another clock. Pending `ScopedCache.get` and `getOption` calls interrupt if their lookup completes after the cache's owner closes; callers must not treat a late lookup as a usable resource. Test owner closure during acquisition when that race matters.
+
 For lazy acquisition inside a shared host, align cache identity with the Scope that owns release. Some platforms permit shared service descriptions while restricting live I/O to one execution. Retain the Scope requirement on reusable APIs unless their host explicitly guarantees it.
 
 ## Runtime And Stream Boundaries

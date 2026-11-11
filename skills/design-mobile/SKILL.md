@@ -5,7 +5,7 @@ description: "Polish mobile web viewport, touch, scrolling, safe areas, keyboard
 
 # Mobile web
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [mobile-native](/Users/phtngyn/Developer/skills/repos/emil/skills/mobile-native/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [mobile-native](../../repos/emil/skills/mobile-native/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

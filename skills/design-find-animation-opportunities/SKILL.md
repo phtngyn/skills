@@ -5,7 +5,7 @@ description: "Find justified places for motion and propose precise recipes witho
 
 # Find animation opportunities
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [find-animation-opportunities](/Users/phtngyn/Developer/skills/repos/emil/skills/find-animation-opportunities/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [find-animation-opportunities](../../repos/emil/skills/find-animation-opportunities/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

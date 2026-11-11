@@ -5,7 +5,7 @@ description: "Diagnose frame drops, rendering costs, and animation property or d
 
 # Animation performance
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animation-performance](/Users/phtngyn/Developer/skills/repos/emil/skills/animation-performance/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animation-performance](../../repos/emil/skills/animation-performance/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

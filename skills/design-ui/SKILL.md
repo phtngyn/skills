@@ -5,7 +5,7 @@ description: "Implement or critique interface hierarchy, components, interaction
 
 # UI craft
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [emil-design-eng](/Users/phtngyn/Developer/skills/repos/emil/skills/emil-design-eng/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [emil-design-eng](../../repos/emil/skills/emil-design-eng/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

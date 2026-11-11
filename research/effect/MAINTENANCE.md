@@ -4,6 +4,18 @@ This directory is maintainer research, outside `skills/effect` and its installed
 
 ## Current Baseline
 
+On 2026-11-11, npm's `latest` release is Effect 4.1.4. The official `effect@4.1.4` tag resolves to `289a53f7b1fc40049219c6e69022db2fb859c356`, adopted in [UPSTREAM.md](../../UPSTREAM.md). The clean reference checkout matches that tag; fetched main remains separately recorded.
+
+Reviewed the 4.1.3 and 4.1.4 changelogs and the focused implementation and regression tests for race-loser interruption, `RcMap` idle clocks, `ScopedCache` owner closure, SQL driver requirements and transaction lifetime, and `TestClock` finalizer masking. Updated the installed guides with these conditional lifecycle decisions and rechecked their mixed-cause and closed-scope fork statements on the published release. SQL and AI APIs retain their unstable annotations despite the stable package version.
+
+For migrations involving AI tools, 4.1.3 changes `Schema.Void` tool encoded results to `null`; dynamic tools without a success schema must return JSON values. The regenerated OpenRouter schemas in 4.1.4 remove some intermediate exports and add required response fields. Review the [release changelog](https://github.com/Effect-TS/effect/blob/effect%404.1.4/packages/effect/CHANGELOG.md) against affected consumers, fixtures and stored responses before upgrading them. These are release-specific migration notes rather than requirements for unrelated programs.
+
+In an isolated temporary npm workspace, all four embedded TypeScript examples and the focused probes compiled with strict TypeScript 7.0.2 against published `effect`, `@effect/vitest`, and `@effect/platform-node` 4.1.4. Vitest 5.1.0 passed fourteen checks: the embedded virtual-time example, service replacement with error identity, schema rejection before downstream effects, listener release on cancellation, defect precedence in typed recovery, recovery and retry with mixed interruption, two closed-scope fork modes, first-use `TestClock` finalizer masking, `RcMap` maker-clock idle expiry, cache-owner closure interrupting pending reads, race-loser queue-item retention, and rejection of retained SQL transaction connections and nested work after completion. The race probe controls the scheduler; the SQL probe uses stub transaction controls, without a database.
+
+Collection validation, all forty validator/port/installer tests, Poteto source-fidelity checks, skill frontmatter validation, installed-link/source-pin checks and diff checks passed. These are focused examples and lifecycle probes, not the full upstream suite or an independent agent-effectiveness evaluation.
+
+## Previous Baseline: 4.1.2
+
 On 2026-11-05, npm's `latest` release is Effect 4.1.2. The official `effect@4.1.2` tag resolves to `506eef143bcc1750ce58920aac1e45da7265d103`, adopted in [UPSTREAM.md](../../UPSTREAM.md). Unreleased main remains a separately recorded fetched revision.
 
 Reviewed the 4.1.1 and 4.1.2 changelogs: cluster transaction/replay and transient storage handling, RPC transport cancellation, Redis rate-limit key isolation, HTTP cookies, crypto declarations, and idle exporter cleanup. The existing ownership, retry, persistence, and cancellation guidance remains applicable. New `effect/jose` APIs are unstable despite the stable package release; inspect their annotations before use.

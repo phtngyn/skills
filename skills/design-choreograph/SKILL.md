@@ -5,7 +5,7 @@ description: "Coordinate several moving elements through deliberate order, overl
 
 # Choreograph
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [choreograph](/Users/phtngyn/Developer/skills/repos/emil/skills/choreograph/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [choreograph](../../repos/emil/skills/choreograph/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

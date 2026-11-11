@@ -9,6 +9,7 @@ When upstream guidance refers to another included skill, read its local adapter:
 | `prototype` | [design-prototype](../../design-prototype/SKILL.md) |
 | `choreograph` | [design-choreograph](../../design-choreograph/SKILL.md) |
 | `animate` | [design-animate](../../design-animate/SKILL.md) |
+| `gestures` | [design-gestures](../../design-gestures/SKILL.md) |
 | `animation-performance` | [design-animation-performance](../../design-animation-performance/SKILL.md) |
 | `review-animations` | [design-review-animations](../../design-review-animations/SKILL.md) |
 | `improve-animations` | [design-improve-animations](../../design-improve-animations/SKILL.md) |

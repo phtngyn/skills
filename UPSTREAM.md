@@ -4,13 +4,13 @@
 
 | Source | Repository | Local clone | Last fetched commit | Skills based on commit |
 | --- | --- | --- | --- | --- |
-| Emil | https://github.com/emilkowalski/skills | `repos/emil` | `c8a79627b59d72d764d6ab6f2c87c09a48169833` | `c8a79627b59d72d764d6ab6f2c87c09a48169833` |
+| Emil | https://github.com/emilkowalski/skills | `repos/emil` | `715c1807e08c497cfd1dc4feb450a2a3300ef2a9` | `715c1807e08c497cfd1dc4feb450a2a3300ef2a9` |
 | Good CSS | https://github.com/vojtaholik/good-css | `repos/good-css` | `35e0e8c673854ca34d8e1879038e44834c855dfb` | `35e0e8c673854ca34d8e1879038e44834c855dfb` |
-| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `cb679e39cabeeadc5b40a5e20da311b9e4054a1b` | `506eef143bcc1750ce58920aac1e45da7265d103` |
-| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `2776ddd2355d6d6c8747d3964600f28daf62f049` | `2776ddd2355d6d6c8747d3964600f28daf62f049` |
+| Effect | https://github.com/Effect-TS/effect | `repos/effect` | `f9f5f9de9431a6ac47b249a443ba999c67c35ac2` | `289a53f7b1fc40049219c6e69022db2fb859c356` |
+| Poteto | https://github.com/cursor/plugins | `repos/pstack` | `5866df557357d005b3c0c9d3da0d9e739b4bdde3` | `2776ddd2355d6d6c8747d3964600f28daf62f049` |
 | Benji Taylor | https://github.com/benjitaylor/skills | `repos/benjitaylor` | `299140fafd08df55a9c234e610c3f64af3f45531` | `299140fafd08df55a9c234e610c3f64af3f45531` |
 
-`skills/design` coordinates fourteen local `design-*` Codex adapters that load Emil and Good CSS directly. This family maintains its own workflow and source rules; see [Design ownership](skills/design/PROVENANCE.md). The Poteto directories under `skills/` contain Codex adaptations of the pinned pstack source; see [POTETO.md](POTETO.md) for ownership, exclusions, and refresh rules. Keep source checkouts at their based-on commits. Effect's based-on commit matches the reviewed stable release. Its maintenance and historical research live outside the installed skill in [research/effect](research/effect/MAINTENANCE.md). The consuming project's declarations and tests establish available Effect behavior. Matt is no longer an installation dependency; an existing local clone is left untouched.
+`skills/design` coordinates fifteen local `design-*` Codex adapters that load Emil and Good CSS directly. This family maintains its own workflow and source rules; see [Design ownership](skills/design/PROVENANCE.md). The Poteto directories under `skills/` contain Codex adaptations of the pinned pstack source; see [POTETO.md](POTETO.md) for ownership, exclusions, and refresh rules. Keep source checkouts at their based-on commits. Effect's based-on commit matches the reviewed stable release. Its maintenance and historical research live outside the installed skill in [research/effect](research/effect/MAINTENANCE.md). The consuming project's declarations and tests establish available Effect behavior. Matt is no longer an installation dependency; an existing local clone is left untouched.
 
 `skills/stageshow` links the complete, unmodified upstream Stageshow folder, including its MIT license, third-party notices, kit, examples, references, and tools.
 

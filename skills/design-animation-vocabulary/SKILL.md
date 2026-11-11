@@ -5,7 +5,7 @@ description: "Name and explain an animation effect so a visual reference can bec
 
 # Animation vocabulary
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animation-vocabulary](/Users/phtngyn/Developer/skills/repos/emil/skills/animation-vocabulary/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animation-vocabulary](../../repos/emil/skills/animation-vocabulary/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

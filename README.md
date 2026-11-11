@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-75 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, an independent Design family with a coordinator and fourteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+76 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, an independent Design family with a coordinator and fifteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -133,6 +133,7 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 | `design-prototype` | Build distinct UI directions in an interactive picker. |
 | `design-choreograph` | Coordinate order, overlap, timing, and interruption across moving elements. |
 | `design-animate` | Build purposeful, interruptible web motion. |
+| `design-gestures` | Build direct drag, swipe, snap, dismiss, and hold interactions. |
 | `design-animation-performance` | Diagnose frame drops and animation rendering costs. |
 | `design-review-animations` | Review a motion component or diff without editing. |
 | `design-improve-animations` | Audit product motion and prepare scoped execution plans. |

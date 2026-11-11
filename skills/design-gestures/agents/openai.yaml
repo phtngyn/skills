@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design: Gestures"
+  short_description: "Design specialist for web gestures"
+  default_prompt: "Use $design-gestures for this interface task."
+policy:
+  allow_implicit_invocation: false

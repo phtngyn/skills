@@ -8,11 +8,11 @@ This skill teaches design and implementation decisions for Effect v4. Its organi
 
 | Source | Reviewed revision | Material used |
 | --- | --- | --- |
-| [Effect](/Users/phtngyn/Developer/skills/repos/effect) | `0c8b446709c737c10d0e11af4313bb29fdff2588` | `LLMS.md`, focused application examples, public declarations/implementation, test/type-test conventions, and focused sharing, failure, disposal, stream and SQL callback changes |
-| [OpenCode v2](/Users/phtngyn/Developer/skills/repos/opencode) | `4617210822bdbb31e5749751afbfb4584ccedac8` | Service graph composition, location ownership, plugin registrations, reloads, session coordination, host adapters, and focused regression tests |
-| [T3 Code](/Users/phtngyn/Developer/skills/repos/t3-code) | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | Shared Layer wiring, durable command/outbox execution, cancellation registration, commit/publication ordering, bounded replay/live streams and focused regression tests |
-| [Alchemy](/Users/phtngyn/Developer/skills/repos/alchemy) | `9e3c0584342d67b24a4215f931047aabd230327b` | Capability setup and invocation, observed-state reconciliation, phased dependency readiness, execution-scoped memoization and focused regression tests |
-| [Writing for Agents](/Users/phtngyn/Developer/skills/repos/mattpocock) | `49dd158d1076134a641b33efb035946536778336` | Decision-oriented hierarchy, conditional context pointers, co-location, and pruning |
+| [Effect](../../repos/effect) | `0c8b446709c737c10d0e11af4313bb29fdff2588` | `LLMS.md`, focused application examples, public declarations/implementation, test/type-test conventions, and focused sharing, failure, disposal, stream and SQL callback changes |
+| [OpenCode v2](../../repos/opencode) | `4617210822bdbb31e5749751afbfb4584ccedac8` | Service graph composition, location ownership, plugin registrations, reloads, session coordination, host adapters, and focused regression tests |
+| [T3 Code](../../repos/t3-code) | `2fbd4318fc5b610c3e7fcfcbd5bbd80b73521d8f` | Shared Layer wiring, durable command/outbox execution, cancellation registration, commit/publication ordering, bounded replay/live streams and focused regression tests |
+| [Alchemy](../../repos/alchemy) | `9e3c0584342d67b24a4215f931047aabd230327b` | Capability setup and invocation, observed-state reconciliation, phased dependency readiness, execution-scoped memoization and focused regression tests |
+| [Writing for Agents](../../repos/mattpocock) | `49dd158d1076134a641b33efb035946536778336` | Decision-oriented hierarchy, conditional context pointers, co-location, and pruning |
 
 The local checkouts live under `repos/`; [UPSTREAM.md](../../UPSTREAM.md) records their adopted revisions. The Effect checkout declares version 4.0.5 and includes subsequent changes with unreleased changesets; that version number alone does not establish availability of the newer fixes or APIs. OpenCode's reviewed dependency catalog uses 4.0.1, and T3 Code's uses 4.0.5. Alchemy's catalog declares `^4.0.0` with a workspace override to 4.0.4. Resolve available APIs against the consuming project's declarations.
 

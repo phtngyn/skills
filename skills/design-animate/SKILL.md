@@ -5,7 +5,7 @@ description: "Build web motion with purposeful timing, interruption, exit behavi
 
 # Animate
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animate](/Users/phtngyn/Developer/skills/repos/emil/skills/animate/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [animate](../../repos/emil/skills/animate/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

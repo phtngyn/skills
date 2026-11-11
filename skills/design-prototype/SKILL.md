@@ -5,7 +5,7 @@ description: "Explore distinct UI directions in an isolated interactive picker, 
 
 # Prototype
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [prototype](/Users/phtngyn/Developer/skills/repos/emil/skills/prototype/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [prototype](../../repos/emil/skills/prototype/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

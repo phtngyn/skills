@@ -20,6 +20,7 @@ Choose the most specific subskill below and read it once; combine specialists on
 | Explore competing visual or interaction directions | [design-prototype](../design-prototype/SKILL.md) |
 | Coordinate several moving elements, staggers, or view transitions | [design-choreograph](../design-choreograph/SKILL.md) |
 | Build or fix web motion | [design-animate](../design-animate/SKILL.md) |
+| Drag, swipe, snap, dismiss, or hold interactions | [design-gestures](../design-gestures/SKILL.md) |
 | Diagnose dropped frames or choose animation properties and drivers | [design-animation-performance](../design-animation-performance/SKILL.md) |
 | Review existing motion or a motion diff | [design-review-animations](../design-review-animations/SKILL.md) |
 | Audit motion and plan improvements | [design-improve-animations](../design-improve-animations/SKILL.md) |

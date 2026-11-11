@@ -5,7 +5,7 @@ description: "Audit product motion, prioritize improvements, and write scoped ex
 
 # Improve animations
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [improve-animations](/Users/phtngyn/Developer/skills/repos/emil/skills/improve-animations/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [improve-animations](../../repos/emil/skills/improve-animations/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

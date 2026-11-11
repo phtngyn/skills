@@ -37,6 +37,8 @@ it.effect("finishes after its delay", () =>
 
 Choose the race that could violate the promise: a new request during refresh, old cleanup after replacement, cancellation while a finalizer is blocked, or failure during a commit/publication handoff. Assert the externally visible result, ownership and settlement. For mixed failure causes, verify that recovery preserves all evidence the caller needs on the selected release.
 
+For cancellation with delayed cleanup, advance the test clock through the finalizer's sleep and await settlement before asserting release. Effect 4.1.4 fixes first-use `TestClock` warning setup interrupting an otherwise uninterruptible finalizer; avoid compensating for that older bug by weakening the cleanup assertion.
+
 ## Runtime, Types, And Packaging
 
 Use focused runtime checks for behavior and cleanup. A declaration change generally needs type-checking; add consumer type tests for public inference, assignability, narrowing or overload contracts. Test direct and piped forms when both are public.

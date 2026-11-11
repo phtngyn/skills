@@ -5,7 +5,7 @@ description: "Review a motion diff or component and report specific craft, perfo
 
 # Review animations
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [review-animations](/Users/phtngyn/Developer/skills/repos/emil/skills/review-animations/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [review-animations](../../repos/emil/skills/review-animations/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

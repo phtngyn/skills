@@ -5,7 +5,7 @@ description: "Exercise interfaces with difficult realistic data, compare normal 
 
 # Stress UI
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [break-ui](/Users/phtngyn/Developer/skills/repos/emil/skills/break-ui/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [break-ui](../../repos/emil/skills/break-ui/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

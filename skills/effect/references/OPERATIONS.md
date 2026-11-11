@@ -29,6 +29,8 @@ A bounded result cache can evict an in-flight entry and allow another lookup for
 
 Configure HTTP credentials, base URL, status classification and decoding at the adapter. Keep authoritative transactions limited to facts that must commit together. External I/O has its own retry and ambiguous-outcome policy.
 
+Keep SQL work within its transaction's lifetime. Effect 4.1.4 rejects statements and nested transactions from fibers that outlive their transaction rather than reusing its released connection. Providing generic `SqlClient` does not satisfy a driver-specific service requirement; expose the generic capability when consumers need portability and provide the driver when they require driver APIs. Recheck driver-layer unions and inferred requirements when upgrading from 4.1.2 or earlier.
+
 Process-owned fibers provide local supervision. If intent must survive process loss, assess the release's durable workflow tools or an appropriate persisted-work protocol. Store required work with authoritative state when a crash between them would lose the operation. Acceptance and completed execution are different promises.
 
 Deduplicating admission does not guarantee exactly-once external execution. Success followed by failed settlement needs replay, reconciliation or terminal-failure policy appropriate to the adapter. In-memory wakeups accelerate discovery while durable state supports recovery.

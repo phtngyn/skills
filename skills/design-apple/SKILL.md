@@ -5,7 +5,7 @@ description: "Design web interactions with direct manipulation, springs, momentu
 
 # Apple-inspired interactions
 
-Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [apple-design](/Users/phtngyn/Developer/skills/repos/emil/skills/apple-design/SKILL.md) for the requested task; local adaptations below take precedence.
+Read the [source rules](../design/references/SOURCES.md) once, reusing them if already loaded. Then follow the upstream [apple-design](../../repos/emil/skills/apple-design/SKILL.md) for the requested task; local adaptations below take precedence.
 
 ## Task and Codex adaptations
 

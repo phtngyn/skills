@@ -10,7 +10,7 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
 DESIGN_SUBSKILLS = {
-    'design-ui', 'design-css', 'design-prototype', 'design-animate', 'design-choreograph',
+    'design-ui', 'design-css', 'design-prototype', 'design-animate', 'design-choreograph', 'design-gestures',
     'design-animation-performance', 'design-review-animations',
     'design-improve-animations', 'design-find-animation-opportunities', 'design-remove-animations',
     'design-animation-vocabulary', 'design-apple', 'design-mobile', 'design-break-ui',
