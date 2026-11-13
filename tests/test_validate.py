@@ -86,6 +86,18 @@ class ValidationTests(unittest.TestCase):
         policy.write_text('policy:\n  allow_implicit_invocation: true\n')
         self.assertTrue(any('design-ui: Design skills require explicit invocation' in error for error in self.validate()))
 
+    def test_only_effect_may_allow_implicit_invocation(self):
+        for name in ('full-send', 'full-stop', 'stageshow'):
+            policy = self.root / f'skills/{name}/agents/openai.yaml'
+            original = policy.read_text()
+            with self.subTest(name=name):
+                policy.unlink()
+                self.assertTrue(any(f'{name}: only effect' in error for error in self.validate()))
+                policy.write_text('policy:\n  allow_implicit_invocation: true\n')
+                self.assertTrue(any(f'{name}: only effect' in error for error in self.validate()))
+                policy.write_text(original)
+        self.assertEqual(self.validate(), [])
+
     def test_design_family_cannot_load_poteto_skills(self):
         document = self.root / 'skills/design-ui/SKILL.md'
         original = document.read_text()

@@ -128,6 +128,10 @@ def validate(root=ROOT):
             errors.append(f'{name}: missing description')
         if len(name) > 64 or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', name):
             errors.append(f'{name}: invalid skill name')
+        if name != 'effect':
+            policy = folder / 'agents/openai.yaml'
+            if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
+                errors.append(f'{name}: only effect may allow implicit invocation')
         if name in DESIGN:
             policy = folder / 'agents/openai.yaml'
             if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
