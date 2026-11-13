@@ -53,7 +53,7 @@ $design improve this dialog's layout and keyboard interactions.
 $effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Invoke `$design` separately for UI work through its own Design specialists and shared workflow. Either family works without loading the other, and Poteto does not invoke Design. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` supplies decisions for the latest stable Effect release.
+`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Invoke `$design` separately for UI work through its own Design specialists and shared workflow. Either family works without loading the other, and Poteto does not invoke Design. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` directs agents to the installed Effect package’s guidance and source.
 
 ## Skills
 
@@ -148,7 +148,7 @@ Invoke `$design` to coordinate the task, or invoke a specialist directly. All De
 
 | Skill | Purpose |
 | --- | --- |
-| `effect` | Design, implement, and review programs and libraries with the latest stable Effect release. |
+| `effect` | Write and review Effect code using the installed package’s guidance and source. |
 
 ### Stageshow
 
