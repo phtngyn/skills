@@ -29,7 +29,7 @@ git pull --ff-only
 ./scripts/setup.sh
 ```
 
-Setup follows this collection’s reviewed pins, not upstream’s latest development branches. Rerunning it at the current pins needs no fetch. `--check` only reports drift; running setup repairs clean revision mismatches. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
+Setup follows this collection’s adopted pins, not upstream’s latest development branches. Rerunning it at the current pins needs no fetch. `--check` only reports drift; running setup repairs clean revision mismatches. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
 
 Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Only `effect` allows implicit invocation; every other skill requires an explicit request. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
 

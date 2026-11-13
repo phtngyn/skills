@@ -6,7 +6,6 @@ REPOS=(
   "Poteto|repos/pstack|https://github.com/cursor/plugins.git|pinned|pstack"
   "Emil|repos/emil|https://github.com/emilkowalski/skills.git|pinned"
   "Good CSS|repos/good-css|https://github.com/vojtaholik/good-css.git|pinned"
-  "Effect|repos/effect|https://github.com/Effect-TS/effect.git|pinned"
 )
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
@@ -46,7 +45,7 @@ for repo in "${REPOS[@]}"; do
   fi
   git -C "$path" fetch origin main
   if [[ "$policy" == "pinned" ]]; then
-    echo "$source_name fetched; checkout preserved. Record origin/main in UPSTREAM.md and review before adopting."
+    echo "$source_name fetched; checkout preserved. Record origin/main in UPSTREAM.md before adopting."
     continue
   fi
   git -C "$path" checkout main
