@@ -99,6 +99,26 @@ class SetupTests(unittest.TestCase):
             self.assertEqual((self.target / name).resolve(), (self.root / "skills" / name).resolve())
         self.assertIn("Original source.", (self.target / "bro/SKILL.md").read_text())
 
+    def test_stageshow_entry_is_materialized_and_synced(self):
+        source = self.root / "repos/benjitaylor/stageshow/SKILL.md"
+        source.parent.mkdir(parents=True)
+        source.write_text("Pinned stageshow.\n")
+        entry = self.root / "skills/stageshow/SKILL.md"
+        entry.unlink()
+        entry.symlink_to("../../repos/benjitaylor/stageshow/SKILL.md")
+        self.run_setup()
+        self.assertFalse(entry.is_symlink())
+        self.assertEqual(entry.read_bytes(), source.read_bytes())
+        before = snapshot(self.base)
+        self.run_setup("--check")
+        self.assertEqual(snapshot(self.base), before)
+        source.write_text("Updated pin.\n")
+        before = snapshot(self.base)
+        self.run_setup("--check", succeeds=False)
+        self.assertEqual(snapshot(self.base), before)
+        self.run_setup()
+        self.assertEqual(entry.read_bytes(), source.read_bytes())
+
     def test_rerun_preserves_links_and_does_not_fetch(self):
         self.run_setup()
         before = snapshot(self.target)
@@ -122,9 +142,9 @@ class SetupTests(unittest.TestCase):
 
     def test_check_reports_missing_link(self):
         self.run_setup()
-        (self.target / "design").unlink()
+        (self.target / "ask-emil").unlink()
         self.run_setup("--check", succeeds=False)
-        self.assertFalse((self.target / "design").exists())
+        self.assertFalse((self.target / "ask-emil").exists())
 
     def test_real_directory_conflict_prevents_partial_install(self):
         (self.target / "architect").mkdir(parents=True)
@@ -216,16 +236,16 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(list((self.root / "repos").iterdir()), [])
 
     def test_broken_resource_prevents_link_creation(self):
-        (self.root / "skills/design/assets").symlink_to("../../missing-assets")
+        (self.root / "skills/ask-emil/assets").symlink_to("../../missing-assets")
         self.run_setup(succeeds=False)
         self.assertFalse(self.target.exists())
 
     def test_existing_relative_owned_link_is_preserved(self):
         self.target.mkdir()
-        relative = os.path.relpath(self.root / "skills/design", self.target)
-        (self.target / "design").symlink_to(relative)
+        relative = os.path.relpath(self.root / "skills/ask-emil", self.target)
+        (self.target / "ask-emil").symlink_to(relative)
         self.run_setup()
-        self.assertEqual(str((self.target / "design").readlink()), relative)
+        self.assertEqual(str((self.target / "ask-emil").readlink()), relative)
         self.run_setup("--check")
 
     def test_uninstall_preserves_foreign_entries_and_removes_retired_owned_link(self):

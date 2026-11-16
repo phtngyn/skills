@@ -9,13 +9,10 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
-DESIGN_SUBSKILLS = {
-    'design-ui', 'design-css', 'design-prototype', 'design-animate', 'design-choreograph', 'design-gestures',
-    'design-animation-performance', 'design-review-animations',
-    'design-improve-animations', 'design-find-animation-opportunities', 'design-remove-animations',
-    'design-animation-vocabulary', 'design-apple', 'design-mobile', 'design-break-ui',
-}
-DESIGN = {'design'} | DESIGN_SUBSKILLS
+EMIL_SPEC = importlib.util.spec_from_file_location('port_emil', Path(__file__).with_name('port_emil.py'))
+EMIL = importlib.util.module_from_spec(EMIL_SPEC)
+EMIL_SPEC.loader.exec_module(EMIL)
+DESIGN = EMIL.NAMES
 PERSONAL = DESIGN | {'effect', 'full-send', 'full-stop'}
 EXTERNAL = {'stageshow'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
@@ -132,22 +129,6 @@ def validate(root=ROOT):
             policy = folder / 'agents/openai.yaml'
             if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
                 errors.append(f'{name}: only effect may allow implicit invocation')
-        if name in DESIGN:
-            policy = folder / 'agents/openai.yaml'
-            if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
-                errors.append(f'{name}: Design skills require explicit invocation')
-            if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
-                errors.append(f'{name}: unsupported host metadata')
-        if name not in PERSONAL | EXTERNAL:
-            if re.search(r'^(?:paths|disable-model-invocation):', front, re.M):
-                errors.append(f'{name}: unsupported host metadata')
-            if name not in expected:
-                continue
-            original = (upstream / name / 'SKILL.md').read_text()
-            implicit = 'false' if name == 'setup-pstack' or 'disable-model-invocation: true' in original else 'true'
-            policy = folder / 'agents/openai.yaml'
-            if not policy.is_file() or not re.search(r'allow_implicit_invocation: ' + implicit + r'\b', policy.read_text()):
-                errors.append(f'{name}: invocation policy differs from upstream')
         for resource in folder.rglob('*'):
             if 'node_modules' in resource.parts:
                 continue
@@ -156,7 +137,9 @@ def validate(root=ROOT):
         for document in folder.rglob('*.md'):
             if 'node_modules' in document.parts:
                 continue
-            errors.extend(check_links(document, root, poteto if name in DESIGN else ()))
+            source = upstream / name / document.relative_to(folder) if name in poteto else root / 'repos/emil/skills' / name / document.relative_to(folder)
+            if not source.is_file() or source.read_bytes() != document.read_bytes():
+                errors.extend(check_links(document, root))
     for document in root.glob('*.md'):
         errors.extend(check_links(document, root))
     errors.extend(check_catalog_docs(root, actual))
@@ -164,6 +147,19 @@ def validate(root=ROOT):
         installed = skills / relative
         if not installed.is_file() or installed.read_bytes() != payload:
             errors.append(f'Poteto source drift: {relative}; regenerate with scripts/port_poteto.py')
+    if (root / 'repos/emil/skills').is_dir():
+        for relative, payload in EMIL.expected_files(root).items():
+            installed = skills / relative
+            if not installed.is_file() or installed.read_bytes() != payload:
+                errors.append(f'Emil source drift: {relative}; regenerate with scripts/port_emil.py')
+    stageshow = root / 'repos/benjitaylor/stageshow'
+    if stageshow.is_dir():
+        for source in stageshow.rglob('*'):
+            if not source.is_file() or 'node_modules' in source.parts:
+                continue
+            installed = skills / 'stageshow' / source.relative_to(stageshow)
+            if not installed.is_file() or installed.read_bytes() != source.read_bytes():
+                errors.append(f'Stageshow source drift: {source.relative_to(stageshow)}')
     for relative in PORT.REMOVED:
         if (skills / relative).exists():
             errors.append(f'Redundant port manual: {relative}')

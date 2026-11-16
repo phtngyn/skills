@@ -1,4 +1,4 @@
-"""Check the port's observable output at native compatibility boundaries."""
+"""Check exact upstream copies and explicit invocation metadata."""
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -12,26 +12,29 @@ SPEC.loader.exec_module(porter)
 
 
 class PortTests(unittest.TestCase):
-    def test_domain_body_survives_metadata_conversion(self):
-        body = '# Principle\n\nPreserve the invariant, exact gates, and reviewer count.\n'
-        source = '---\nname: principle-example\ndescription: Example.\ndisable-model-invocation: true\n---\n\n' + body
-        result = porter.render(source, 'principle-example/SKILL.md')
-        self.assertEqual(result.split('\n---\n', 1)[1], '\n' + body)
-        self.assertNotIn('disable-model-invocation', result)
+    def test_import_preserves_frontmatter_body_paths_and_binary_resources(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'repos/pstack/pstack/skills/example'
+            source.mkdir(parents=True)
+            entry = b'---\nname: example\ndescription: Example.\ndisable-model-invocation: true\nicon: original\n---\nUse /make-bot-ui and `Task`. Read ~/.cursor/rules/pstack-models.mdc.\n'
+            (source / 'SKILL.md').write_bytes(entry)
+            (source / 'resource.bin').write_bytes(b'\x00\xff\r\n')
+            (source / 'guide.md').write_bytes(b'Run scripts/tool.ts\r\n')
+            files = porter.expected_files(root)
+            self.assertEqual(files['example/SKILL.md'], entry)
+            self.assertEqual(files['example/resource.bin'], b'\x00\xff\r\n')
+            self.assertEqual(files['example/guide.md'], b'Run scripts/tool.ts\r\n')
+            self.assertEqual(files['example/agents/openai.yaml'], b'policy:\n  allow_implicit_invocation: false\n')
 
-    def test_script_mapping_leaves_transcript_names_intact(self):
-        result = porter.render('Keep agent-transcripts/ and run bun scripts/orch/orch.ts.\n', 'poteto-mode/playbooks/prototype.md')
-        self.assertIn('agent-transcripts/', result)
-        self.assertIn('bun "${PSTACK_SKILLS_ROOT}/poteto-mode/scripts/orch/orch.ts"', result)
-
-    def test_plan_reads_installed_skills_and_project_control_from_its_trunk(self):
-        source = ('node pstack/skills/poteto-mode/scripts/check-plan.mjs <plan>\n'
-                  'git show origin/main:pstack/skills/swarm/SKILL.md`\n'
-                  'git show origin/main:<control skill path>`\n')
-        result = porter.render(source, 'poteto-mode/playbooks/prototype.md')
-        self.assertIn('node "${PSTACK_SKILLS_ROOT}/poteto-mode/scripts/check-plan.mjs" <plan>', result)
-        self.assertIn('cat "${PSTACK_SKILLS_ROOT}/swarm/SKILL.md"`', result)
-        self.assertIn('git show origin/main:<control skill path>`', result)
+    def test_skills_without_upstream_invocation_flag_are_still_explicit_only(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'repos/pstack/pstack/skills/example'
+            source.mkdir(parents=True)
+            (source / 'SKILL.md').write_text('---\nname: example\ndescription: Example.\n---\n')
+            files = porter.expected_files(root)
+            self.assertEqual(files['example/agents/openai.yaml'], b'policy:\n  allow_implicit_invocation: false\n')
 
     def test_refresh_removes_tracked_obsolete_helpers_without_touching_personal_files(self):
         with tempfile.TemporaryDirectory() as temporary:

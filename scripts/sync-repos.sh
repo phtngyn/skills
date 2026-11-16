@@ -5,7 +5,6 @@ REPOS=(
   "Benji Taylor|repos/benjitaylor|https://github.com/benjitaylor/skills.git|pinned"
   "Poteto|repos/pstack|https://github.com/cursor/plugins.git|pinned|pstack"
   "Emil|repos/emil|https://github.com/emilkowalski/skills.git|pinned"
-  "Good CSS|repos/good-css|https://github.com/vojtaholik/good-css.git|pinned"
 )
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."

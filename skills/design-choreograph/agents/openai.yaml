@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design: Choreograph"
-  short_description: "Coordinate motion across several elements"
-  default_prompt: "Use $design-choreograph for this interface task."
-policy:
-  allow_implicit_invocation: false

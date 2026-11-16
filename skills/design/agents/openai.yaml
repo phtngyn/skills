@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design"
-  short_description: "Coordinate UI craft, CSS, motion, and mobile specialists"
-  default_prompt: "Use $design to help with this interface."
-policy:
-  allow_implicit_invocation: false

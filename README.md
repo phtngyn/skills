@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-76 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, an independent Design family with a coordinator and fifteen subskills, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+76 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, sixteen Emil skills under their original names, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -49,11 +49,11 @@ $poteto-mode fix this retry path creating duplicate rows. Reproduce it, fix the 
 $architect with checkpoint redesign this importer around its callers and failure contract.
 $how explain resource ownership and shutdown in this subsystem.
 $interrogate review this branch against the accepted requirements without editing.
-$design improve this dialog's layout and keyboard interactions.
+$ask-emil improve this dialog's layout and keyboard interactions.
 $effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Invoke `$design` separately for UI work through its own Design specialists and shared workflow. Either family works without loading the other, and Poteto does not invoke Design. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` directs agents to the installed Effect package’s guidance and source.
+`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Use `$ask-emil` to choose an Emil UI or motion skill. Poteto does not invoke Emil skills automatically. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` directs agents to the installed Effect package’s guidance and source.
 
 ## Skills
 
@@ -121,30 +121,32 @@ The remaining 24 skills are principles, each prefixed with `principle-`:
 - `test-behavior-not-implementation`
 - `type-system-discipline`
 
-### Design
+### Emil
 
-Invoke `$design` to coordinate the task, or invoke a specialist directly. All Design entries are explicit-only. The specialists share Design's own workflow and source rules and read their detailed guidance from the pinned Emil and Good CSS sources. See [Design ownership](skills/design/PROVENANCE.md).
+Use `$ask-emil` to choose a specialist, or invoke one directly. These replace the local `design` and `design-*` adapters. Good CSS is removed. The existing installation exclusions (`ask-sonner`, `pick-ui-library`, `write-swift`, `animate-expo`) remain; upstream references to them are preserved. All entries are explicit-only.
 
 | Skill | Purpose |
 | --- | --- |
-| `design` | Coordinate UI work through the Design specialists. |
-| `design-ui` | Implement or critique interface craft, components, and interaction states. |
-| `design-css` | Implement and review layout, typography, overflow, and native CSS. |
-| `design-prototype` | Build distinct UI directions in an interactive picker. |
-| `design-choreograph` | Coordinate order, overlap, timing, and interruption across moving elements. |
-| `design-animate` | Build purposeful, interruptible web motion. |
-| `design-gestures` | Build direct drag, swipe, snap, dismiss, and hold interactions. |
-| `design-animation-performance` | Diagnose frame drops and animation rendering costs. |
-| `design-review-animations` | Review a motion component or diff without editing. |
-| `design-improve-animations` | Audit product motion and prepare scoped execution plans. |
-| `design-find-animation-opportunities` | Find justified opportunities for motion without editing. |
-| `design-remove-animations` | Remove unnecessary motion and reduce excessive animation. |
-| `design-animation-vocabulary` | Identify and explain an animation effect. |
-| `design-apple` | Shape physical, Apple-inspired web interactions. |
-| `design-mobile` | Polish mobile web touch, viewport, scrolling, and safe areas. |
-| `design-break-ui` | Stress interfaces with difficult realistic data. |
+| `animate` | Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use review-animations; for auditing a whole codebase use improve-animations. |
+| `animation-performance` | Keep web animations inside the frame budget — animate composite-only properties, keep motion off the main thread when the page is busy, and find the cause when an animation drops frames. Use when an animation is janky, choppy, stutters, or drops frames; when choosing which property to animate; when deciding between CSS and JS animation on performance grounds; or when reaching for `will-change` or GPU layers. For choosing easing, duration, or whether to animate at all use animate; for reviewing motion as a whole use review-animations. |
+| `animation-vocabulary` | Reverse-lookup glossary that turns a vague description of a web animation or motion effect into its exact term ("the bouncy thing when a popover opens" → Pop in; "the iOS rubber-band scroll" → Rubber-banding). Use when the user asks "what's it called when…", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one. |
+| `apple-design` | Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/sheet interactions, momentum and interruptible transitions, translucent materials and depth, typography (optical sizing, tracking, leading), reduced-motion, or the design foundations (feedback, spatial consistency, restraint) behind Apple-style interfaces. |
+| `ask-emil` | Ask which skill or flow fits your situation. A router over the skills in this repo. |
+| `break-ui` | Try to break a piece of UI by feeding it worst-case data — long names, unbreakable emails, one-letter names, missing fields, huge counts, zero items, long labels, non-Latin text, emoji, extreme numbers — then render it behind a "Demo data / Worst case" toggle and report everything that broke, with the fix for each. Use when the user asks to stress-test, break, or find edge cases in a component or screen, or to "try the worst case". For visual design critique use emil-design-eng; for motion use review-animations. |
+| `choreograph` | Coordinate several elements that animate together — decide what moves, in what order, how much they overlap, and what stays still — so a group reads as one intentional motion instead of a pile of separate animations. Use when building or fixing a staggered list, a hero entrance, a view swap inside a container, a multi-step flow, an element leaving while its siblings close the gap, a morph between rich states, or any interaction with several moving parts (icon + background + lines, panel + content, items flying into a target). Triggers on — stagger, sequence, choreography, "one after another", crossfade, AnimatePresence mode, hero entrance, multi-step, useAnimate, "feels mechanical", "too much going on", "feels slow to open". |
+| `emil-design-eng` | Emil Kowalski's design-engineering philosophy for UI polish, component design, animation decisions, and the invisible details that make software feel great. Use when building or reviewing a UI component's interactions and polish (press and hover states, popover origin, tooltip timing, transitions vs keyframes, clip-path techniques, drag details) and no narrower skill fits. |
+| `find-animation-opportunities` | Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks "what could be animated here?" or wants to "make this feel more alive". For fixing existing animations, use improve-animations or review-animations instead. |
+| `gestures` | Build drag, swipe, and sheet interactions that track the finger 1:1 and stay interruptible. Use when building or fixing anything the user drags, swipes, flings, holds, or dismisses with a gesture — drawers, sheets, swipe-to-dismiss toasts and cards, drag-to-reorder, pull-to-refresh, hold-to-confirm — or when a gesture feels laggy, disconnected from the finger, jumps on release, or can't be caught mid-animation. Triggers on — gesture, drag, swipe, fling, sheet, snap points, Vaul, Motion drag props, rubber-band, pull to refresh, hold to delete, touch-action, "doesn't follow my finger", "jumps when I let go", "can't grab it mid-animation". |
+| `improve-animations` | Survey a codebase's animation and motion code as a senior motion advisor, then produce a prioritized audit and self-contained implementation plans for other agents (or cheaper models) to execute. Read-only on source code — it plans improvements, it does not apply them. Use when the user asks to "improve the animations", "audit the motion", "make this app feel better", or wants a roadmap of animation fixes rather than a review of a single diff. |
+| `learn-taste` | Turn a session's design corrections into rules, with their why, in DESIGN.md, a project skill, or a lint check. |
+| `mobile-native` | Make a web app feel native on a phone — the small CSS and meta-tag fixes that separate "a website in a browser" from something that feels installed. Covers sticky hover states, tap highlight flashes, the 100vh bug, inputs that zoom the page, laggy taps, pull-to-refresh hijacking scroll, content under the notch, long-press selecting button text, carousels that scroll the wrong way, mismatched status bars, and the rule that you test on real hardware. Use when a web app is being built for or reviewed on mobile, when something "works in Chrome but feels wrong on my phone", when building a PWA, a bottom sheet, a carousel, a full-screen layout, or any touch interaction. For motion itself use animate; for React Native use animate-expo. |
+| `prototype` | Build multiple genuinely different versions of a UI piece you describe, rendered behind a visual picker so you can flip through them live and promote the one that feels right. |
+| `remove-animations` | Find the animations an interface doesn't need and remove them — motion on keyboard actions, high-frequency surfaces, functional data, and decoration with no purpose — then clean up what they leave behind. Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app "feels slow", "has too much animation", "feels over-animated", wants to "tone down the motion", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities; for fixing animations that should stay, use improve-animations or review-animations. |
+| `review-animations` | Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned. |
 
 ### Effect
+
+This local skill is version-independent: it reads the consuming project’s installed Effect guidance and source. Setup requires no Effect reference clone and update checks do not track Effect releases.
 
 | Skill | Purpose |
 | --- | --- |
@@ -176,14 +178,15 @@ Use these skills through an explicit request. Discovery alone does not grant the
 
 ## Source fidelity
 
-Poteto's retained skills are regenerated from the pinned upstream source by `scripts/port_poteto.py`. The port changes invocation metadata, unavailable tool calls, model configuration, and platform paths. It adds no runtime manual. [POTETO.md](POTETO.md) records those substitutions and exclusions; [UPSTREAM.md](UPSTREAM.md) records source pins.
+Imported Poteto, Emil, and Stageshow files match their adopted upstream sources byte for byte, including frontmatter and supporting resources. The only local invocation addition is `agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Upstream tool names, model defaults, paths, slash-command examples, and references to excluded skills remain unchanged.
 
-Design is an independent family with its own [source rules](skills/design/references/SOURCES.md). [Effect research](research/effect/MAINTENANCE.md) stays outside the installed skills.
+Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
 
 ## Validation
 
 ```bash
 python3 scripts/port_poteto.py --check
+python3 scripts/port_emil.py --check
 python3 scripts/validate.py
 python3 tests/test_validate.py
 python3 tests/test_port_poteto.py
@@ -191,7 +194,7 @@ python3 tests/test_setup.py
 ./scripts/setup.sh --check
 ```
 
-Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, local Markdown links and heading anchors, and the absence of Design dependencies on Poteto skills. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
+Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, local Markdown links and heading anchors, and exact upstream file fidelity. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
 
 The imported GitHub watcher and plan-checking helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
 

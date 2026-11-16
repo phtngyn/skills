@@ -35,7 +35,7 @@ class ValidationTests(unittest.TestCase):
 
     def write_skill(self, folder, name, upstream=False):
         folder.mkdir(parents=True)
-        extra = 'disable-model-invocation: true\n' if upstream else ''
+        extra = 'disable-model-invocation: true\n' if name in {'alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices'} else ''
         (folder / 'SKILL.md').write_text(f'---\nname: {name}\ndescription: Fixture skill.\n{extra}---\n\n# Fixture\n')
         if not upstream and name != 'effect':
             (folder / 'agents').mkdir()
@@ -78,13 +78,13 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(self.validate(), [])
 
     def test_design_subskills_are_required_catalog_members(self):
-        (self.root / 'skills/design-mobile/SKILL.md').unlink()
-        self.assertTrue(any("missing=['design-mobile']" in error for error in self.validate()))
+        (self.root / 'skills/mobile-native/SKILL.md').unlink()
+        self.assertTrue(any("missing=['mobile-native']" in error for error in self.validate()))
 
     def test_design_family_requires_explicit_invocation(self):
-        policy = self.root / 'skills/design-ui/agents/openai.yaml'
+        policy = self.root / 'skills/emil-design-eng/agents/openai.yaml'
         policy.write_text('policy:\n  allow_implicit_invocation: true\n')
-        self.assertTrue(any('design-ui: Design skills require explicit invocation' in error for error in self.validate()))
+        self.assertTrue(any('emil-design-eng: only effect' in error for error in self.validate()))
 
     def test_only_effect_may_allow_implicit_invocation(self):
         for name in ('full-send', 'full-stop', 'stageshow'):
@@ -96,14 +96,6 @@ class ValidationTests(unittest.TestCase):
                 policy.write_text('policy:\n  allow_implicit_invocation: true\n')
                 self.assertTrue(any(f'{name}: only effect' in error for error in self.validate()))
                 policy.write_text(original)
-        self.assertEqual(self.validate(), [])
-
-    def test_design_family_cannot_load_poteto_skills(self):
-        document = self.root / 'skills/design-ui/SKILL.md'
-        original = document.read_text()
-        document.write_text(original + '\nRead [alpha](../alpha/SKILL.md).\n')
-        self.assertTrue(any('Design family cannot depend on Poteto skill alpha' in error for error in self.validate()))
-        document.write_text(original + '\nRead [CSS](../design-css/SKILL.md).\n')
         self.assertEqual(self.validate(), [])
 
     def test_titled_links_are_checked_in_skills_and_root_docs(self):

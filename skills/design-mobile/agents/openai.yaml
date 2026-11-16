@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design: Mobile web"
-  short_description: "Design specialist for mobile web"
-  default_prompt: "Use $design-mobile for this interface task."
-policy:
-  allow_implicit_invocation: false

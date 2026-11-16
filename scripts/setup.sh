@@ -145,6 +145,20 @@ while IFS=$'\t' read -r repo remote commit; do
   printf 'source ready: %s @ %s\n' "$repo" "$commit"
 done <<< "$source_rows"
 
+# Codex discovers linked skill directories but skips linked SKILL.md files.
+stageshow_source="$collection_root/repos/benjitaylor/stageshow/SKILL.md"
+stageshow_entry="$collection_root/skills/stageshow/SKILL.md"
+if [[ -f "$stageshow_source" ]]; then
+  if [[ "$action" == install ]]; then
+    if [[ -L "$stageshow_entry" ]] || ! cmp -s "$stageshow_source" "$stageshow_entry"; then
+      rm -f -- "$stageshow_entry"
+      cp -- "$stageshow_source" "$stageshow_entry"
+    fi
+  else
+    [[ ! -L "$stageshow_entry" ]] && cmp -s "$stageshow_source" "$stageshow_entry" || fail 'stageshow entry point needs syncing; run setup'
+  fi
+fi
+
 for name in "${skill_names[@]}"; do
   skill_dir="$collection_root/skills/$name"
   [[ -f "$skill_dir/SKILL.md" ]] || fail "unavailable entry point: $name"

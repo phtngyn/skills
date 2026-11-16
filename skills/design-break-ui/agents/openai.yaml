@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design: Stress UI"
-  short_description: "Design specialist for stress ui"
-  default_prompt: "Use $design-break-ui for this interface task."
-policy:
-  allow_implicit_invocation: false

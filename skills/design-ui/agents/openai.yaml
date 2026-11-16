@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design: UI craft"
-  short_description: "Design specialist for ui craft"
-  default_prompt: "Use $design-ui for this interface task."
-policy:
-  allow_implicit_invocation: false

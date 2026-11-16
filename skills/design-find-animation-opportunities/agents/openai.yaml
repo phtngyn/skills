@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design: Find animation opportunities"
-  short_description: "Design specialist for find animation opportunities"
-  default_prompt: "Use $design-find-animation-opportunities for this interface task."
-policy:
-  allow_implicit_invocation: false
