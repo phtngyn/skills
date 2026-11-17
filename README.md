@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-76 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, sixteen Emil skills under their original names, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+77 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, sixteen Emil skills under their original names, `effect`, two personal pstack delivery entry points, Stageshow, and Cursor Team Kit’s `deslop`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -144,6 +144,14 @@ Use `$ask-emil` to choose a specialist, or invoke one directly. These replace th
 | `remove-animations` | Find the animations an interface doesn't need and remove them — motion on keyboard actions, high-frequency surfaces, functional data, and decoration with no purpose — then clean up what they leave behind. Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app "feels slow", "has too much animation", "feels over-animated", wants to "tone down the motion", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities; for fixing animations that should stay, use improve-animations or review-animations. |
 | `review-animations` | Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned. |
 
+### Cursor Team Kit
+
+| Skill | Purpose |
+| --- | --- |
+| `deslop` | Remove unnecessary AI-generated code patterns from the branch diff while preserving behavior. |
+
+Copied byte for byte from `cursor-team-kit/skills/deslop/SKILL.md` in the same Cursor plugins revision recorded for Poteto in [UPSTREAM.md](UPSTREAM.md). It supplies the pre-commit cleanup referenced by pstack. Invocation is explicit-only.
+
 ### Effect
 
 This local skill is version-independent: it reads the consuming project’s installed Effect guidance and source. Setup requires no Effect reference clone and update checks do not track Effect releases.
@@ -178,9 +186,9 @@ Use these skills through an explicit request. Discovery alone does not grant the
 
 ## Source fidelity
 
-Imported Poteto, Emil, and Stageshow files match their adopted upstream sources byte for byte, including frontmatter and supporting resources. The only local invocation addition is `agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Upstream tool names, model defaults, paths, slash-command examples, and references to excluded skills remain unchanged.
+Imported Poteto, Emil, Cursor Team Kit, and Stageshow files match their adopted upstream sources byte for byte, including frontmatter and supporting resources. The only local invocation addition is `agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Upstream tool names, model defaults, paths, slash-command examples, and references to excluded skills remain unchanged.
 
-Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
+Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Refresh `deslop` from the adopted Cursor plugins checkout with `git -C repos/pstack show HEAD:cursor-team-kit/skills/deslop/SKILL.md > skills/deslop/SKILL.md`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
 
 ## Validation
 

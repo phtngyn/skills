@@ -12,6 +12,8 @@ Emil skills are installed under their upstream names, with `$ask-emil` routing t
 
 `skills/stageshow` keeps a regular copy of upstream `SKILL.md` so Codex can discover it; setup syncs that file from the adopted pin. Its MIT license, third-party notices, kit, examples, references, and tools remain linked to the unmodified upstream source. Local `agents/openai.yaml` metadata makes invocation explicit-only.
 
+`skills/deslop/SKILL.md` is copied from `cursor-team-kit/skills/deslop/SKILL.md` at the Poteto row’s adopted revision. Collection validation checks its exact source fidelity through Git, including sparse checkouts.
+
 ## Maintenance
 
 For installation and routine updates on every machine, run `./scripts/setup.sh` after pulling this collection. It clones missing sources and reconciles clean existing checkouts to their based-on commits. It fetches a pinned commit only when missing locally, preserves branch pointers, and stops on local source edits. `--check` remains read-only. The commands below are the maintainer workflow for fetching and adopting new upstream versions; routine installation does not require them.

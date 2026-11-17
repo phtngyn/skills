@@ -4,6 +4,7 @@ from html import unescape
 import importlib.util
 from pathlib import Path
 import re
+import subprocess
 import sys
 from urllib.parse import unquote
 
@@ -14,7 +15,7 @@ EMIL = importlib.util.module_from_spec(EMIL_SPEC)
 EMIL_SPEC.loader.exec_module(EMIL)
 DESIGN = EMIL.NAMES
 PERSONAL = DESIGN | {'effect', 'full-send', 'full-stop'}
-EXTERNAL = {'stageshow'}
+EXTERNAL = {'stageshow', 'deslop'}
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
 
 PORT_SPEC = importlib.util.spec_from_file_location('port_poteto', Path(__file__).with_name('port_poteto.py'))
@@ -152,6 +153,13 @@ def validate(root=ROOT):
             installed = skills / relative
             if not installed.is_file() or installed.read_bytes() != payload:
                 errors.append(f'Emil source drift: {relative}; regenerate with scripts/port_emil.py')
+    if (root / 'repos/pstack/.git').exists() and 'deslop' in actual:
+        source = subprocess.check_output([
+            'git', '-C', str(root / 'repos/pstack'),
+            'show', 'HEAD:cursor-team-kit/skills/deslop/SKILL.md',
+        ])
+        if (skills / 'deslop/SKILL.md').read_bytes() != source:
+            errors.append('Cursor Team Kit source drift: deslop/SKILL.md')
     stageshow = root / 'repos/benjitaylor/stageshow'
     if stageshow.is_dir():
         for source in stageshow.rglob('*'):
