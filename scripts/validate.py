@@ -4,18 +4,22 @@ from html import unescape
 import importlib.util
 from pathlib import Path
 import re
-import subprocess
 import sys
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
 EMIL_SPEC = importlib.util.spec_from_file_location('port_emil', Path(__file__).with_name('port_emil.py'))
 EMIL = importlib.util.module_from_spec(EMIL_SPEC)
 EMIL_SPEC.loader.exec_module(EMIL)
 DESIGN = EMIL.NAMES
 PERSONAL = DESIGN | {'effect', 'full-send', 'full-stop'}
-EXTERNAL = {'stageshow', 'deslop'}
+EXTERNAL = {'stageshow'}
+POTETO_LEGACY = re.compile(
+    r'\.cursor/|cursor-team-kit|control-ui|control-cli|/deslop\b|/loop\b|'
+    r'\b(?:AskQuestion|subagent_type|run_in_background|cloud_base_branch)\b|'
+    r'\b(?:claude|gemini|grok)-[a-z0-9-]+',
+    re.I,
+)
 LINK = re.compile(r'''\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+(?:"[^"\n]*"|'[^'\n]*'))?\s*\)''')
 
 PORT_SPEC = importlib.util.spec_from_file_location('port_poteto', Path(__file__).with_name('port_poteto.py'))
@@ -107,9 +111,8 @@ def validate(root=ROOT):
     actual = {p.parent.name for p in skills.glob('*/SKILL.md')}
     if not upstream.is_dir():
         return ['Missing pinned Poteto source; run setup before collection validation.']
-    poteto = {p.parent.name for p in upstream.glob('*/SKILL.md')} - EXCLUDED
-    expected = poteto.copy()
-    expected |= PERSONAL | EXTERNAL
+    poteto = {p.parent.name for p in upstream.glob('*/SKILL.md')} - PORT.EXCLUDED
+    expected = poteto | PERSONAL | EXTERNAL
     if actual != expected:
         errors.append(f'Catalog mismatch: missing={sorted(expected-actual)}, extra={sorted(actual-expected)}')
     for name in sorted(actual):
@@ -130,36 +133,40 @@ def validate(root=ROOT):
             policy = folder / 'agents/openai.yaml'
             if not policy.is_file() or not re.search(r'allow_implicit_invocation: false\b', policy.read_text()):
                 errors.append(f'{name}: only effect may allow implicit invocation')
-        for resource in folder.rglob('*'):
-            if 'node_modules' in resource.parts:
-                continue
-            if resource.is_symlink() and not resource.exists():
-                errors.append(f'{resource.relative_to(root)}: broken symlink')
-        for document in folder.rglob('*.md'):
+        for document in folder.rglob('*'):
             if 'node_modules' in document.parts:
                 continue
-            source = upstream / name / document.relative_to(folder) if name in poteto else root / 'repos/emil/skills' / name / document.relative_to(folder)
+            if document.is_symlink() and not document.exists():
+                errors.append(f'{document.relative_to(root)}: broken symlink')
+            if document.suffix != '.md' or not document.is_file():
+                continue
+            if name in poteto:
+                errors.extend(check_links(document, root))
+                continue
+            source = root / 'repos/emil/skills' / name / document.relative_to(folder)
             if not source.is_file() or source.read_bytes() != document.read_bytes():
                 errors.extend(check_links(document, root))
     for document in root.glob('*.md'):
         errors.extend(check_links(document, root))
     errors.extend(check_catalog_docs(root, actual))
-    for relative, payload in PORT.expected_files(root).items():
+    try:
+        port_files = PORT.expected_files(root)
+    except ValueError as error:
+        errors.append(str(error))
+        port_files = {}
+    for relative, payload in port_files.items():
         installed = skills / relative
         if not installed.is_file() or installed.read_bytes() != payload:
             errors.append(f'Poteto source drift: {relative}; regenerate with scripts/port_poteto.py')
+        if installed.suffix in {'.md', '.sh'}:
+            legacy = POTETO_LEGACY.search(payload.decode())
+            if legacy:
+                errors.append(f'Poteto Codex compatibility: {relative} refers to {legacy[0]}')
     if (root / 'repos/emil/skills').is_dir():
         for relative, payload in EMIL.expected_files(root).items():
             installed = skills / relative
             if not installed.is_file() or installed.read_bytes() != payload:
                 errors.append(f'Emil source drift: {relative}; regenerate with scripts/port_emil.py')
-    if (root / 'repos/pstack/.git').exists() and 'deslop' in actual:
-        source = subprocess.check_output([
-            'git', '-C', str(root / 'repos/pstack'),
-            'show', 'HEAD:cursor-team-kit/skills/deslop/SKILL.md',
-        ])
-        if (skills / 'deslop/SKILL.md').read_bytes() != source:
-            errors.append('Cursor Team Kit source drift: deslop/SKILL.md')
     stageshow = root / 'repos/benjitaylor/stageshow'
     if stageshow.is_dir():
         for source in stageshow.rglob('*'):

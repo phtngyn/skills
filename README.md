@@ -1,6 +1,6 @@
 # Personal skills for Codex
 
-77 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, sixteen Emil skills under their original names, `effect`, two personal pstack delivery entry points, Stageshow, and Cursor Team Kit’s `deslop`. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
+76 skills: the 56 Poteto core skills retained after excluding `make-bot-ui` and `typescript-best-practices`, sixteen Emil skills under their original names, `effect`, two personal pstack delivery entry points, and Stageshow. Benny is excluded. The former `build`, `prompt`, and `write` wrappers are removed; `bro` and `ketchup` now belong to the adapted Poteto collection.
 
 ## Install
 
@@ -53,7 +53,7 @@ $ask-emil improve this dialog's layout and keyboard interactions.
 $effect review this worker's interruption, retries, and resource lifetime.
 ```
 
-`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Use `$ask-emil` to choose an Emil UI or motion skill. Poteto does not invoke Emil skills automatically. The 23 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` directs agents to the installed Effect package’s guidance and source.
+`poteto-mode` coordinates engineering work through its own skills, principles, and playbooks. Use `$ask-emil` to choose an Emil UI or motion skill. Poteto does not invoke Emil skills automatically. The 22 playbooks under `skills/poteto-mode/playbooks/` remain ordinary resources, not extra registered skills. `$effect` directs agents to the installed Effect package’s guidance and source.
 
 ## Skills
 
@@ -86,7 +86,7 @@ $effect review this worker's interruption, retries, and resource lifetime.
 | `create-formal-verification-skill` | Generate and prove a project-specific formal verification workflow. |
 | `maintain-formal-verification-skill` | Keep formal models, properties, and harnesses aligned with changed code. |
 | `statechart` | Check TLA+ models and draw statecharts with paths to broken rules. |
-| `no-comments` | Review comments and address accepted clutter or unenforced constraints. |
+| `no-comments` | Review comments and suppressions, fix confirmed findings, and propose enforceable constraints. |
 | `correct` | Prevent recurring agent mistakes structurally. |
 | `technical-writing` | Structure and edit technical documents. |
 | `unslop` | Remove formulaic AI prose. |
@@ -144,14 +144,6 @@ Use `$ask-emil` to choose a specialist, or invoke one directly. These replace th
 | `remove-animations` | Find the animations an interface doesn't need and remove them — motion on keyboard actions, high-frequency surfaces, functional data, and decoration with no purpose — then clean up what they leave behind. Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app "feels slow", "has too much animation", "feels over-animated", wants to "tone down the motion", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities; for fixing animations that should stay, use improve-animations or review-animations. |
 | `review-animations` | Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned. |
 
-### Cursor Team Kit
-
-| Skill | Purpose |
-| --- | --- |
-| `deslop` | Remove unnecessary AI-generated code patterns from the branch diff while preserving behavior. |
-
-Copied byte for byte from `cursor-team-kit/skills/deslop/SKILL.md` in the same Cursor plugins revision recorded for Poteto in [UPSTREAM.md](UPSTREAM.md). It supplies the pre-commit cleanup referenced by pstack. Invocation is explicit-only.
-
 ### Effect
 
 This local skill is version-independent: it reads the consuming project’s installed Effect guidance and source. Setup requires no Effect reference clone and update checks do not track Effect releases.
@@ -186,9 +178,9 @@ Use these skills through an explicit request. Discovery alone does not grant the
 
 ## Source fidelity
 
-Imported Poteto, Emil, Cursor Team Kit, and Stageshow files match their adopted upstream sources byte for byte, including frontmatter and supporting resources. The only local invocation addition is `agents/openai.yaml` with `policy.allow_implicit_invocation: false`. Upstream tool names, model defaults, paths, slash-command examples, and references to excluded skills remain unchanged.
+Poteto's skills and playbooks run in Codex through the maintained port in [POTETO.md](POTETO.md). The [runtime guidance](skills/poteto-mode/references/codex.md) covers T3 and standalone Codex. Emil and Stageshow retain their adopted upstream content. Imported skills use `agents/openai.yaml` for explicit invocation.
 
-Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Refresh `deslop` from the adopted Cursor plugins checkout with `git -C repos/pstack show HEAD:cursor-team-kit/skills/deslop/SKILL.md > skills/deslop/SKILL.md`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
+Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
 
 ## Validation
 
@@ -202,17 +194,17 @@ python3 tests/test_setup.py
 ./scripts/setup.sh --check
 ```
 
-Collection validation checks the included catalog, invocation policy, README coverage, stated catalog counts, local Markdown links and heading anchors, and exact upstream file fidelity. Validator tests exercise documentation failures in temporary fixtures. Installer tests use temporary directories and local Git fixtures, with no changes to global skills and no network fetching.
+Collection validation checks the catalog, invocation policy, README coverage, documented counts, local links and headings, and generated file fidelity. Validator tests use temporary fixtures. Installer tests use temporary directories and local Git repositories without changing installed skills.
 
-The imported GitHub watcher and plan-checking helpers require Bun. When changing those helpers, run from `skills/poteto-mode/scripts`:
+The imported GitHub watcher requires Bun. When changing it, run from `skills/poteto-mode/scripts`:
 
 ```bash
 bun install --frozen-lockfile
-bun test watch-pr check-plan.test.ts
+bun run test
 bun run typecheck
 ```
 
-Without Bun, skills use their documented direct-tool fallback. The helpers are not required for skill installation or discovery.
+Without Bun, skills use their documented direct-tool fallback. Skill installation and discovery do not require the watcher.
 
 The statechart compiler uses a TypeScript-capable runtime through `skills/statechart/scripts/statechart`. Run its checks from `skills/statechart/scripts`:
 

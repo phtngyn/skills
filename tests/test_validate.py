@@ -22,6 +22,15 @@ class ValidationTests(unittest.TestCase):
             self.write_skill(self.upstream / name, name, upstream=True)
         for name in ['alpha', 'principle-check', *sorted(validator.PERSONAL | validator.EXTERNAL)]:
             self.write_skill(self.root / 'skills' / name, name)
+        patch = self.root / 'scripts/poteto-codex.patch'
+        patch.parent.mkdir()
+        patch.write_text(
+            'diff --git a/alpha/reference.md b/alpha/reference.md\n'
+            'new file mode 100644\n'
+            '--- /dev/null\n+++ b/alpha/reference.md\n'
+            '@@ -0,0 +1 @@\n+# Fixture reference\n'
+        )
+        (self.root / 'skills/alpha/reference.md').write_text('# Fixture reference\n')
         self.skill_count = len(validator.PERSONAL | validator.EXTERNAL) + 2
         self.readme = self.root / 'README.md'
         self.readme.write_text(
@@ -54,8 +63,15 @@ class ValidationTests(unittest.TestCase):
         document.write_text(document.read_text() + '\nReplace the upstream workflow.\n')
         self.assertTrue(any('Poteto source drift: alpha/SKILL.md' in error for error in self.validate()))
 
-    def test_removed_runtime_manual_cannot_return(self):
-        document = self.root / 'skills/poteto-mode/references/codex.md'
+    def test_unchanged_upstream_playbook_cannot_add_a_legacy_dependency(self):
+        for folder in (self.upstream / 'alpha', self.root / 'skills/alpha'):
+            (folder / 'playbook.md').write_text('Drive the browser with control-ui.\n')
+        self.assertIn(
+            'Poteto Codex compatibility: alpha/playbook.md refers to control-ui', self.validate(),
+        )
+
+    def test_obsolete_comment_reviewer_cannot_return(self):
+        document = self.root / 'skills/no-comments/references/comment-reviewer.md'
         document.parent.mkdir(parents=True)
         document.write_text('# Runtime manual\n')
         self.assertTrue(any('Redundant port manual' in error for error in self.validate()))

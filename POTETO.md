@@ -1,10 +1,10 @@
-# Poteto source fidelity
+# Poteto for Codex
 
-The 56 retained Poteto skills are copied byte for byte from the adopted `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). This includes frontmatter, invocation examples, model defaults, tool names, paths, playbooks, scripts, and references.
+The 56 retained Poteto skills start from the adopted `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). The generator applies [the Codex port](scripts/poteto-codex.patch) and adds explicit-only invocation metadata in `agents/openai.yaml`. Files outside the patch retain their upstream bytes.
 
-The only local invocation addition is `agents/openai.yaml` with `policy.allow_implicit_invocation: false` for every installed skill. No content substitutions or compatibility rewrites run during generation. Upstream instructions retain their original platform assumptions.
+Use `$skill-name` in chat. The [runtime guidance](skills/poteto-mode/references/codex.md) covers Codex delegation, history, verification, and PR lifecycles, including T3 tools where available. Agents inherit the active Codex model by default. `$setup-pstack` can set optional role preferences supported by the host.
 
-Excluded from installation: `make-bot-ui`, `typescript-best-practices`, and Benny. References to excluded skills remain unchanged inside retained upstream content. Effect, full-send, and full-stop are locally maintained and are outside this import.
+The imported catalog excludes `make-bot-ui` and `typescript-best-practices`. Effect, full-send, and full-stop are maintained separately.
 
 Regenerate and verify with:
 
@@ -15,4 +15,4 @@ python3 scripts/validate.py
 python3 tests/test_port_poteto.py
 ```
 
-Regeneration removes obsolete tracked files in managed Poteto skill directories and preserves untracked notes and personal skills. The previous Codex-specific substitutions have been removed.
+When adopting a new pin, review the upstream changes for host assumptions and refresh the patch against that checkout. Review new skills, playbooks, and helpers even if the patch still applies. A patch conflict stops regeneration before it writes to the collection. Regeneration removes obsolete tracked files in managed Poteto directories and preserves untracked notes and personal skills.

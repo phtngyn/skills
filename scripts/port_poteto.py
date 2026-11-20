@@ -1,17 +1,47 @@
 #!/usr/bin/env python3
-"""Copy retained Poteto skills byte for byte from the pinned source."""
+"""Generate the retained Poteto skills with the Codex port applied."""
 from pathlib import Path
 import argparse
+import os
 import re
 import subprocess
 import sys
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
-REMOVED = ('poteto-mode/references/codex.md', 'no-comments/references/comment-reviewer.md')
+REMOVED = ('no-comments/references/comment-reviewer.md',)
+
+
+def apply_codex_port(files, patch):
+    """Apply the maintained patch in isolation before touching installed files."""
+    with tempfile.TemporaryDirectory(prefix='poteto-port-') as temporary:
+        tree = Path(temporary)
+        for relative, payload in files.items():
+            path = tree / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+        env = os.environ.copy()
+        for key in ('GIT_DIR', 'GIT_WORK_TREE', 'GIT_COMMON_DIR', 'GIT_INDEX_FILE', 'GIT_PREFIX'):
+            env.pop(key, None)
+        env['GIT_CEILING_DIRECTORIES'] = str(tree.parent.resolve())
+        result = subprocess.run(
+            ['git', '-C', str(tree), 'apply', '--unidiff-zero', '--whitespace=nowarn', str(patch.resolve())],
+            capture_output=True, text=True, env=env,
+        )
+        if result.returncode:
+            raise ValueError(f'Codex port does not apply to the Poteto source:\n{result.stderr.strip()}')
+        return {
+            path.relative_to(tree).as_posix(): path.read_bytes()
+            for path in sorted(tree.rglob('*')) if path.is_file()
+        }
 
 
 def expected_files(root=ROOT):
+    patch = root / 'scripts/poteto-codex.patch'
+    if not patch.is_file():
+        raise ValueError(f'Missing Codex port patch: {patch}')
+
     source = root / 'repos/pstack/pstack/skills'
     files = {}
     for folder in sorted(source.iterdir()):
@@ -20,11 +50,9 @@ def expected_files(root=ROOT):
         for path in folder.rglob('*'):
             if not path.is_file() or 'node_modules' in path.parts:
                 continue
-            relative = path.relative_to(source).as_posix()
-            payload = path.read_bytes()
-            files[relative] = payload
+            files[path.relative_to(source).as_posix()] = path.read_bytes()
         files[f'{folder.name}/agents/openai.yaml'] = b'policy:\n  allow_implicit_invocation: false\n'
-    return files
+    return apply_codex_port(files, patch)
 
 
 def obsolete_files(root, files):
@@ -53,7 +81,10 @@ def main():
     dirty = subprocess.check_output(['git', '-C', str(ROOT / 'repos/pstack'), 'status', '--porcelain'], text=True).strip()
     if dirty:
         parser.error('Poteto source has local changes; preserve or resolve them before regeneration.')
-    files = expected_files()
+    try:
+        files = expected_files()
+    except ValueError as error:
+        parser.error(str(error))
     changed = []
     for relative, payload in files.items():
         destination = ROOT / 'skills' / relative
