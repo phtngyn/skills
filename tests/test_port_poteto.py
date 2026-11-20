@@ -18,16 +18,23 @@ class PortTests(unittest.TestCase):
             root = Path(temporary)
             source = root / 'repos/pstack/pstack/skills/example'
             source.mkdir(parents=True)
-            entry = b'---\nname: example\ndescription: Example.\n---\nUse the upstream tool.\n'
+            entry = (
+                b'---\nname: example\ndescription: Use /example.\n'
+                b'disable-model-invocation: true\nicon: crown\ncolor: yellow\n'
+                b'license: MIT\n---\nUse the upstream tool.\n'
+            )
             (source / 'SKILL.md').write_bytes(entry)
             (source / 'resource.bin').write_bytes(b'\x00\xff\r\n')
-            (source / 'guide.md').write_bytes(b'Run scripts/tool.ts\r\n')
+            (source / 'guide.md').write_bytes(
+                b'Run /example. Read ../example/SKILL.md and https://example.org/example.\r\n'
+                b'Keep /example-long and /make-bot-ui unchanged.\r\n'
+            )
             patch = root / 'scripts/poteto-codex.patch'
             patch.parent.mkdir()
             patch.write_text(
                 'diff --git a/example/SKILL.md b/example/SKILL.md\n'
                 '--- a/example/SKILL.md\n+++ b/example/SKILL.md\n'
-                '@@ -4,2 +4,2 @@\n ---\n-Use the upstream tool.\n+Use the Codex tool.\n'
+                '@@ -5,2 +5,2 @@\n ---\n-Use the upstream tool.\n+Use the Codex tool.\n'
                 'diff --git a/example/reference.md b/example/reference.md\n'
                 'new file mode 100644\n'
                 '--- /dev/null\n+++ b/example/reference.md\n'
@@ -38,10 +45,17 @@ class PortTests(unittest.TestCase):
             scratch_parent.mkdir()
             with mock_patch.object(tempfile, 'tempdir', str(scratch_parent)):
                 files = porter.expected_files(root)
-            self.assertEqual(files['example/SKILL.md'], entry.replace(b'the upstream tool', b'the Codex tool'))
+            self.assertEqual(
+                files['example/SKILL.md'],
+                b'---\nname: example\ndescription: Use $example.\nlicense: MIT\n---\nUse the Codex tool.\n',
+            )
             self.assertEqual(files['example/reference.md'], b'# Codex reference\n')
             self.assertEqual(files['example/resource.bin'], b'\x00\xff\r\n')
-            self.assertEqual(files['example/guide.md'], b'Run scripts/tool.ts\r\n')
+            self.assertEqual(
+                files['example/guide.md'],
+                b'Run $example. Read ../example/SKILL.md and https://example.org/example.\r\n'
+                b'Keep /example-long and /make-bot-ui unchanged.\r\n',
+            )
             self.assertEqual(files['example/agents/openai.yaml'], b'policy:\n  allow_implicit_invocation: false\n')
             self.assertEqual((source / 'SKILL.md').read_bytes(), entry)
 

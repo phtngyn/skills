@@ -10,7 +10,7 @@
 
 Emil skills are installed under their upstream names, with `$ask-emil` routing to the included specialists. Good CSS and the local Design adapters are removed. Excluded Emil skills remain `ask-sonner`, `pick-ui-library`, `write-swift`, and `animate-expo`. Entry points are regular files; resources and MIT licensing are retained. The Poteto imports follow [POTETO.md](POTETO.md). The Effect skill is version-independent and reads the consuming project’s installed package guidance. It has no upstream release checks or source checkout requirement.
 
-`skills/stageshow` keeps a regular copy of upstream `SKILL.md` so Codex can discover it; setup syncs that file from the adopted pin. Its MIT license, third-party notices, kit, examples, references, and tools remain linked to the unmodified upstream source. Local `agents/openai.yaml` metadata makes invocation explicit-only.
+`skills/stageshow` keeps the catalog entry and explicit-invocation metadata. Setup syncs the entry and copies the MIT license, third-party notices, kit, examples, references, and tools directly from the pinned upstream checkout into the installed skill.
 
 ## Maintenance
 

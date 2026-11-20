@@ -56,6 +56,7 @@ class SetupTests(unittest.TestCase):
         self.tip = git(self.origin, "rev-parse", "HEAD")
         (self.root / "scripts").mkdir(parents=True)
         shutil.copy2(SCRIPT, self.root / "scripts/setup.sh")
+        shutil.copy2(SCRIPT.with_name("install_skills.py"), self.root / "scripts/install_skills.py")
         for name in SKILLS:
             package = self.root / "skills" / name
             package.mkdir(parents=True)
@@ -87,7 +88,7 @@ class SetupTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         return result
 
-    def test_install_uses_adopted_pin_and_links_all_skills(self):
+    def test_install_uses_adopted_pin_and_copies_all_skills(self):
         self.run_setup()
         checkout = self.root / "repos/source"
         self.assertEqual(git(checkout, "rev-parse", "HEAD"), self.pin)
@@ -95,20 +96,24 @@ class SetupTests(unittest.TestCase):
         self.assertEqual((checkout / "source-version").read_text(), "adopted\n")
         self.assertEqual(sorted(path.name for path in self.target.iterdir()), sorted(SKILLS))
         for name in SKILLS:
-            self.assertTrue((self.target / name).is_symlink())
-            self.assertEqual((self.target / name).resolve(), (self.root / "skills" / name).resolve())
+            self.assertTrue((self.target / name).is_dir())
+            self.assertFalse((self.target / name).is_symlink())
+        self.assertFalse(any(path.is_symlink() for path in self.target.rglob("*")))
+        shutil.rmtree(self.root)
         self.assertIn("Original source.", (self.target / "bro/SKILL.md").read_text())
 
     def test_stageshow_entry_is_materialized_and_synced(self):
         source = self.root / "repos/benjitaylor/stageshow/SKILL.md"
         source.parent.mkdir(parents=True)
         source.write_text("Pinned stageshow.\n")
+        (source.parent / "LICENSE").write_text("Stageshow resource.\n")
         entry = self.root / "skills/stageshow/SKILL.md"
         entry.unlink()
         entry.symlink_to("../../repos/benjitaylor/stageshow/SKILL.md")
         self.run_setup()
         self.assertFalse(entry.is_symlink())
         self.assertEqual(entry.read_bytes(), source.read_bytes())
+        self.assertEqual((self.target / "stageshow/LICENSE").read_text(), "Stageshow resource.\n")
         before = snapshot(self.base)
         self.run_setup("--check")
         self.assertEqual(snapshot(self.base), before)
@@ -119,7 +124,7 @@ class SetupTests(unittest.TestCase):
         self.run_setup()
         self.assertEqual(entry.read_bytes(), source.read_bytes())
 
-    def test_rerun_preserves_links_and_does_not_fetch(self):
+    def test_rerun_preserves_copies_and_does_not_fetch(self):
         self.run_setup()
         before = snapshot(self.target)
         (self.origin / "source-version").write_text("third version\n")
@@ -140,9 +145,9 @@ class SetupTests(unittest.TestCase):
         self.run_setup("--check")
         self.assertEqual(snapshot(self.base), before)
 
-    def test_check_reports_missing_link(self):
+    def test_check_reports_missing_copy(self):
         self.run_setup()
-        (self.target / "ask-emil").unlink()
+        shutil.rmtree(self.target / "ask-emil")
         self.run_setup("--check", succeeds=False)
         self.assertFalse((self.target / "ask-emil").exists())
 
@@ -184,7 +189,7 @@ class SetupTests(unittest.TestCase):
         self.assertIn("fetch:", result.stdout)
         self.assertEqual(git(checkout, "rev-parse", "HEAD"), adopted)
         self.assertIn("Updated source.", (self.target / "bro/SKILL.md").read_text())
-        self.assertEqual(snapshot(self.target), before)
+        self.assertNotEqual(snapshot(self.target), before)
         self.run_setup("--check")
 
     def test_check_revision_mismatch_is_read_only_and_explains_repair(self):
@@ -240,12 +245,13 @@ class SetupTests(unittest.TestCase):
         self.run_setup(succeeds=False)
         self.assertFalse(self.target.exists())
 
-    def test_existing_relative_owned_link_is_preserved(self):
+    def test_existing_relative_owned_link_is_migrated(self):
         self.target.mkdir()
         relative = os.path.relpath(self.root / "skills/ask-emil", self.target)
         (self.target / "ask-emil").symlink_to(relative)
         self.run_setup()
-        self.assertEqual(str((self.target / "ask-emil").readlink()), relative)
+        self.assertFalse((self.target / "ask-emil").is_symlink())
+        self.assertTrue((self.target / "ask-emil/SKILL.md").is_file())
         self.run_setup("--check")
 
     def test_uninstall_preserves_foreign_entries_and_removes_retired_owned_link(self):
@@ -261,6 +267,16 @@ class SetupTests(unittest.TestCase):
         self.assertTrue((self.target / "foreign").is_symlink())
         self.assertEqual((self.target / "personal/notes.md").read_text(), "Keep this.\n")
         self.run_setup("--uninstall")
+
+    def test_local_edits_prevent_overwrite_and_uninstall(self):
+        self.run_setup()
+        installed = self.target / "bro"
+        (installed / "local-notes.md").write_text("Keep my notes.\n")
+        before = snapshot(self.target)
+        for args in ((), ("--uninstall",)):
+            result = self.run_setup(*args, succeeds=False)
+            self.assertIn("locally modified skill", result.stderr)
+            self.assertEqual(snapshot(self.target), before)
 
     def test_uninstall_works_without_sources(self):
         self.run_setup()

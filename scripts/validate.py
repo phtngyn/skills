@@ -109,6 +109,9 @@ def validate(root=ROOT):
     upstream = root / 'repos/pstack/pstack/skills'
     errors = []
     actual = {p.parent.name for p in skills.glob('*/SKILL.md')}
+    for folder in skills.iterdir():
+        if folder.is_symlink():
+            errors.append(f'{folder.relative_to(root)}: skill directory must be a real directory')
     if not upstream.is_dir():
         return ['Missing pinned Poteto source; run setup before collection validation.']
     poteto = {p.parent.name for p in upstream.glob('*/SKILL.md')} - PORT.EXCLUDED
@@ -136,8 +139,9 @@ def validate(root=ROOT):
         for document in folder.rglob('*'):
             if 'node_modules' in document.parts:
                 continue
-            if document.is_symlink() and not document.exists():
-                errors.append(f'{document.relative_to(root)}: broken symlink')
+            if document.is_symlink():
+                errors.append(f'{document.relative_to(root)}: skill resources must be real files or directories')
+                continue
             if document.suffix != '.md' or not document.is_file():
                 continue
             if name in poteto:
@@ -169,12 +173,9 @@ def validate(root=ROOT):
                 errors.append(f'Emil source drift: {relative}; regenerate with scripts/port_emil.py')
     stageshow = root / 'repos/benjitaylor/stageshow'
     if stageshow.is_dir():
-        for source in stageshow.rglob('*'):
-            if not source.is_file() or 'node_modules' in source.parts:
-                continue
-            installed = skills / 'stageshow' / source.relative_to(stageshow)
-            if not installed.is_file() or installed.read_bytes() != source.read_bytes():
-                errors.append(f'Stageshow source drift: {source.relative_to(stageshow)}')
+        entry = skills / 'stageshow/SKILL.md'
+        if not entry.is_file() or entry.read_bytes() != (stageshow / 'SKILL.md').read_bytes():
+            errors.append('Stageshow source drift: SKILL.md')
     for relative in PORT.REMOVED:
         if (skills / relative).exists():
             errors.append(f'Redundant port manual: {relative}')

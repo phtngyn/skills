@@ -11,9 +11,9 @@ usage() {
   cat <<'EOF'
 Usage: ./scripts/setup.sh [--check | --uninstall] [--target DIRECTORY]
 
-Install/update: reconcile sources to UPSTREAM.md's adopted pins, then link skills.
-Check: verify sources, resources, and installed links without fetching or writing.
-Uninstall: remove only this collection's links, preserving other entries.
+Install/update: reconcile sources to UPSTREAM.md's adopted pins, then install skill copies.
+Check: verify sources, resources, and installed copies without fetching or writing.
+Uninstall: remove only this collection's copies and legacy links, preserving other entries.
 
 The default target is ~/.agents/skills. Clean sources move to the adopted pins;
 missing commits are fetched as needed. Local edits and branch pointers are preserved.
@@ -48,33 +48,10 @@ if [[ -e "$target_dir" || -L "$target_dir" ]]; then
   target_dir="$(cd -- "$target_dir" && pwd -P)"
 fi
 
-is_our_link() {
-  local entry="$1" expected destination
-  [[ -L "$entry" ]] || return 1
-  expected="$collection_root/skills/${entry##*/}"
-  destination="$(readlink "$entry")"
-  [[ "$destination" == "$expected" ]] && return 0
-  if [[ -d "$entry" ]]; then
-    [[ "$(cd -- "$entry" && pwd -P)" == "$expected" ]]
-    return
-  fi
-  # A removed skill can leave a dangling link through a relative or aliased path.
-  [[ "$destination" == /* ]] || destination="${entry%/*}/$destination"
-  [[ "${destination##*/}" == "${entry##*/}" && -d "${destination%/*}" ]] || return 1
-  [[ "$(cd -- "${destination%/*}" && pwd -P)" == "$collection_root/skills" ]]
-}
-
+command -v python3 >/dev/null 2>&1 || fail 'python3 is required'
+installer="$collection_root/scripts/install_skills.py"
 if [[ "$action" == uninstall ]]; then
-  removed=0
-  for entry in "$target_dir"/*; do
-    if is_our_link "$entry"; then
-      rm -- "$entry"
-      printf 'removed: %s\n' "$entry"
-      removed=$((removed + 1))
-    fi
-  done
-  printf 'Removed %s collection links. Other entries were preserved.\n' "$removed"
-  exit 0
+  exec python3 "$installer" uninstall "$collection_root" "$target_dir"
 fi
 
 command -v git >/dev/null 2>&1 || fail 'git is required'
@@ -88,17 +65,8 @@ for skill_dir in "$collection_root"/skills/*; do
 done
 [[ ${#skill_names[@]} -gt 0 ]] || fail 'no skills found'
 
-# Reject conflicts before cloning sources or changing installation links.
 if [[ "$action" == install ]]; then
-  conflicts=0
-  for name in "${skill_names[@]}"; do
-    entry="$target_dir/$name"
-    if [[ -e "$entry" || -L "$entry" ]] && ! is_our_link "$entry"; then
-      printf 'conflict: %s (left unchanged)\n' "$entry" >&2
-      conflicts=$((conflicts + 1))
-    fi
-  done
-  [[ "$conflicts" -eq 0 ]] || fail 'resolve or back up conflicting entries before installing'
+  python3 "$installer" preflight "$collection_root" "$target_dir" "${skill_names[@]}"
 fi
 
 # UPSTREAM.md is the single source of repository locations and adopted revisions.
@@ -145,7 +113,7 @@ while IFS=$'\t' read -r repo remote commit; do
   printf 'source ready: %s @ %s\n' "$repo" "$commit"
 done <<< "$source_rows"
 
-# Codex discovers linked skill directories but skips linked SKILL.md files.
+# Keep the catalog entry in sync with the adopted Stageshow source.
 stageshow_source="$collection_root/repos/benjitaylor/stageshow/SKILL.md"
 stageshow_entry="$collection_root/skills/stageshow/SKILL.md"
 if [[ -f "$stageshow_source" ]]; then
@@ -159,45 +127,4 @@ if [[ -f "$stageshow_source" ]]; then
   fi
 fi
 
-for name in "${skill_names[@]}"; do
-  skill_dir="$collection_root/skills/$name"
-  [[ -f "$skill_dir/SKILL.md" ]] || fail "unavailable entry point: $name"
-  for resource in "$skill_dir"/*; do
-    if [[ -L "$resource" && ! -e "$resource" ]]; then
-      fail "broken resource link: $resource"
-    fi
-  done
-done
-
-if [[ "$action" == install ]]; then
-  mkdir -p -- "$target_dir"
-  target_dir="$(cd -- "$target_dir" && pwd -P)"
-fi
-
-# Reconcile retired skills only after all sources and current skills pass preflight.
-for entry in "$target_dir"/*; do
-  if is_our_link "$entry" && [[ ! -f "$collection_root/skills/${entry##*/}/SKILL.md" ]]; then
-    if [[ "$action" == check ]]; then
-      fail "retired collection link: $entry; run setup to remove it"
-    fi
-    rm -- "$entry"
-    printf 'removed retired link: %s\n' "$entry"
-  fi
-done
-
-missing=0
-for name in "${skill_names[@]}"; do
-  entry="$target_dir/$name"
-  if is_our_link "$entry"; then
-    printf 'installed: %s\n' "$name"
-  elif [[ "$action" == check ]]; then
-    printf 'missing or conflicting link: %s\n' "$entry" >&2
-    missing=$((missing + 1))
-  else
-    [[ ! -e "$entry" && ! -L "$entry" ]] || fail "destination changed during setup: $entry"
-    ln -s -- "$collection_root/skills/$name" "$entry"
-    printf 'linked: %s\n' "$name"
-  fi
-done
-[[ "$missing" -eq 0 ]] || fail "$missing installation links need attention"
-printf '%s skills ready in %s\n' "${#skill_names[@]}" "$target_dir"
+exec python3 "$installer" "$action" "$collection_root" "$target_dir" "${skill_names[@]}"

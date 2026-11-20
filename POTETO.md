@@ -1,6 +1,6 @@
 # Poteto for Codex
 
-The 56 retained Poteto skills start from the adopted `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). The generator applies [the Codex port](scripts/poteto-codex.patch) and adds explicit-only invocation metadata in `agents/openai.yaml`. Files outside the patch retain their upstream bytes.
+The 56 retained Poteto skills start from the adopted `repos/pstack/pstack/skills/` source recorded in [UPSTREAM.md](UPSTREAM.md). The generator removes Cursor-only entry point metadata, translates bundled `/skill-name` invocations to Codex’s `$skill-name` syntax, and writes explicit-only policy in `agents/openai.yaml`. It then applies [the Codex port](scripts/poteto-codex.patch) to the normalized source for workflow-specific changes. Other files retain their upstream bytes.
 
 Use `$skill-name` in chat. The [runtime guidance](skills/poteto-mode/references/codex.md) covers Codex delegation, history, verification, and PR lifecycles, including T3 tools where available. Agents inherit the active Codex model by default. `$setup-pstack` can set optional role preferences supported by the host.
 

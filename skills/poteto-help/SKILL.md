@@ -34,7 +34,7 @@ When role preferences are absent and model choice matters, explain inheritance a
 
 ## Get set up
 
-1. Install the collection using [setup](../../README.md#install). Start a new chat after installing new skills so Codex can discover them.
+1. Install the collection using its [setup instructions](https://github.com/phtngyn/skills#install). Start a new chat after installing new skills so Codex can discover them.
 2. Run [$setup-pstack](../setup-pstack/SKILL.md) if the user wants optional model or effort preferences.
 3. Start a real task with `$poteto-mode`, a goal, and a check that can pass or fail.
 

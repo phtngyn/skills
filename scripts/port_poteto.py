@@ -11,6 +11,8 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {'make-bot-ui', 'typescript-best-practices'}
 REMOVED = ('no-comments/references/comment-reviewer.md',)
+FRONTMATTER = re.compile(rb'\A---\r?\n.*?^---\r?$', re.M | re.S)
+CURSOR_FIELDS = re.compile(rb'^(?:disable-model-invocation|icon|color):[^\r\n]*\r?\n', re.M)
 
 
 def apply_codex_port(files, patch):
@@ -37,22 +39,35 @@ def apply_codex_port(files, patch):
         }
 
 
+def normalized_files(source):
+    """Translate shared metadata and invocations while preserving resource bytes."""
+    names = sorted(
+        {path.parent.name for path in source.glob('*/SKILL.md')} - EXCLUDED,
+        key=lambda name: (-len(name), name),
+    )
+    commands = b'|'.join(re.escape(name.encode()) for name in names)
+    invocation = re.compile(rb'(?<![a-zA-Z0-9_./:$-])/(' + commands + rb')(?![a-zA-Z0-9_/-])')
+    files = {}
+    for name in names:
+        folder = source / name
+        for path in folder.rglob('*'):
+            if not path.is_file() or 'node_modules' in path.parts:
+                continue
+            payload = path.read_bytes()
+            if path.suffix == '.md':
+                payload = invocation.sub(rb'$\1', payload)
+            if path == folder / 'SKILL.md':
+                payload = FRONTMATTER.sub(lambda match: CURSOR_FIELDS.sub(b'', match[0]), payload, count=1)
+            files[path.relative_to(source).as_posix()] = payload
+        files[f'{name}/agents/openai.yaml'] = b'policy:\n  allow_implicit_invocation: false\n'
+    return files
+
+
 def expected_files(root=ROOT):
     patch = root / 'scripts/poteto-codex.patch'
     if not patch.is_file():
         raise ValueError(f'Missing Codex port patch: {patch}')
-
-    source = root / 'repos/pstack/pstack/skills'
-    files = {}
-    for folder in sorted(source.iterdir()):
-        if folder.name in EXCLUDED or not (folder / 'SKILL.md').is_file():
-            continue
-        for path in folder.rglob('*'):
-            if not path.is_file() or 'node_modules' in path.parts:
-                continue
-            files[path.relative_to(source).as_posix()] = path.read_bytes()
-        files[f'{folder.name}/agents/openai.yaml'] = b'policy:\n  allow_implicit_invocation: false\n'
-    return apply_codex_port(files, patch)
+    return apply_codex_port(normalized_files(root / 'repos/pstack/pstack/skills'), patch)
 
 
 def obsolete_files(root, files):

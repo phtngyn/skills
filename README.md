@@ -20,7 +20,7 @@ cp -i global/AGENTS.md "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"
 
 `cp -i` asks before replacing existing instructions. This installs a copy; rerun it after updating the saved instructions. The skill setup and uninstall commands manage only skills.
 
-Setup clones missing upstream sources and moves clean existing checkouts to the adopted revisions in [UPSTREAM.md](UPSTREAM.md), fetching missing commits only when needed. It then links each skill into `~/.agents/skills`. Local source edits stop setup with repair guidance; branch pointers are never rewritten. Retired links owned by this collection are removed after preflight succeeds. Foreign links and real directories are preserved; a conflicting current skill name stops installation before changing links.
+Setup reconciles the upstream revisions in [UPSTREAM.md](UPSTREAM.md), then copies each skill and its resources into `~/.agents/skills`. It migrates legacy links owned by this collection to real directories. Copies work independently of this checkout. Foreign entries and locally edited copies are preserved. A conflict stops setup before it changes installed skills.
 
 On each machine, update with:
 
@@ -29,7 +29,7 @@ git pull --ff-only
 ./scripts/setup.sh
 ```
 
-Setup follows this collection’s adopted pins, not upstream’s latest development branches. Rerunning it at the current pins needs no fetch. `--check` only reports drift; running setup repairs clean revision mismatches. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
+Setup follows this collection’s adopted pins. Rerunning it at the current pins needs no fetch. `--check` reports source and installed copy drift. Run setup after editing or updating skills to refresh the installed copies. If you edit a source under `repos/`, commit, stash, or move those edits before updating.
 
 Start a new chat after installation so Codex reloads the skill catalog. Invoke skills with `$skill-name`. Only `effect` allows implicit invocation; every other skill requires an explicit request. Workflows read sibling skill instructions when their phases need them. The retained specialists keep their invocation settings.
 
@@ -38,7 +38,7 @@ Start a new chat after installation so Codex reloads the skill catalog. Invoke s
 ./scripts/setup.sh --uninstall
 ```
 
-Uninstall removes only this collection's links, including retired ones. It preserves upstream checkouts and unrelated skills. Moving or deleting this repository breaks installed links.
+Uninstall removes this collection’s unedited copies and legacy links, including retired ones. It preserves unrelated skills and upstream checkouts.
 
 ## Workflow
 
@@ -180,7 +180,7 @@ Use these skills through an explicit request. Discovery alone does not grant the
 
 Poteto's skills and playbooks run in Codex through the maintained port in [POTETO.md](POTETO.md). The [runtime guidance](skills/poteto-mode/references/codex.md) covers T3 and standalone Codex. Emil and Stageshow retain their adopted upstream content. Imported skills use `agents/openai.yaml` for explicit invocation.
 
-Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Setup syncs Stageshow's regular `SKILL.md` copy; its resources remain linked. [POTETO.md](POTETO.md) records the import policy; [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
+Regenerate Poteto with `scripts/port_poteto.py` and Emil with `scripts/port_emil.py`. Setup syncs Stageshow’s entry point and copies its resources from the pinned checkout. [POTETO.md](POTETO.md) records the import policy. [UPSTREAM.md](UPSTREAM.md) records the pins. Effect, full-send, and full-stop remain locally maintained.
 
 ## Validation
 

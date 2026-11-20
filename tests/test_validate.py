@@ -44,7 +44,7 @@ class ValidationTests(unittest.TestCase):
 
     def write_skill(self, folder, name, upstream=False):
         folder.mkdir(parents=True)
-        extra = 'disable-model-invocation: true\n' if name in {'alpha', 'principle-check', 'make-bot-ui', 'typescript-best-practices'} else ''
+        extra = 'disable-model-invocation: true\n' if upstream else ''
         (folder / 'SKILL.md').write_text(f'---\nname: {name}\ndescription: Fixture skill.\n{extra}---\n\n# Fixture\n')
         if not upstream and name != 'effect':
             (folder / 'agents').mkdir()
